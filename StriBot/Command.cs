@@ -16,7 +16,8 @@ namespace StriBot
         public CommandType Type { get; set; }
         public Action<OnChatCommandReceivedArgs> Action { get; set; }
 
-        public Command(string name, string info, Role requires, Action<OnChatCommandReceivedArgs> action, CommandType type) : this(name, info, Role.Any, action, null, type) { }
+        public Command(string name, string info, Role requires, Action<OnChatCommandReceivedArgs> action, CommandType type) : this(name, info, requires, action, null, type) { }
+
         public Command(string name, string info, Role requires, Action<OnChatCommandReceivedArgs> action, string[] args, CommandType type)
         {
             Requires = requires;
@@ -26,6 +27,7 @@ namespace StriBot
             Args = args;
             Type = type;
         }
+
         public Command(string name, string info, Action<OnChatCommandReceivedArgs> action, string[] args, CommandType type) : this (name, info, Role.Any, action, args, type ) { }
 
         public Command(string name, string info, Action<OnChatCommandReceivedArgs> action, CommandType type) : this(name, info, Role.Any, action, null, type) { }

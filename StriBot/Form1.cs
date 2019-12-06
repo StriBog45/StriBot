@@ -42,45 +42,7 @@ namespace StriBot
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CreateReport();
-        }
-        private void CreateReport()
-        {
-            string catalog = "Отчеты";
-            if (!Directory.Exists(catalog))
-                Directory.CreateDirectory(catalog);
-
-            string name = String.Format("{0}", DateTime.Now.ToString(new CultureInfo("ru-RU")).Split(' ')[0]);
-            string path = GetPath(catalog, name);
-
-            // Delete the file if it exists.
-            while (File.Exists(path))
-            {
-                name += "(1)";
-                path = GetPath(catalog, name);
-            }
-
-            List<string> report = new List<string>();
-            report.Add(String.Format("Побед: {0}, Поражений: {1}", MyBot.Wins, MyBot.Losses));
-            report.Add(String.Format("Смертей: {0}", MyBot.Deaths));
-            report.Add(String.Format("Боссы: {0}", MyBot.bosses.ToString()));
-            foreach (var command in MyBot.commands.Values)      {
-                if (command.Type != CommandType.Hidden)
-                {
-                    StringBuilder result = new StringBuilder('!' + command.Name);
-                    if (command.Args != null)
-                        foreach (var arg in command.Args)
-                            result.Append(String.Format(" [{0}]", arg));
-                    result.Append(String.Format(" - {0}.", command.Info));
-                    report.Add(result.ToString());
-                }
-            }
-            // Create the file.
-            File.WriteAllLines(path, report.ToArray());
-        }
-        private string GetPath(string catalog, string name)
-        {
-            return String.Format("{0}\\{1}.txt",catalog,name);
+            Reporter.CreateCommands(MyBot.commands);
         }
 
         private void buttonDistribution_Click(object sender, EventArgs e)
