@@ -9,8 +9,8 @@ namespace StriBot
     public enum CommandType
     {
         Info,
-        Extension,
-        Zakaz,
+        Interactive,
+        Order,
         Streamers,
         Hidden
     }
