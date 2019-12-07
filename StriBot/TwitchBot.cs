@@ -191,6 +191,9 @@ namespace StriBot
             commands = new Dictionary<string, Command>()
             {
                 #region Информационные
+                {"команды", new Command("Команды","Ссылка на список команд",
+                delegate (OnChatCommandReceivedArgs e) {
+                        SendMessage(String.Format("Основа: {0} Поддержка: {1} Звание: {2}", CoreMMR, SupMMR, medallion));}, CommandType.Info)},
                 {"mmr", new Command("mmr","Узнать рейтинг стримера в Dota 2",
                 delegate (OnChatCommandReceivedArgs e) {
                         SendMessage(String.Format("Основа: {0} Поддержка: {1} Звание: {2}", CoreMMR, SupMMR, medallion));}, CommandType.Info)},
