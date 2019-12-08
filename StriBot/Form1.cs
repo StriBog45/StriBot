@@ -15,7 +15,7 @@ namespace StriBot
     public partial class Form1 : Form
     {
         private delegate void SafeCallDelegate();
-        private delegate void SafeCallDelegateOrders(List<Tuple<string, string, int>> orders);
+        private delegate void SafeCallDelegateOrders(List<(string, string, int)> orders);
 
         public TwitchBot MyBot { get;set;}
         public Form1()
@@ -79,7 +79,7 @@ namespace StriBot
             MyBot.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value));
         }
 
-        void UpdateOrderList(List<Tuple<string, string, int>> orders)
+        void UpdateOrderList(List<(string, string, int)> orders)
         {
 
             if (listViewOrder.InvokeRequired)
@@ -101,7 +101,7 @@ namespace StriBot
             {
                 if(selected.SubItems[0].Text.Contains("youtube"))
                     webBrowser.Navigate(selected.SubItems[0].Text);
-                MyBot.ListOrders.Remove(Tuple.Create(selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text)));
+                MyBot.ListOrders.Remove((selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text)));
                 DataBase.AddMoneyToUser(selected.SubItems[1].Text, -Int32.Parse(selected.SubItems[2].Text));
                 MyBot.SendMessage(String.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text));
                 listViewOrder.Items.Remove(selected);
@@ -111,7 +111,7 @@ namespace StriBot
         {
             foreach (ListViewItem selected in listViewOrder.SelectedItems)
             {
-                MyBot.ListOrders.Remove(Tuple.Create(selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text)));
+                MyBot.ListOrders.Remove((selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text)));
                 MyBot.SendMessage(String.Format("Заказ @{0} отменен", selected.SubItems[1].Text));
                 listViewOrder.Items.Remove(selected);
             }
@@ -178,7 +178,7 @@ namespace StriBot
 
         private void buttonReminderClear_Click(object sender, EventArgs e)
         {
-            MyBot.textReminder = "";
+            MyBot.TextReminder = "";
             MyBot.SendMessage("Напоминание удалено");
         }
     }
