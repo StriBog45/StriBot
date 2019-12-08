@@ -18,8 +18,11 @@ namespace StriBot
         public static void ConnectToBase() {
         }
         public static void DisconnectToBase() { }
+
         public static void AddMoneyToUser(string nickname, int amount)
         {
+            CleanNickname(nickname);
+
             DataTable dTable = new DataTable();
             using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
             {
@@ -47,8 +50,11 @@ namespace StriBot
                 }
             }
         }
+
         public static int CheckMoney(string nickname)
         {
+            CleanNickname(nickname);
+
             DataTable dTable = new DataTable();
             using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
             {
@@ -74,5 +80,8 @@ namespace StriBot
             else
                 return 0;
         }
+
+        public static string CleanNickname(string nick)
+            => nick[0] != '@' ? nick : nick.Remove(0, 1);
     }
 }
