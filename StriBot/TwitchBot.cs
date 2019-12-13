@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TwitchLib;
-using TwitchLib.Api;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
+using TwitchLib.Api.Helix.Models.Users;
+using TwitchLib.Api.V5.Models.Subscriptions;
+using TwitchLib.Api;
 
 namespace StriBot
 {
@@ -21,6 +22,8 @@ namespace StriBot
         public Dictionary<string, Command> commands;
         public CollectionHelper bosses;
         Random random;
+        private static TwitchAPI api;
+
         public int Deaths { get; set; } = 0;
         public int Wins { get; set; } = 0;
         public int Losses { get; set; } = 0;
@@ -134,10 +137,37 @@ namespace StriBot
             twitchClient.OnGiftedSubscription += TwitchClient_OnGiftedSubscription;
             twitchClient.Connect();
 
-            //var channelInfo = new TwitchLib.Api.Models.v5.Channels.Channel();
-            //twitchAPI = new TwitchAPI();
-            //twitchAPI.Settings.ClientId = TwitchInfo.ClientId;
-            //twitchAPI.Settings.AccessToken = TwitchInfo.AccessToken;
+            api = new TwitchAPI();
+            api.Settings.ClientId = twitchInfo.ClientId;
+            api.Settings.AccessToken = twitchInfo.AccessToken;
+
+            ExampleCallsAsync();
+
+        }
+
+        private void ExampleCallsAsync()
+        {
+            //Checks subscription for a specific user and the channel specified
+            Subscription subscription = api.V5.Channels.CheckChannelSubscriptionByUserAsync(twitchInfo.ChannelId, twitchInfo.ChannelId).Result;
+
+            //Return bool if channel is online/offline.
+            bool isStreaming = api.V5.Streams.BroadcasterOnlineAsync(twitchInfo.ChannelId).Result;
+
+            ////Gets a list of all the subscritions of the specified channel.
+            var allSubscriptions = api.V5.Channels.GetAllSubscribersAsync(twitchInfo.ChannelId).Result;
+
+            //Get channels a specified user follows.
+            //GetUsersFollowsResponse userFollows = api.Helix.Users.GetUsersFollowsAsync(twitchInfo.ChannelId).Result;
+
+            //Get Specified Channel Follows
+            //var channelFollowers = api.V5.Channels.GetChannelFollowersAsync(twitchInfo.ChannelId).Result;
+
+            
+
+            //Update Channel Title/Game
+            //await api.V5.Channels.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
+            if (isStreaming)
+                isStreaming = !isStreaming;
         }
 
         private void TwitchClient_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)

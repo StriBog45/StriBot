@@ -1,3 +1,5 @@
 StriBog45
-???
+AccessToken
 StriBog45
+ClientId
+ChannelId
