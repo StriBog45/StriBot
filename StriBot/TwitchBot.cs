@@ -141,7 +141,7 @@ namespace StriBot
             api.Settings.ClientId = twitchInfo.ClientId;
             api.Settings.AccessToken = twitchInfo.AccessToken;
 
-            ExampleCallsAsync();
+            //ExampleCallsAsync();
 
         }
 
@@ -182,7 +182,7 @@ namespace StriBot
         }
         private void OnRaidNotification(object sender, OnRaidNotificationArgs e)
         {
-            SendMessage(String.Format("Нас атакует армия под руководством {0}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ", e.RaidNotificaiton.DisplayName));
+            SendMessage(String.Format("Нас атакует армия под руководством {0}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ", e.RaidNotification.DisplayName));
         }
         private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
