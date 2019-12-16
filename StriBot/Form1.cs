@@ -28,7 +28,6 @@ namespace StriBot
         private void Form1_Load(object sender, EventArgs e)
         {
             textBoxMMR.Text = MyBot.CoreMMR.ToString();
-            DataBase.ConnectToBase();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -42,7 +41,7 @@ namespace StriBot
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Reporter.CreateCommands(MyBot.commands);
+            Reporter.CreateCommands(MyBot.Commands);
         }
 
         private void buttonDistribution_Click(object sender, EventArgs e)
@@ -144,7 +143,7 @@ namespace StriBot
             else
             {
                 listView1.Items.Clear();
-                foreach (var boss in MyBot.bosses)
+                foreach (var boss in MyBot.Bosses)
                     listView1.Items.Add(new ListViewItem(boss));
             }
         }
@@ -155,7 +154,7 @@ namespace StriBot
         private void buttonBossDelete_Click(object sender, EventArgs e)
         {
             foreach (int item in listView1.SelectedIndices)
-                MyBot.bosses.RemoveAt(item);
+                MyBot.Bosses.RemoveAt(item);
         }
         private void buttonDeathAdd_Click(object sender, EventArgs e)
         {
@@ -180,6 +179,11 @@ namespace StriBot
         {
             MyBot.TextReminder = "";
             MyBot.SendMessage("Напоминание удалено");
+        }
+
+        private void buttonReconnect_Click(object sender, EventArgs e)
+        {
+            MyBot.Reconnect();
         }
     }
 }

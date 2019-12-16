@@ -82,6 +82,7 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.buttonReconnect = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -154,6 +155,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.buttonReconnect);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.buttonReminderClear);
             this.tabPage1.Controls.Add(this.panel3);
@@ -626,6 +628,16 @@
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // buttonReconnect
+            // 
+            this.buttonReconnect.Location = new System.Drawing.Point(9, 436);
+            this.buttonReconnect.Name = "buttonReconnect";
+            this.buttonReconnect.Size = new System.Drawing.Size(115, 23);
+            this.buttonReconnect.TabIndex = 13;
+            this.buttonReconnect.Text = "Переподключение";
+            this.buttonReconnect.UseVisualStyleBackColor = true;
+            this.buttonReconnect.Click += new System.EventHandler(this.buttonReconnect_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -714,6 +726,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.Button buttonReconnect;
     }
 }
 

@@ -15,9 +15,6 @@ namespace StriBot
         //SQLiteConnection.CreateFile(baseName);
 
         static SQLiteFactory factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
-        public static void ConnectToBase() {
-        }
-        public static void DisconnectToBase() { }
 
         public static void AddMoneyToUser(string nickname, int amount)
         {
