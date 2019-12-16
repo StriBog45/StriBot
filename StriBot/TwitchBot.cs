@@ -53,6 +53,7 @@ namespace StriBot
         private int toysForSub = 30;
         private int timeoutTime = 120;
         private int halberdTime = 10;
+        private int subCoefficient = 2;
         private string medallion = "Властелин 3";
         private Action<List<(string, string, int)>> OrdersUpdate;
         private Action BossUpdate;
@@ -409,7 +410,7 @@ namespace StriBot
                 {"смерть", new Command("Смерть","Добавляет смерть", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     Deaths++;
-                    SendMessage(String.Format("Смертей: {0}",Deaths));
+                    SendMessage(String.Format("Смертей: {0}", Deaths));
                     SendMessage("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ …………………...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ………………… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬"); }, CommandType.Interactive)},
                 { "смертей", new Command("Смертей","Показывает количество смертей",
                 delegate (OnChatCommandReceivedArgs e) {
@@ -496,7 +497,7 @@ namespace StriBot
                         if( ReceivedUsers.Where(x => x.CompareTo(e.Command.ChatMessage.DisplayName) == 0).ToArray().Count() == 0)
                         {
                             if(e.Command.ChatMessage.IsSubscriber)
-                                DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, DistributionAmountPerUsers*3);
+                                DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, DistributionAmountPerUsers*subCoefficient);
                             else
                                 DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, DistributionAmountPerUsers);
                             SendMessage(String.Format("{0} успешно стащил игрушку!", e.Command.ChatMessage.DisplayName));
@@ -517,7 +518,7 @@ namespace StriBot
                             if(DistributionAmountPerUsers == 0)
                                 DistributionAmountPerUsers = 1;
                             if(e.Command.ChatMessage.IsSubscriber)
-                                DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, -DistributionAmountPerUsers*3);
+                                DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, -DistributionAmountPerUsers*subCoefficient);
                             else
                                 DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, -DistributionAmountPerUsers);
                             SendMessage(String.Format("{0} незаметно вернул игрушку!", e.Command.ChatMessage.DisplayName));
@@ -537,17 +538,17 @@ namespace StriBot
                     }
                     else
                         SendMessage("Неправильная команда");
-                    },new string[]{"объект","количество"},CommandType.Interactive)},
+                    }, new string[]{"объект","количество"},CommandType.Interactive)},
                 { "изъять", new Command("Изъять","Изымает объект Х игрушек", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
-                    if(e.Command.ArgumentsAsList.Count == 2)
+                    if(e.Command.ArgumentsAsList.Count == 2 && Convert.ToInt32(e.Command.ArgumentsAsList[1]) > 0)
                     {
                         DataBase.AddMoneyToUser(e.Command.ArgumentsAsList[0],Convert.ToInt32(e.Command.ArgumentsAsList[1])*(-1));
                         SendMessage(String.Format("Вы успешно изъяли игрушки! wlgEz "));
                     }
                     else
                         SendMessage("Неправильная команда");
-                    },new string[]{"объект","количество"}, CommandType.Interactive)},
+                    }, new string[]{"объект","количество"}, CommandType.Interactive)},
                 { "заначка", new Command("Заначка","Текущие количество игрушек у вас",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(e.Command.ArgumentsAsList.Count == 0)
@@ -836,6 +837,7 @@ namespace StriBot
                 canUseCommand = false;
                 SendMessage($"{name} обезаружен ещё {HalberdDictionary[name]} минут(ы,у)!");
             }
+
             return HalberdDictionary.ContainsKey(name) ? false : canUseCommand;
         }
     }

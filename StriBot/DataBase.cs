@@ -21,7 +21,7 @@ namespace StriBot
 
         public static void AddMoneyToUser(string nickname, int amount)
         {
-            CleanNickname(nickname);
+            var clearName = CleanNickname(nickname);
 
             DataTable dTable = new DataTable();
             using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
@@ -34,14 +34,14 @@ namespace StriBot
                     throw new ArgumentException("Connection closed");
                 try // чтение
                 {
-                    var sqlQuery = String.Format("SELECT * FROM Money WHERE nick = '{0}'", nickname);
+                    var sqlQuery = String.Format("SELECT * FROM Money WHERE nick = '{0}'", clearName);
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
                     adapter.Fill(dTable);
 
                     if (dTable.Rows.Count > 0)
                         amountBefore = Convert.ToInt32(dTable.Rows[0].ItemArray[1]);
 
-                    sqlCmd.CommandText = String.Format("INSERT INTO Money ('nick', 'money') VALUES('{0}', '{1}') ON CONFLICT(nick) DO UPDATE SET money = {2};",nickname,amount,amountBefore+amount);
+                    sqlCmd.CommandText = String.Format("INSERT INTO Money ('nick', 'money') VALUES('{0}', '{1}') ON CONFLICT(nick) DO UPDATE SET money = {2};", clearName, amount, amountBefore+amount);
                     sqlCmd.ExecuteNonQuery();
                 }
                 catch (SQLiteException ex)
@@ -53,7 +53,7 @@ namespace StriBot
 
         public static int CheckMoney(string nickname)
         {
-            CleanNickname(nickname);
+            var clearName = CleanNickname(nickname);
 
             DataTable dTable = new DataTable();
             using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
@@ -66,7 +66,7 @@ namespace StriBot
                     throw new ArgumentException("Connection closed");
                 try // чтение
                 {
-                    var sqlQuery = String.Format("SELECT * FROM Money WHERE nick = '{0}'",nickname);
+                    var sqlQuery = String.Format("SELECT * FROM Money WHERE nick = '{0}'", clearName);
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);         
                     adapter.Fill(dTable);
                 }
