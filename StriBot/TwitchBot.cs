@@ -11,6 +11,7 @@ using TwitchLib.Client.Models;
 using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.V5.Models.Subscriptions;
 using TwitchLib.Api;
+using TwitchLib.Client.Extensions;
 
 namespace StriBot
 {
@@ -50,6 +51,7 @@ namespace StriBot
         private int duelTimer;
         private int toysForSub = 30;
         private int timeoutTime = 120;
+        private int timeoutTimeInMinute = 2;
         private int halberdTime = 10;
         private int subCoefficient = 2;
         private int SubCoefficient { get => subBonus ? subCoefficient : 1; }
@@ -665,7 +667,8 @@ namespace StriBot
                             else
                                 SendMessage(String.Format("Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {0}. Поздравляем победителя {1} Kappa )/", looser.DisplayName, winner.DisplayName));
                             if(!looser.IsModerator)
-                                SendMessage(String.Format("/timeout @{0} {1}",looser.DisplayName, timeoutTime));
+                                TimeoutUserExt.TimeoutUser(twitchClient, twitchInfo.Channel, looser.DisplayName, new TimeSpan(0, timeoutTimeInMinute, 0), "(凸ಠ益ಠ)凸 - выражение лица вашего противника");
+                                //SendMessage(String.Format("/timeout @{0} {1}",looser.DisplayName, timeoutTime));
                             duelMember = null;
                         }
                     }
