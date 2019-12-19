@@ -667,8 +667,7 @@ namespace StriBot
                             else
                                 SendMessage(String.Format("Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {0}. Поздравляем победителя {1} Kappa )/", looser.DisplayName, winner.DisplayName));
                             if(!looser.IsModerator)
-                                TimeoutUserExt.TimeoutUser(twitchClient, twitchInfo.Channel, looser.DisplayName, new TimeSpan(0, timeoutTimeInMinute, 0), "(凸ಠ益ಠ)凸 - выражение лица вашего противника");
-                                //SendMessage(String.Format("/timeout @{0} {1}",looser.DisplayName, timeoutTime));
+                                TimeoutUserExt.TimeoutUser(twitchClient, twitchInfo.Channel, looser.Username, new TimeSpan(0, timeoutTimeInMinute, 0), "Ваш противник - (凸ಠ益ಠ)凸");
                             duelMember = null;
                         }
                     }
