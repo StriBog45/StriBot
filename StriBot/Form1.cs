@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StriBot
@@ -22,7 +15,7 @@ namespace StriBot
         {
             InitializeComponent();
 
-            MyBot = new TwitchBot(UpdateOrderList, BossUpdate);
+            MyBot = new TwitchBot(UpdateOrderList, BossUpdate, DeathUpdate);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -147,26 +140,29 @@ namespace StriBot
                     listView1.Items.Add(new ListViewItem(boss));
             }
         }
-        private void buttonBossUpdate_Click(object sender, EventArgs e)
-        {
-            BossUpdate();
-        }
+
         private void buttonBossDelete_Click(object sender, EventArgs e)
         {
             foreach (int item in listView1.SelectedIndices)
                 MyBot.Bosses.RemoveAt(item);
         }
+
         private void buttonDeathAdd_Click(object sender, EventArgs e)
-        {
-            MyBot.Deaths++;
-        }
-        private void buttonDeathCheck_Click(object sender, EventArgs e)
-        {
-            label1.Text = String.Format("Смертей: {0}", MyBot.Deaths);
-        }
+            => MyBot.Deaths++;
+
         private void buttonDeathReduce_Click(object sender, EventArgs e)
+            => MyBot.Deaths--;
+
+        void DeathUpdate()
         {
-            MyBot.Deaths--;
+            var d = new SafeCallDelegate(DeathUpdate);
+
+            if (listView1.InvokeRequired)
+                listView1.Invoke(d);
+            else
+            {
+                label1.Text = String.Format("Смертей: {0}", MyBot.Deaths);
+            }
         }
 
         private void listViewOrder_SelectedIndexChanged(object sender, EventArgs e)
@@ -182,8 +178,18 @@ namespace StriBot
         }
 
         private void buttonReconnect_Click(object sender, EventArgs e)
-        {
-            MyBot.Reconnect();
-        }
+            => MyBot.Reconnect();
+
+        private void buttonSmileMode_Click(object sender, EventArgs e)
+            => MyBot.SmileMode();
+
+        private void SubMode_Click(object sender, EventArgs e)
+            => MyBot.SubMode();
+
+        private void buttonFollowMode_Click(object sender, EventArgs e)
+            => MyBot.FollowersMode();
+
+        private void buttonUnfollowMode_Click(object sender, EventArgs e)
+            => MyBot.FollowersModeOff();
     }
 }
