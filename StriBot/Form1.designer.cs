@@ -36,6 +36,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonReconnect = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.buttonBetsDota2 = new System.Windows.Forms.Button();
             this.numericUpDownWinnerSelcter = new System.Windows.Forms.NumericUpDown();
@@ -51,7 +52,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.buttonDeathAdd = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonDeathCheck = new System.Windows.Forms.Button();
             this.buttonDeathReduce = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button8 = new System.Windows.Forms.Button();
@@ -62,7 +62,6 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.buttonBossUpdate = new System.Windows.Forms.Button();
             this.buttonBossDelete = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonMMRSet = new System.Windows.Forms.Button();
@@ -82,7 +81,10 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.buttonReconnect = new System.Windows.Forms.Button();
+            this.buttonSmileMode = new System.Windows.Forms.Button();
+            this.SubMode = new System.Windows.Forms.Button();
+            this.buttonFollowMode = new System.Windows.Forms.Button();
+            this.buttonUnfollowMode = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -112,10 +114,10 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new System.Drawing.Font("Monotype Corsiva", 30F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.linkLabel1.Location = new System.Drawing.Point(12, 272);
+            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.linkLabel1.Location = new System.Drawing.Point(2, 272);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(167, 49);
+            this.linkLabel1.Size = new System.Drawing.Size(196, 46);
             this.linkLabel1.TabIndex = 1;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "StriBog45";
@@ -155,6 +157,10 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.buttonUnfollowMode);
+            this.tabPage1.Controls.Add(this.buttonFollowMode);
+            this.tabPage1.Controls.Add(this.SubMode);
+            this.tabPage1.Controls.Add(this.buttonSmileMode);
             this.tabPage1.Controls.Add(this.buttonReconnect);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.buttonReminderClear);
@@ -169,6 +175,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Меню";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonReconnect
+            // 
+            this.buttonReconnect.Location = new System.Drawing.Point(9, 436);
+            this.buttonReconnect.Name = "buttonReconnect";
+            this.buttonReconnect.Size = new System.Drawing.Size(115, 23);
+            this.buttonReconnect.TabIndex = 13;
+            this.buttonReconnect.Text = "Переподключение";
+            this.buttonReconnect.UseVisualStyleBackColor = true;
+            this.buttonReconnect.Click += new System.EventHandler(this.buttonReconnect_Click);
             // 
             // groupBox4
             // 
@@ -298,11 +314,10 @@
             // 
             this.panel3.Controls.Add(this.buttonDeathAdd);
             this.panel3.Controls.Add(this.label1);
-            this.panel3.Controls.Add(this.buttonDeathCheck);
             this.panel3.Controls.Add(this.buttonDeathReduce);
             this.panel3.Location = new System.Drawing.Point(6, 6);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(253, 62);
+            this.panel3.Size = new System.Drawing.Size(174, 62);
             this.panel3.TabIndex = 6;
             // 
             // buttonDeathAdd
@@ -318,26 +333,16 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Monotype Corsiva", 20.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(59, 0);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(9, 2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(130, 33);
+            this.label1.Size = new System.Drawing.Size(155, 31);
             this.label1.TabIndex = 0;
             this.label1.Text = "Смертей: 0";
             // 
-            // buttonDeathCheck
-            // 
-            this.buttonDeathCheck.Location = new System.Drawing.Point(89, 36);
-            this.buttonDeathCheck.Name = "buttonDeathCheck";
-            this.buttonDeathCheck.Size = new System.Drawing.Size(75, 23);
-            this.buttonDeathCheck.TabIndex = 2;
-            this.buttonDeathCheck.Text = "Проверить";
-            this.buttonDeathCheck.UseVisualStyleBackColor = true;
-            this.buttonDeathCheck.Click += new System.EventHandler(this.buttonDeathCheck_Click);
-            // 
             // buttonDeathReduce
             // 
-            this.buttonDeathReduce.Location = new System.Drawing.Point(170, 36);
+            this.buttonDeathReduce.Location = new System.Drawing.Point(89, 36);
             this.buttonDeathReduce.Name = "buttonDeathReduce";
             this.buttonDeathReduce.Size = new System.Drawing.Size(75, 23);
             this.buttonDeathReduce.TabIndex = 1;
@@ -406,7 +411,6 @@
             // panel4
             // 
             this.panel4.Controls.Add(this.listView1);
-            this.panel4.Controls.Add(this.buttonBossUpdate);
             this.panel4.Controls.Add(this.buttonBossDelete);
             this.panel4.Location = new System.Drawing.Point(6, 75);
             this.panel4.Name = "panel4";
@@ -430,19 +434,9 @@
             this.columnHeader1.Text = "Боссы";
             this.columnHeader1.Width = 153;
             // 
-            // buttonBossUpdate
-            // 
-            this.buttonBossUpdate.Location = new System.Drawing.Point(3, 114);
-            this.buttonBossUpdate.Name = "buttonBossUpdate";
-            this.buttonBossUpdate.Size = new System.Drawing.Size(75, 23);
-            this.buttonBossUpdate.TabIndex = 4;
-            this.buttonBossUpdate.Text = "Обновить";
-            this.buttonBossUpdate.UseVisualStyleBackColor = true;
-            this.buttonBossUpdate.Click += new System.EventHandler(this.buttonBossUpdate_Click);
-            // 
             // buttonBossDelete
             // 
-            this.buttonBossDelete.Location = new System.Drawing.Point(85, 114);
+            this.buttonBossDelete.Location = new System.Drawing.Point(43, 114);
             this.buttonBossDelete.Name = "buttonBossDelete";
             this.buttonBossDelete.Size = new System.Drawing.Size(75, 23);
             this.buttonBossDelete.TabIndex = 5;
@@ -600,6 +594,7 @@
             this.columnHeader4});
             this.listViewOrder.FullRowSelect = true;
             this.listViewOrder.HideSelection = false;
+            this.listViewOrder.LabelEdit = true;
             this.listViewOrder.Location = new System.Drawing.Point(6, 6);
             this.listViewOrder.Name = "listViewOrder";
             this.listViewOrder.Size = new System.Drawing.Size(537, 111);
@@ -621,6 +616,7 @@
             // columnHeader4
             // 
             this.columnHeader4.Text = "Цена";
+            this.columnHeader4.Width = 129;
             // 
             // timer1
             // 
@@ -628,15 +624,45 @@
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // buttonReconnect
+            // buttonSmileMode
             // 
-            this.buttonReconnect.Location = new System.Drawing.Point(9, 436);
-            this.buttonReconnect.Name = "buttonReconnect";
-            this.buttonReconnect.Size = new System.Drawing.Size(115, 23);
-            this.buttonReconnect.TabIndex = 13;
-            this.buttonReconnect.Text = "Переподключение";
-            this.buttonReconnect.UseVisualStyleBackColor = true;
-            this.buttonReconnect.Click += new System.EventHandler(this.buttonReconnect_Click);
+            this.buttonSmileMode.Location = new System.Drawing.Point(176, 436);
+            this.buttonSmileMode.Name = "buttonSmileMode";
+            this.buttonSmileMode.Size = new System.Drawing.Size(75, 23);
+            this.buttonSmileMode.TabIndex = 14;
+            this.buttonSmileMode.Text = "SmileMode";
+            this.buttonSmileMode.UseVisualStyleBackColor = true;
+            this.buttonSmileMode.Click += new System.EventHandler(this.buttonSmileMode_Click);
+            // 
+            // SubMode
+            // 
+            this.SubMode.Location = new System.Drawing.Point(257, 436);
+            this.SubMode.Name = "SubMode";
+            this.SubMode.Size = new System.Drawing.Size(75, 23);
+            this.SubMode.TabIndex = 15;
+            this.SubMode.Text = "SubMode";
+            this.SubMode.UseVisualStyleBackColor = true;
+            this.SubMode.Click += new System.EventHandler(this.SubMode_Click);
+            // 
+            // buttonFollowMode
+            // 
+            this.buttonFollowMode.Location = new System.Drawing.Point(338, 436);
+            this.buttonFollowMode.Name = "buttonFollowMode";
+            this.buttonFollowMode.Size = new System.Drawing.Size(75, 23);
+            this.buttonFollowMode.TabIndex = 15;
+            this.buttonFollowMode.Text = "FollowMode";
+            this.buttonFollowMode.UseVisualStyleBackColor = true;
+            this.buttonFollowMode.Click += new System.EventHandler(this.buttonFollowMode_Click);
+            // 
+            // buttonUnfollowMode
+            // 
+            this.buttonUnfollowMode.Location = new System.Drawing.Point(419, 436);
+            this.buttonUnfollowMode.Name = "buttonUnfollowMode";
+            this.buttonUnfollowMode.Size = new System.Drawing.Size(75, 23);
+            this.buttonUnfollowMode.TabIndex = 15;
+            this.buttonUnfollowMode.Text = "UnfollowM";
+            this.buttonUnfollowMode.UseVisualStyleBackColor = true;
+            this.buttonUnfollowMode.Click += new System.EventHandler(this.buttonUnfollowMode_Click);
             // 
             // Form1
             // 
@@ -696,7 +722,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button buttonDeathAdd;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button buttonDeathCheck;
         private System.Windows.Forms.Button buttonDeathReduce;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button8;
@@ -707,7 +732,6 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.Button buttonBossUpdate;
         private System.Windows.Forms.Button buttonBossDelete;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonMMRSet;
@@ -727,6 +751,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.Button buttonReconnect;
+        private System.Windows.Forms.Button buttonSmileMode;
+        private System.Windows.Forms.Button buttonFollowMode;
+        private System.Windows.Forms.Button SubMode;
+        private System.Windows.Forms.Button buttonUnfollowMode;
     }
 }
 

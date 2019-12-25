@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
@@ -56,17 +55,20 @@ namespace StriBot
         private int subCoefficient = 2;
         private int SubCoefficient { get => subBonus ? subCoefficient : 1; }
         private bool subBonus;
+        private bool chatModeEnabled = false;
         private string medallion = "Властелин 3";
         private Action<List<(string, string, int)>> OrdersUpdate;
         private Action BossUpdate;
+        private Action DeathUpdate;
         private TwitchInfo twitchInfo;
         public List<(string, string, int)> ListOrders { get; set; }
         private ConcurrentDictionary<string, int> HalberdDictionary { get; set; }
 
-        public TwitchBot(Action<List<(string, string, int)>> ordersUpdate, Action bossUpdate)
+        public TwitchBot(Action<List<(string, string, int)>> ordersUpdate, Action bossUpdate, Action deathUpdate)
         {
             OrdersUpdate = ordersUpdate;
             BossUpdate = bossUpdate;
+            DeathUpdate = deathUpdate;
             CreateCommands();
 
             ReceivedUsers = new List<string>();
@@ -121,7 +123,7 @@ namespace StriBot
             if (timer == 30)
                 SendMessage("У стримера все под контролем! wlgDen ");
             if (timer == 45)
-                SendMessage("Спасибо за вашу поддержку! striboPled ");
+                SendMessage("Спасибо за вашу поддержку! HolidaySanta ");
 
             if (timer % 10 == 0 && !String.IsNullOrEmpty(TextReminder))
                 SendMessage("Напоминание: " + TextReminder);
@@ -241,8 +243,8 @@ namespace StriBot
 
         private void TwitchClient_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
         {
-            SendMessage(String.Format("Добро пожаловать {0}! striboPled ", e.GiftedSubscription.DisplayName));
-            SendMessage(String.Format("Добро пожаловать {0}! striboPled ", e.GiftedSubscription.MsgParamRecipientUserName));
+            SendMessage(String.Format("Добро пожаловать {0}! HolidaySanta ", e.GiftedSubscription.DisplayName));
+            SendMessage(String.Format("Добро пожаловать {0}! HolidaySanta ", e.GiftedSubscription.MsgParamRecipientUserName));
         }
 
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
@@ -257,7 +259,7 @@ namespace StriBot
 
         private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
-            SendMessage(String.Format("Добро пожаловать {0}! Срочно плед этому господину! striboPled Вам начислено {1} игрушек!", e.Subscriber.DisplayName, toysForSub));
+            SendMessage(String.Format("Добро пожаловать {0}! Срочно плед этому господину! wlgHype Вам начислено {1} игрушек!", e.Subscriber.DisplayName, toysForSub));
             DataBase.AddMoneyToUser(e.Subscriber.DisplayName, toysForSub);
         }
 
@@ -304,7 +306,7 @@ namespace StriBot
                         if(accuracy < 10)
                             snowResult = "и... промазал";
                         if(accuracy >= 10 && accuracy <= 20)
-                            snowResult = "но цель уклонилась striboPledik";
+                            snowResult = "но цель уклонилась wlgDuck ";
                         if(accuracy > 30)
                             snowResult = String.Format("и попал {0}",RandomHelper.GetRandomOfArray(Hited));
                         SendMessage(String.Format("{0} бросил снежок в {1} {2}", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString,snowResult));
@@ -418,9 +420,9 @@ namespace StriBot
                     if(size == 0)
                         SendMessage(String.Format("0 размер... Извините, {0}, а что мерить? wlgThonk ",e.Command.ChatMessage.DisplayName));
                     if(size == 1)
-                        SendMessage(String.Format("1 размер... Не переживай {0}, ещё вырастут striboPled",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("1 размер... Не переживай {0}, ещё вырастут wlgDuck ",e.Command.ChatMessage.DisplayName));
                     if(size == 2)
-                        SendMessage(String.Format("2 размер... {0}, ваши груди отлично помещаются в ладошки! wlgF ",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("2 размер... {0}, ваши груди отлично помещаются в ладошки! sadinsGasm ",e.Command.ChatMessage.DisplayName));
                     if(size == 3)
                         SendMessage(String.Format("3 размер... Идеально... KreyGasm , {0} оставьте мне ваш номерок",e.Command.ChatMessage.DisplayName));
                     if(size == 4)
@@ -446,8 +448,9 @@ namespace StriBot
                 { "смерть", new Command("Смерть","Добавляет смерть", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     Deaths++;
+                    DeathUpdate();
                     SendMessage(String.Format("Смертей: {0}", Deaths));
-                    SendMessage("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ …………………...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ………………… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬"); }, CommandType.Interactive)},
+                    SendMessage("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ ……………..............……...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ…….……….........…..… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬"); }, CommandType.Interactive)},
                 { "смертей", new Command("Смертей","Показывает количество смертей",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage(String.Format("Смертей: {0}",Deaths)); }, CommandType.Interactive)},
@@ -486,14 +489,14 @@ namespace StriBot
                 #endregion
 
                 #region Заказы
-                { "заказ", new Command("Заказ",String.Format("Предложить свой заказ",PriceList.Hero),CreateOrder(), new string[] {"Игрушки", "Заказ"}, CommandType.Order )},
-                { "заказгерой", new Command("ЗаказГерой",String.Format("Заказать героя на игру, цена: {0} игрушек",PriceList.Hero),CreateOrder(PriceList.Hero), new string[] {"Имя героя"}, CommandType.Order )},
-                { "заказкосплей", new Command("ЗаказКосплей",String.Format("Заказать косплей на трансляцию, цена: {0} игрушек",PriceList.Cosplay),CreateOrder(PriceList.Cosplay), new string[] {"Имя героя"}, CommandType.Hidden )},
-                { "заказигра", new Command("ЗаказИгры",String.Format("Заказать игру на трансляцию, цена: {0} игрушек",PriceList.Game),CreateOrder(PriceList.Game), new string[] {"Название игры"}, CommandType.Order )},
-                { "заказvip", new Command("ЗаказVIP",String.Format("Купить VIP, цена: {0} игрушек",PriceList.VIP),CreateOrder(PriceList.VIP, "VIP"), CommandType.Order)},
-                { "заказгруппы", new Command("ЗаказГруппы",String.Format("Заказать совместную игру со стримером, цена: {0} игрушек",PriceList.Group),CreateOrder(PriceList.Group, "Group"), CommandType.Order)},
-                { "заказбуст", new Command("ЗаказБуст",String.Format("Заказать буст, 1 трансляция, цена: {0} игрушек",PriceList.Boost),CreateOrder(PriceList.Boost, "Буст"), CommandType.Order)},
-                { "заказпесня", new Command("ЗаказПесня",String.Format("Заказать воспроизведение песни, цена: {0} игрушек",PriceList.Song),CreateOrder(PriceList.Song), new string[] {"Ссылка на песню"}, CommandType.Order )},
+                { "заказ", new Command("Заказ", String.Format("Предложить свой заказ",PriceList.Hero), CreateOrder(), new string[] {"Игрушки", "Заказ"}, CommandType.Order )},
+                { "заказгерой", new Command("ЗаказГерой", String.Format("Заказать героя на игру, цена: {0} игрушек",PriceList.Hero), CreateOrder(PriceList.Hero), new string[] {"Имя героя"}, CommandType.Order )},
+                { "заказкосплей", new Command("ЗаказКосплей", String.Format("Заказать косплей на трансляцию, цена: {0} игрушек", PriceList.Cosplay),CreateOrder(PriceList.Cosplay), new string[] {"Имя героя"}, CommandType.Hidden )},
+                { "заказигра", new Command("ЗаказИгры", String.Format("Заказать игру на трансляцию, цена: {0} игрушек", PriceList.Game),CreateOrder(PriceList.Game), new string[] {"Название игры"}, CommandType.Order )},
+                { "заказvip", new Command("ЗаказVIP", String.Format("Купить VIP, цена: {0} игрушек",PriceList.VIP),CreateOrder(PriceList.VIP, "VIP"), CommandType.Order)},
+                { "заказгруппы", new Command("ЗаказГруппы", String.Format("Заказать совместную игру со стримером, цена: {0} игрушек", PriceList.Group),CreateOrder(PriceList.Group, "Group"), CommandType.Order)},
+                { "заказбуст", new Command("ЗаказБуст", String.Format("Заказать буст, 1 трансляция, цена: {0} игрушек", PriceList.Boost),CreateOrder(PriceList.Boost, "Буст"), CommandType.Order)},
+                { "заказпесня", new Command("ЗаказПесня", String.Format("Заказать воспроизведение песни, цена: {0} игрушек", PriceList.Song),CreateOrder(PriceList.Song), new string[] {"Ссылка на песню"}, CommandType.Order )},
                 #endregion
 
                 #region DateBase
@@ -868,6 +871,39 @@ namespace StriBot
 
             return HalberdDictionary.ContainsKey(name) ? false : canUseCommand;
         }
-    }
 
+        public void SmileMode()
+        {
+            if (chatModeEnabled)
+            {
+                twitchClient.EmoteOnlyOff(twitchInfo.Channel);
+                chatModeEnabled = false;
+            }
+            else
+            {
+                twitchClient.EmoteOnlyOn(twitchInfo.Channel);
+                chatModeEnabled = true;
+            }
+        }
+
+        public void SubMode()
+        {
+            if (chatModeEnabled)
+            {
+                twitchClient.SubscribersOnlyOff(twitchInfo.Channel);
+                chatModeEnabled = false;
+            }
+            else
+            {
+                twitchClient.SubscribersOnlyOn(twitchInfo.Channel);
+                chatModeEnabled = true;
+            }
+        }
+
+        public void FollowersMode()
+            => twitchClient.FollowersOnlyOn(twitchInfo.Channel, new TimeSpan());
+
+        public void FollowersModeOff()
+            => twitchClient.FollowersOnlyOff(twitchInfo.Channel);
+    }
 }
