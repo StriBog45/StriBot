@@ -292,6 +292,9 @@ namespace StriBot
                 {"steam", new Command("Steam","Ссылка на мой steam",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage("https://steamcommunity.com/id/StriBog45"); }, CommandType.Info)},
+                {"uptime", new Command("Uptime","Длительность текущей трансляции",
+                delegate (OnChatCommandReceivedArgs e) {
+                    SendMessage(GetUptime()); }, CommandType.Info)},
                 #endregion
 
                 #region Интерактив
@@ -905,5 +908,19 @@ namespace StriBot
 
         public void FollowersModeOff()
             => twitchClient.FollowersOnlyOff(twitchInfo.Channel);
+
+        string GetUptime()
+        {
+            string userId = GetUserId(twitchInfo.Channel);
+
+            return String.IsNullOrEmpty(userId) ? "Offline" : api.V5.Streams.GetUptimeAsync(userId).Result.ToString();
+        }
+
+        string GetUserId(string username)
+        {
+            var userList = api.V5.Users.GetUserByNameAsync(username).Result.Matches;
+
+            return userList[0]?.Id;
+        }
     }
 }
