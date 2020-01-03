@@ -294,11 +294,11 @@ namespace StriBot
                     SendMessage("https://steamcommunity.com/id/StriBog45"); }, CommandType.Info)},
                 {"uptime", new Command("Uptime","Длительность текущей трансляции",
                 delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage(GetUptime()); }, CommandType.Info)},
+                    SendMessage( $"Трансляция длится: {GetUptime()}"); }, CommandType.Info)},
                 #endregion
 
                 #region Интерактив
-                { "снежок", new Command("Снежок","Бросает снежок в объект",
+                    { "снежок", new Command("Снежок","Бросает снежок в объект",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
                         SendMessage(String.Format("{0} бросил снежок и попал в себя!", e.Command.ChatMessage.DisplayName));
@@ -913,7 +913,7 @@ namespace StriBot
         {
             string userId = GetUserId(twitchInfo.Channel);
 
-            return String.IsNullOrEmpty(userId) ? "Offline" : api.V5.Streams.GetUptimeAsync(userId).Result.ToString();
+            return String.IsNullOrEmpty(userId) ? "Offline" : api.V5.Streams.GetUptimeAsync(userId).Result.Value.ToString(@"hh\:mm\:ss");
         }
 
         string GetUserId(string username)
