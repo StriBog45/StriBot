@@ -241,10 +241,14 @@ namespace StriBot
                 isStreaming = !isStreaming;
         }
 
+        /// <summary>
+        /// e.GiftedSubscription.DisplayName - кто подарил "Добро пожаловать OrloffNY"
+        /// e.GiftedSubscription.MsgParamRecipientUserName - кому подарили "Добро пожаловать syndicatereara!"
+        /// </summary>
         private void TwitchClient_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
         {
-            SendMessage(String.Format("Добро пожаловать {0}! HolidaySanta ", e.GiftedSubscription.DisplayName));
-            SendMessage(String.Format("Добро пожаловать {0}! HolidaySanta ", e.GiftedSubscription.MsgParamRecipientUserName));
+            SendMessage(String.Format("{0} подарил подписку для {1}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {2} игрушек", e.GiftedSubscription.DisplayName, e.GiftedSubscription.MsgParamRecipientUserName, toysForSub));
+            DataBase.AddMoneyToUser(e.GiftedSubscription.DisplayName, toysForSub);
         }
 
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
@@ -259,7 +263,7 @@ namespace StriBot
 
         private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
-            SendMessage(String.Format("Добро пожаловать {0}! Срочно плед этому господину! wlgHype Вам начислено {1} игрушек!", e.Subscriber.DisplayName, toysForSub));
+            SendMessage(String.Format("{0} подписался! PogChamp Срочно плед этому господину! А пока возьми {1} игрушек :)", e.Subscriber.DisplayName, toysForSub));
             DataBase.AddMoneyToUser(e.Subscriber.DisplayName, toysForSub);
         }
 
