@@ -119,7 +119,7 @@ namespace StriBot
             if (timer == 40)
                 DistributionMoney(1, 5);
             if (timer == 15)
-                SendMessage("Если увидел крутой момент, запечатли это! Сделай клип! striboS ");
+                SendMessage("Если увидел крутой момент, запечатли это! Сделай клип! striboF ");
             if (timer == 30)
                 SendMessage("У стримера все под контролем! wlgDen ");
             if (timer == 45)
@@ -348,9 +348,9 @@ namespace StriBot
                 { "цветы", new Command("Цветы","Дарит букет цветов объекту",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(String.Format("{0} приобрел букет {1} wlgFlowers ", e.Command.ChatMessage.DisplayName, RandomHelper.GetRandomOfArray(Bucket)));
+                        SendMessage(String.Format("{0} приобрел букет {1} PepoFlower ", e.Command.ChatMessage.DisplayName, RandomHelper.GetRandomOfArray(Bucket)));
                     else
-                        SendMessage(String.Format("{0} дарит {1} букет {2} wlgFlowers ", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, RandomHelper.GetRandomOfArray(Bucket)));
+                        SendMessage(String.Format("{0} дарит {1} букет {2} PepoFlower ", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, RandomHelper.GetRandomOfArray(Bucket)));
                 },
                 new string[] {"Объект"}, CommandType.Interactive )},
                 { "люблю", new Command("Люблю","Показывает насколько вы любите объект",
@@ -370,21 +370,21 @@ namespace StriBot
                         if(duelAccuraccy <= 10)
                             duelResult = "Побеждает в сухую! wlgEz ";
                         if(duelAccuraccy > 10 && duelAccuraccy <= 20)
-                            duelResult = "Проиграл в сухую. wlgCry ";
+                            duelResult = "Проиграл в сухую. striboCry ";
                         if(duelAccuraccy >20 && duelAccuraccy <= 40)
                             duelResult = "Удалось подловить противника с помощью руны. Победа.";
                         if(duelAccuraccy >40 && duelAccuraccy <= 50)
-                            duelResult = "Крипы зажали. Неловко. Поражение.";
+                            duelResult = "Крипы зажали. Неловко. Поражение. CouldYouNot ";
                         if(duelAccuraccy >50 && duelAccuraccy <= 60)
-                            duelResult = "Противник проигнорировал дуэль.";
+                            duelResult = "Противник проигнорировал дуэль. CouldYouNot ";
                         if(duelAccuraccy >60 && duelAccuraccy <=70)
-                            duelResult = "Перефармил противника и сломал башню. Победа.";
+                            duelResult = "Перефармил противника и сломал башню. Победа. POGGERS ";
                         if(duelAccuraccy >70 && duelAccuraccy <= 80)
                             duelResult = "Похоже противник намного опытнее на этом герое. Поражение.";
                         if(duelAccuraccy >80 && duelAccuraccy <= 90)
-                            duelResult = "Боже, что сейчас произошло!? Победа! TearGlove ";
+                            duelResult = "Боже, что сейчас произошло!? Победа! striboLyc ";
                         if(duelAccuraccy > 90)
-                            duelResult = "Жил до конца, умер как герой. Поражение. wlgSad ";
+                            duelResult = "Жил до конца, умер как герой. Поражение. FeelsRainMan ";
                         SendMessage(String.Format("{0} вызывает {1} на битву 1х1 на {2}! Итог: {3}", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString, Heroes.GetRandomHero(), duelResult));
                     }
                     else
@@ -417,7 +417,7 @@ namespace StriBot
                 delegate (OnChatCommandReceivedArgs e) {
                     int coin = random.Next(0,101);
                     if(coin == 100)
-                        SendMessage("Бросаю монетку... Ребро wlgH ");
+                        SendMessage("Бросаю монетку... Ребро POGGERS ");
                     else
                         SendMessage(String.Format("Бросаю монетку... {0}", coin < 50 ? "Орел" : "Решка"));}, CommandType.Interactive)},
                 { "размерг", new Command("РазмерГ","Узнать размер вашей груди",
@@ -429,7 +429,7 @@ namespace StriBot
                     if(size == 1)
                         SendMessage(String.Format("1 размер... Не переживай {0}, ещё вырастут wlgDuck ",e.Command.ChatMessage.DisplayName));
                     if(size == 2)
-                        SendMessage(String.Format("2 размер... {0}, ваши груди отлично помещаются в ладошки! sadinsGasm ",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("2 размер... {0}, ваши груди отлично помещаются в ладошки! billyReady ",e.Command.ChatMessage.DisplayName));
                     if(size == 3)
                         SendMessage(String.Format("3 размер... Идеально... KreyGasm , {0} оставьте мне ваш номерок",e.Command.ChatMessage.DisplayName));
                     if(size == 4)
