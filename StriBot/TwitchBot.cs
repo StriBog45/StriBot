@@ -88,6 +88,7 @@ namespace StriBot
             twitchClient.OnChatCommandReceived += OnChatCommandReceived;
             twitchClient.OnJoinedChannel += OnJoinedChannel;
             twitchClient.OnNewSubscriber += OnNewSubscriber;
+            twitchClient.OnReSubscriber += OnReSubscriber;
             twitchClient.OnRaidNotification += OnRaidNotification;
             twitchClient.OnGiftedSubscription += TwitchClient_OnGiftedSubscription;
             twitchClient.Connect();
@@ -98,6 +99,12 @@ namespace StriBot
 
             //ExampleCallsAsync();
 
+        }
+
+        private void OnReSubscriber(object sender, OnReSubscriberArgs e)
+        {
+            SendMessage(String.Format("{0} подписался! PogChamp Срочно плед этому господину! А пока возьми {1} игрушек :)", e.ReSubscriber.DisplayName, toysForSub));
+            DataBase.AddMoneyToUser(e.ReSubscriber.DisplayName, toysForSub);
         }
 
         public void SendMessage(string message)
