@@ -11,6 +11,7 @@ using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.V5.Models.Subscriptions;
 using TwitchLib.Api;
 using TwitchLib.Client.Extensions;
+using StriBot.Language;
 
 namespace StriBot
 {
@@ -24,8 +25,9 @@ namespace StriBot
         public int Losses { get; set; } = 0;
         public int CoreMMR { get; set; } = 4300;
         public int SupMMR { get; set; } = 3900;
-        public string TextReminder { get; set; } = "";
+        public string TextReminder { get; set; } = string.Empty;
         public Dictionary<string, (int, int)> UsersBetted { get; set; }
+        public Currency ChannelCurrency { get; }
         private int DistributionAmountUsers { get; set; }
         private int DistributionAmountPerUsers { get; set; }
 
@@ -69,6 +71,9 @@ namespace StriBot
             OrdersUpdate = ordersUpdate;
             BossUpdate = bossUpdate;
             DeathUpdate = deathUpdate;
+
+            ChannelCurrency = new Currency();
+
             CreateCommands();
 
             ReceivedUsers = new List<string>();
@@ -167,7 +172,7 @@ namespace StriBot
             subBonus = bonus;
             DistributionAmountPerUsers = perUser;
             DistributionAmountUsers = maxUsers;
-            SendMessage("Замечены игрушки без присмотра! Время полоскать! Пиши !стащить wlgF ");
+            SendMessage($"Замечены {ChannelCurrency.NominativeMultiple} без присмотра! Время полоскать! Пиши !стащить wlgF ");
             ReceivedUsers.Clear();
         }
 
@@ -202,12 +207,12 @@ namespace StriBot
                     else
                         DataBase.AddMoneyToUser(bet.Key, bet.Value.Item2 * (-1));
                 }
-                SendMessage(String.Format("Победила ставка под номером {0}! В ставках участвовало {1} енотов! Вы можете проверить свой запас игрушек", winner, UsersBetted.Count));
+                SendMessage($"Победила ставка под номером {winner}! В ставках участвовало {UsersBetted.Count} енотов! Вы можете проверить свой запас {ChannelCurrency.GenitiveMultiple}");
 
                 SendMessage("Победили: " + UsersBetted.Where(x => x.Value.Item1 == winner)
-                    .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? "" : ", ").Append($"{next.Key}:{next.Value.Item2}")).ToString());
+                    .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.Item2}")).ToString());
                 SendMessage("Проиграли: " + UsersBetted.Where(x => x.Value.Item1 != winner)
-                    .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? "" : ", ").Append($"{next.Key}:{next.Value.Item2}")).ToString());
+                    .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.Item2}")).ToString());
 
                 UsersBetted.Clear();
                 betsProcessing = false;
@@ -247,7 +252,7 @@ namespace StriBot
         /// </summary>
         private void TwitchClient_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
         {
-            SendMessage(String.Format("{0} подарил подписку для {1}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {2} игрушек", e.GiftedSubscription.DisplayName, e.GiftedSubscription.MsgParamRecipientUserName, toysForSub));
+            SendMessage($"{e.GiftedSubscription.DisplayName} подарил подписку для {e.GiftedSubscription.MsgParamRecipientUserName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {toysForSub} {ChannelCurrency.Incline(toysForSub)}");
             DataBase.AddMoneyToUser(e.GiftedSubscription.DisplayName, toysForSub);
         }
 
@@ -263,7 +268,7 @@ namespace StriBot
 
         private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
-            SendMessage(String.Format("{0} подписался! PogChamp Срочно плед этому господину! А пока возьми {1} игрушек :)", e.Subscriber.DisplayName, toysForSub));
+            SendMessage($"{e.Subscriber.DisplayName} подписался! PogChamp Срочно плед этому господину! А пока возьми {toysForSub} {ChannelCurrency.Incline(toysForSub, true)} :)");
             DataBase.AddMoneyToUser(e.Subscriber.DisplayName, toysForSub);
         }
 
@@ -309,7 +314,7 @@ namespace StriBot
                     else
                     {
                         var accuracy = random.Next(0,100);
-                        string snowResult = "";
+                        string snowResult = string.Empty;
                         if(accuracy < 10)
                             snowResult = "и... промазал";
                         if(accuracy >= 10 && accuracy <= 20)
@@ -366,7 +371,7 @@ namespace StriBot
                     if(!String.IsNullOrEmpty(e.Command.ArgumentsAsString))
                     {
                         var duelAccuraccy = random.Next(0,100);
-                        string duelResult = "";
+                        string duelResult = string.Empty;
                         if(duelAccuraccy <= 10)
                             duelResult = "Побеждает в сухую! wlgEz ";
                         if(duelAccuraccy > 10 && duelAccuraccy <= 20)
@@ -496,14 +501,14 @@ namespace StriBot
                 #endregion
 
                 #region Заказы
-                { "заказ", new Command("Заказ", String.Format("Предложить свой заказ",PriceList.Hero), CreateOrder(), new string[] {"Игрушки", "Заказ"}, CommandType.Order )},
-                { "заказгерой", new Command("ЗаказГерой", String.Format("Заказать героя на игру, цена: {0} игрушек",PriceList.Hero), CreateOrder(PriceList.Hero), new string[] {"Имя героя"}, CommandType.Order )},
-                { "заказкосплей", new Command("ЗаказКосплей", String.Format("Заказать косплей на трансляцию, цена: {0} игрушек", PriceList.Cosplay),CreateOrder(PriceList.Cosplay), new string[] {"Имя героя"}, CommandType.Hidden )},
-                { "заказигра", new Command("ЗаказИгры", String.Format("Заказать игру на трансляцию, цена: {0} игрушек", PriceList.Game),CreateOrder(PriceList.Game), new string[] {"Название игры"}, CommandType.Order )},
-                { "заказvip", new Command("ЗаказVIP", String.Format("Купить VIP, цена: {0} игрушек",PriceList.VIP),CreateOrder(PriceList.VIP, "VIP"), CommandType.Order)},
-                { "заказгруппы", new Command("ЗаказГруппы", String.Format("Заказать совместную игру со стримером, цена: {0} игрушек", PriceList.Group),CreateOrder(PriceList.Group, "Group"), CommandType.Order)},
-                { "заказбуст", new Command("ЗаказБуст", String.Format("Заказать буст, 1 трансляция, цена: {0} игрушек", PriceList.Boost),CreateOrder(PriceList.Boost, "Буст"), CommandType.Order)},
-                { "заказпесня", new Command("ЗаказПесня", String.Format("Заказать воспроизведение песни, цена: {0} игрушек", PriceList.Song),CreateOrder(PriceList.Song), new string[] {"Ссылка на песню"}, CommandType.Order )},
+                { "заказ", new Command("Заказ", String.Format("Предложить свой заказ",PriceList.Hero), CreateOrder(), new string[] {ChannelCurrency.NominativeMultiple, "Заказ"}, CommandType.Order)},
+                { "заказгерой", new Command("ЗаказГерой", $"Заказать героя на игру, цена: {PriceList.Hero} {ChannelCurrency.Incline(PriceList.Hero)}", CreateOrder(PriceList.Hero), new string[] {"Имя героя"}, CommandType.Order)},
+                { "заказкосплей", new Command("ЗаказКосплей", $"Заказать косплей на трансляцию, цена: {PriceList.Cosplay} {ChannelCurrency.Incline(PriceList.Cosplay)}", CreateOrder(PriceList.Cosplay), new string[] {"Имя героя"}, CommandType.Hidden)},
+                { "заказигра", new Command("ЗаказИгры", $"Заказать игру на трансляцию, цена: {PriceList.Game} {ChannelCurrency.Incline(PriceList.Game)}", CreateOrder(PriceList.Game), new string[] {"Название игры"}, CommandType.Order )},
+                { "заказvip", new Command("ЗаказVIP", $"Купить VIP, цена: {PriceList.VIP} {ChannelCurrency.Incline(PriceList.VIP)}", CreateOrder(PriceList.VIP, "VIP"), CommandType.Order)},
+                { "заказгруппы", new Command("ЗаказГруппы", $"Заказать совместную игру со стримером, цена: {PriceList.Group} {ChannelCurrency.Incline(PriceList.Group)}", CreateOrder(PriceList.Group, "Group"), CommandType.Order)},
+                { "заказбуст", new Command("ЗаказБуст", $"Заказать буст, 1 трансляция, цена: {PriceList.Boost} {ChannelCurrency.Incline(PriceList.Boost)}", CreateOrder(PriceList.Boost, "Буст"), CommandType.Order)},
+                { "заказпесня", new Command("ЗаказПесня", $"Заказать воспроизведение песни, цена: {PriceList.Song} {ChannelCurrency.Incline(PriceList.Song)}", CreateOrder(PriceList.Song), new string[] {"Ссылка на песню"}, CommandType.Order)},
                 #endregion
 
                 #region DateBase
@@ -536,7 +541,7 @@ namespace StriBot
                         SendMessage("В данный момент ставить нельзя!");
                 },
                 new string[] {"на что","сколько"}, CommandType.Interactive )},
-                { "стащить", new Command("Стащить","Крадет игрушку без присмотра",
+                { "стащить", new Command("Стащить", $"Крадет {ChannelCurrency.Dative} без присмотра",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(DistributionAmountUsers > 0)
                     {
@@ -546,18 +551,18 @@ namespace StriBot
                                 DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, DistributionAmountPerUsers*SubCoefficient);
                             else
                                 DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, DistributionAmountPerUsers);
-                            SendMessage(String.Format("{0} успешно стащил игрушку!", e.Command.ChatMessage.DisplayName));
+                            SendMessage($"{e.Command.ChatMessage.DisplayName} успешно стащил {ChannelCurrency.Dative}!");
                             DistributionAmountUsers--;
                             ReceivedUsers.Add(e.Command.ChatMessage.DisplayName);
                         }
                         else
-                            SendMessage(String.Format("{0} вы уже забрали игрушку! Не жадничайте!", e.Command.ChatMessage.DisplayName));
+                            SendMessage($"{e.Command.ChatMessage.DisplayName} вы уже забрали {ChannelCurrency.Dative}! Не жадничайте!");
                     }
                     else
                     {
-                        SendMessage(String.Format("{0} игрушек не осталось!", e.Command.ChatMessage.DisplayName));
+                        SendMessage($"{e.Command.ChatMessage.DisplayName} {ChannelCurrency.GenitiveMultiple} не осталось!");
                     }}, CommandType.Interactive)},
-                { "вернуть", new Command("Вернуть","Возвращает игрушку боту",
+                { "вернуть", new Command("Вернуть", $"Возвращает {ChannelCurrency.Dative} боту",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(DataBase.CheckMoney(e.Command.ChatMessage.DisplayName) > 0)
                     {
@@ -567,7 +572,7 @@ namespace StriBot
                                 DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, -DistributionAmountPerUsers*SubCoefficient);
                             else
                                 DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, -DistributionAmountPerUsers);
-                            SendMessage(String.Format("{0} незаметно вернул игрушку!", e.Command.ChatMessage.DisplayName));
+                            SendMessage($"{e.Command.ChatMessage.DisplayName} незаметно вернул {ChannelCurrency.Dative}!");
                             DistributionAmountUsers++;
                             ReceivedUsers.Remove(e.Command.ChatMessage.DisplayName);
                     }
