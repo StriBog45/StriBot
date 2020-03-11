@@ -2,28 +2,28 @@
 {
     public class Currency : Cases
     {
-        public string Nominative => "Игрушка";
+        public string Nominative => "игрушка";
 
-        public string Genitive => "Игрушки";
+        public string Genitive => "игрушки";
 
-        public string Dative => "Игрушку";
+        public string Dative => "игрушку";
 
-        public string Accusative => "Игрушку";
+        public string Accusative => "игрушку";
 
-        public string Instrumental => "Игрушкой";
+        public string Instrumental => "игрушкой";
 
-        public string Prepositional => "Игрушке";
+        public string Prepositional => "игрушке";
 
-        public string NominativeMultiple => "Игрушки";
+        public string NominativeMultiple => "игрушки";
 
-        public string GenitiveMultiple => "Игрушек";
+        public string GenitiveMultiple => "игрушек";
 
-        public string DativeMultiple => "Игрушкам";
+        public string DativeMultiple => "игрушкам";
 
-        public string AccusativeMultiple => "Игрушки";
+        public string AccusativeMultiple => "игрушки";
 
-        public string InstrumentalMultiple => "Игрушками";
+        public string InstrumentalMultiple => "игрушками";
 
-        public string PrepositionalMultiple => "Игрушках";
+        public string PrepositionalMultiple => "игрушках";
     }
 }
