@@ -508,7 +508,7 @@ namespace StriBot
                 #endregion
 
                 #region Заказы
-                { "заказ", new Command("Заказ", String.Format("Предложить свой заказ",PriceList.Hero), CreateOrder(), new string[] {ChannelCurrency.NominativeMultiple, "Заказ"}, CommandType.Order)},
+                { "заказ", new Command("Заказ", String.Format("Предложить свой заказ",PriceList.Hero), CreateOrder(), new string[] {ChannelCurrency.NominativeMultiple.Title(), "Заказ"}, CommandType.Order)},
                 { "заказгерой", new Command("ЗаказГерой", $"Заказать героя на игру, цена: {PriceList.Hero} {ChannelCurrency.Incline(PriceList.Hero)}", CreateOrder(PriceList.Hero), new string[] {"Имя героя"}, CommandType.Order)},
                 { "заказкосплей", new Command("ЗаказКосплей", $"Заказать косплей на трансляцию, цена: {PriceList.Cosplay} {ChannelCurrency.Incline(PriceList.Cosplay)}", CreateOrder(PriceList.Cosplay), new string[] {"Имя героя"}, CommandType.Hidden)},
                 { "заказигра", new Command("ЗаказИгры", $"Заказать игру на трансляцию, цена: {PriceList.Game} {ChannelCurrency.Incline(PriceList.Game)}", CreateOrder(PriceList.Game), new string[] {"Название игры"}, CommandType.Order )},
@@ -611,12 +611,12 @@ namespace StriBot
                     if(e.Command.ArgumentsAsList.Count == 0)
                     {
                         var amount = DataBase.CheckMoney(e.Command.ChatMessage.DisplayName);
-                        SendMessage($"{e.Command.ChatMessage.DisplayName} имеет {amount} {ChannelCurrency.Incline(amount)}! ");
+                        SendMessage($"{e.Command.ChatMessage.DisplayName} имеет {amount} {ChannelCurrency.Incline(amount, true)}! ");
                     }
                     else
                     {
                         var amount = DataBase.CheckMoney(e.Command.ArgumentsAsString);
-                        SendMessage($"{e.Command.ArgumentsAsString} имеет {amount} {ChannelCurrency.Incline(amount)}!");
+                        SendMessage($"{e.Command.ArgumentsAsString} имеет {amount} {ChannelCurrency.Incline(amount, true)}!");
                     }
                 }, CommandType.Interactive)},
                 { "s", new Command("S", $"Заказ музыки с Youtube или Sound Cloud. Цена: {PriceList.Song} {ChannelCurrency.Incline(PriceList.Song)}",
@@ -648,7 +648,7 @@ namespace StriBot
                             {
                                 if(amount <= DataBase.CheckMoney(e.Command.ChatMessage.DisplayName))
                                 {
-                                    SendMessage($"Кто осмелится принять вызов {e.Command.ChatMessage.DisplayName} в смертельной дуэли со ставкой в {amount} {ChannelCurrency.Incline(amount)}?");
+                                    SendMessage($"Кто осмелится принять вызов {e.Command.ChatMessage.DisplayName} в смертельной дуэли со ставкой в {amount} {ChannelCurrency.Incline(amount, true)}?");
                                     duelMember = new Tuple<ChatMessage, int>(e.Command.ChatMessage,amount);
                                     duelTimer = 0;
                                 }
