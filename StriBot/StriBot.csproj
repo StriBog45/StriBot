@@ -215,6 +215,10 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Heroes.cs" />
+    <Compile Include="Language\Cases.cs" />
+    <Compile Include="Language\CasesExtension.cs" />
+    <Compile Include="Language\Currency.cs" />
+    <Compile Include="Language\StringExtension.cs" />
     <Compile Include="PriceList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
