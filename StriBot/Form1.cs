@@ -20,7 +20,7 @@ namespace StriBot
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            textBoxMMR.Text = MyBot.CoreMMR.ToString();
+            textBoxMMR.Text = MyBot.MMR.ToString();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -110,11 +110,11 @@ namespace StriBot
         }
         private void buttonMMRSet_Click(object sender, EventArgs e)
         {
-            MyBot.CoreMMR = Convert.ToInt32(textBoxMMR.Text);
+            MyBot.MMR = Convert.ToInt32(textBoxMMR.Text);
         }
         private void buttonMMRCheck_Click(object sender, EventArgs e)
         {
-            textBoxMMR.Text = MyBot.CoreMMR.ToString();
+            textBoxMMR.Text = MyBot.MMR.ToString();
         }
         private void buttonWinsCheck_Click(object sender, EventArgs e)
         {

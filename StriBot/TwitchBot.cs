@@ -23,8 +23,7 @@ namespace StriBot
         public int Deaths { get; set; } = 0;
         public int Wins { get; set; } = 0;
         public int Losses { get; set; } = 0;
-        public int CoreMMR { get; set; } = 4300;
-        public int SupMMR { get; set; } = 3900;
+        public int MMR { get; set; } = 4000;
         public string TextReminder { get; set; } = string.Empty;
         public Dictionary<string, (int, int)> UsersBetted { get; set; }
         public Currency ChannelCurrency { get; }
@@ -58,7 +57,7 @@ namespace StriBot
         private int SubCoefficient { get => subBonus ? subCoefficient : 1; }
         private bool subBonus;
         private bool chatModeEnabled = false;
-        private string medallion = "Властелин 3";
+        private string medallion = "Властелин 2";
         private Action<List<(string, string, int)>> OrdersUpdate;
         private Action BossUpdate;
         private Action DeathUpdate;
@@ -289,7 +288,7 @@ namespace StriBot
                         SendMessage("https://vk.cc/a6Giqf");}, CommandType.Info)},
                 {"mmr", new Command("mmr","Узнать рейтинг стримера в Dota 2",
                 delegate (OnChatCommandReceivedArgs e) {
-                        SendMessage(String.Format("Основа: {0} Поддержка: {1} Звание: {2}", CoreMMR, SupMMR, medallion));}, CommandType.Info)},
+                        SendMessage($"Рейтинг: {MMR} Звание: {medallion}");}, CommandType.Info)},
                 {"dotabuff", new Command("Dotabuff","Ссылка на dotabuff",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage("https://ru.dotabuff.com/players/113554714"); }, CommandType.Info)},
@@ -495,12 +494,12 @@ namespace StriBot
                 { "победа", new Command("Победа","Добавляет победу", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     Wins++;
-                    CoreMMR += 25;
+                    MMR += 25;
                     SendMessage(String.Format("Побед: {0}, Поражений: {1}", Wins, Losses)); }, CommandType.Interactive)},
                 { "поражение", new Command("Поражение","Добавляет поражение", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     Losses++;
-                    CoreMMR -= 25;
+                    MMR -= 25;
                     SendMessage(String.Format("Побед: {0}, Поражений: {1}", Wins, Losses)); }, CommandType.Interactive)},
                 { "счет", new Command("Счет","Текущий счет побед и поражений",
                 delegate (OnChatCommandReceivedArgs e) {
