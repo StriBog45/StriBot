@@ -787,7 +787,10 @@ namespace StriBot
                     SendMessage("Лера. Киев. Стример. :), twitch.tv/starval"); }, CommandType.Streamers)},
                 { "aiana", new Command("Aiana","Показывает ссылку на twitch AianaKim",
                 delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Наша улыбашка-очаровашка Аяна BLELELE  twitch.tv/aianakim"); }, CommandType.Streamers)}
+                    SendMessage("Наша улыбашка-очаровашка Аяна BLELELE  twitch.tv/aianakim"); }, CommandType.Streamers)},
+                { "reara", new Command("SyndicateReara","Показывает ссылку на twitch SyndicateReara",
+                delegate (OnChatCommandReceivedArgs e) {
+                    SendMessage("Незабудь выполнить воинское приветствие striboF twitch.tv/syndicatereara"); }, CommandType.Streamers)}
                 #endregion
             };
         }
