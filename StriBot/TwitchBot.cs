@@ -108,7 +108,7 @@ namespace StriBot
 
         private void OnReSubscriber(object sender, OnReSubscriberArgs e)
         {
-            SendMessage(String.Format("{0} подписался! PogChamp Срочно плед этому господину! А пока возьми {1} игрушек :)", e.ReSubscriber.DisplayName, toysForSub));
+            SendMessage($"{e.ReSubscriber.DisplayName} подписался! PogChamp Срочно плед этому господину! А пока возьми {toysForSub} {ChannelCurrency.Incline(toysForSub)} :)");
             DataBase.AddMoneyToUser(e.ReSubscriber.DisplayName, toysForSub);
         }
 
@@ -146,7 +146,7 @@ namespace StriBot
             if (duelMember != null)
                 if (duelTimer >= 3)
                 {
-                    SendMessage(String.Format("Дуэль {0} никто не принял", duelMember.Item1.DisplayName));
+                    SendMessage($"Дуэль {duelMember.Item1.DisplayName} никто не принял");
                     duelTimer = 0;
                     duelMember = null;
                 }
@@ -529,20 +529,20 @@ namespace StriBot
                         && numberOfBets < BettingOptions.Length && amountOfBets > 0)
                         {
                             if(DataBase.CheckMoney(e.Command.ChatMessage.DisplayName) < amountOfBets)
-                                SendMessage(String.Format("{0} у тебя недостаточно игрушек для такой ставки!",e.Command.ChatMessage.DisplayName));
+                                SendMessage($"{e.Command.ChatMessage.DisplayName} у тебя недостаточно {ChannelCurrency.GenitiveMultiple} для такой ставки!");
                             else
                             {
                                 if(!UsersBetted.ContainsKey(e.Command.ChatMessage.DisplayName))
                                 {
                                     UsersBetted.Add(e.Command.ChatMessage.DisplayName, (numberOfBets,amountOfBets));
-                                    SendMessage(String.Format("{0} успешно сделал ставку!",e.Command.ChatMessage.DisplayName));
+                                    SendMessage($"{e.Command.ChatMessage.DisplayName} успешно сделал ставку!");
                                 }
                                 else
-                                    SendMessage(String.Format("{0} уже сделал ставку!",e.Command.ChatMessage.DisplayName));
+                                    SendMessage($"{e.Command.ChatMessage.DisplayName} уже сделал ставку!");
                             }
                         }
                         else
-                            SendMessage(String.Format("{0} вы неправильно указали ставку",e.Command.ChatMessage.DisplayName));
+                            SendMessage($"{e.Command.ChatMessage.DisplayName} вы неправильно указали ставку");
                     }
                     else
                         SendMessage("В данный момент ставить нельзя!");
@@ -595,7 +595,7 @@ namespace StriBot
                         SendMessage(String.Format("Вы успешно добавили игрушки! wlgF"));
                     }
                     else
-                        SendMessage("Неправильная команда");
+                        IncorrectCommand();
                     }, new string[]{"объект","количество"},CommandType.Interactive)},
                 { "изъять", new Command("Изъять","Изымает объект Х игрушек", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
@@ -605,7 +605,7 @@ namespace StriBot
                         SendMessage(String.Format("Вы успешно изъяли игрушки! wlgEz "));
                     }
                     else
-                        SendMessage("Неправильная команда");
+                        IncorrectCommand();
                     }, new string[]{"объект","количество"}, CommandType.Interactive)},
                 { "заначка", new Command("Заначка","Текущие количество игрушек у вас",
                 delegate (OnChatCommandReceivedArgs e) {
@@ -632,7 +632,7 @@ namespace StriBot
                             DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName,-PriceList.Song);
                         }
                         else
-                            SendMessage(String.Format("{0} у вас недостаточно игрушек! wlgCry", e.Command.ChatMessage.DisplayName));
+                            NoMoney(e.Command.ChatMessage.DisplayName);
                     }
                     else
                         SendMessage("Нужна ссылка на Sound Cloud");
@@ -654,10 +654,10 @@ namespace StriBot
                                     duelTimer = 0;
                                 }
                                 else
-                                    SendMessage("У вас недостаточно игрушек для такой ставки!");
+                                    NoMoney(e.Command.ChatMessage.DisplayName);
                             }
                             else
-                                SendMessage("Вы неправильно пользуетесь командой!");
+                                IncorrectCommand();
                         }
                         else
                         {
@@ -672,7 +672,7 @@ namespace StriBot
                         if(duelMember.Item1.DisplayName == e.Command.ChatMessage.DisplayName)
                             SendMessage(String.Format("@{0} не торопись! Твоё время ещё не пришло",duelMember.Item1.DisplayName));
                         else if(DataBase.CheckMoney(e.Command.ChatMessage.DisplayName) < duelMember.Item2)
-                            SendMessage("У вас недостаточно игрушек, чтобы принять дуэль!");
+                            NoMoney(e.Command.ChatMessage.DisplayName);
                         else
                         {
                             SendMessage(String.Format("Смертельная дуэль между {0} и {1}!",duelMember.Item1.DisplayName,e.Command.ChatMessage.DisplayName));
@@ -706,10 +706,10 @@ namespace StriBot
                             SendMessage(String.Format("{0} подарил игрушки {1} в количестве {2} ! ",e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsList[0],amount));
                         }
                         else
-                            SendMessage("У вас недостаточно игрушек!");
+                            NoMoney(e.Command.ChatMessage.DisplayName);
                     }
                     else
-                        SendMessage("Вы неправильно пользуетесь командой!");
+                        IncorrectCommand();
                 }, new string[]{"кому", "сколько" }, CommandType.Interactive)},
                 { "алебарда", new Command("Алебарда",$"Запретить использовать команды на {halberdTime} минут. Цена: {PriceList.Halberd} игрушек",
                 delegate (OnChatCommandReceivedArgs e) {
@@ -727,10 +727,10 @@ namespace StriBot
                             SendMessage(String.Format("{0} использовал алебарду на {1}! Цель обезаружена на {2} минут!",e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsList[0], halberdTime));
                         }
                         else
-                            SendMessage("У вас недостаточно игрушек!");
+                            NoMoney(e.Command.ChatMessage.DisplayName);
                     }
                     else
-                        SendMessage("Вы неправильно пользуетесь командой!");
+                        IncorrectCommand();
                 }, new string[]{"цель"}, CommandType.Interactive)},
                 { "разбросать", new Command("Разбросать","Разбрасывает игрушки в чате, любой желающий может стащить",
                 delegate (OnChatCommandReceivedArgs e) {
@@ -746,10 +746,10 @@ namespace StriBot
                             DistributionMoney(amountForPer, amountPeople, false);
                         }
                         else
-                            SendMessage("Недостаточно игрушек");
+                            NoMoney(e.Command.ChatMessage.DisplayName);
                     }
                     else
-                        SendMessage("Некорректное использование команды");
+                        IncorrectCommand();
 
                 }, new string[] {"Сколько стащит за раз", "Сколько человек сможет стащить"}, CommandType.Interactive)},
                 #endregion
@@ -792,6 +792,12 @@ namespace StriBot
             };
         }
 
+        private void NoMoney(string displayName)
+            => SendMessage($"{displayName} у вас недостаточно {ChannelCurrency.GenitiveMultiple}! wlgCry");
+
+        private void IncorrectCommand()
+            => SendMessage("Некорректное использование команды!");
+
         private Action<OnChatCommandReceivedArgs> CreateOrder(int price, string product)
         {
             return delegate (OnChatCommandReceivedArgs e)
@@ -803,7 +809,7 @@ namespace StriBot
                     OrdersUpdate(ListOrders);
                 }
                 else
-                    SendMessage(String.Format("{0} у тебя недостаточно игрушек!", e.Command.ChatMessage.DisplayName));
+                    NoMoney(e.Command.ChatMessage.DisplayName);
             };
         }
 
@@ -820,10 +826,10 @@ namespace StriBot
                         OrdersUpdate(ListOrders);
                     }
                     else
-                        SendMessage("Некорректное использование команды");
+                        IncorrectCommand();
                 }
                 else
-                    SendMessage(String.Format("{0} у тебя недостаточно игрушек!", e.Command.ChatMessage.DisplayName));
+                    NoMoney(e.Command.ChatMessage.DisplayName);
             };
         }
 
@@ -844,10 +850,10 @@ namespace StriBot
                             OrdersUpdate(ListOrders);
                         }
                         else
-                            SendMessage(String.Format("{0} у тебя недостаточно игрушек!", e.Command.ChatMessage.DisplayName));
+                            NoMoney(e.Command.ChatMessage.DisplayName);
                     }
                     else
-                        SendMessage("Некорректное использование команды");
+                        IncorrectCommand();
                 }
             };
         }
