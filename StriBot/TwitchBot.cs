@@ -442,11 +442,11 @@ namespace StriBot
                     if(size == 2)
                         SendMessage(String.Format("2 размер... {0}, ваши груди отлично помещаются в ладошки! billyReady ",e.Command.ChatMessage.DisplayName));
                     if(size == 3)
-                        SendMessage(String.Format("3 размер... Идеально... KreyGasm , {0} оставьте мне ваш номерок",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("3 размер... Идеально... Kreygasm , {0} оставьте мне ваш номерок",e.Command.ChatMessage.DisplayName));
                     if(size == 4)
                         SendMessage(String.Format("4 размер... Внимание мужчин к {0} обеспечено wlgDen ",e.Command.ChatMessage.DisplayName));
                     if(size == 5)
-                        SendMessage(String.Format("5 размер... В грудях {0} можно утонуть счастливым KreyGasm", e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("5 размер... В грудях {0} можно утонуть счастливым Kreygasm", e.Command.ChatMessage.DisplayName));
                     if(size == 6)
                         SendMessage(String.Format("6 размер... В ваших руках... Кхм, на грудной клетке {0} две убийственные груши", e.Command.ChatMessage.DisplayName));
                 }, CommandType.Interactive)},
@@ -510,7 +510,7 @@ namespace StriBot
                 { "заказ", new Command("Заказ", String.Format("Предложить свой заказ",PriceList.Hero), CreateOrder(), new string[] {ChannelCurrency.NominativeMultiple.Title(), "Заказ"}, CommandType.Order)},
                 { "заказгерой", new Command("ЗаказГерой", $"Заказать героя на игру, цена: {PriceList.Hero} {ChannelCurrency.Incline(PriceList.Hero)}", CreateOrder(PriceList.Hero), new string[] {"Имя героя"}, CommandType.Order)},
                 { "заказкосплей", new Command("ЗаказКосплей", $"Заказать косплей на трансляцию, цена: {PriceList.Cosplay} {ChannelCurrency.Incline(PriceList.Cosplay)}", CreateOrder(PriceList.Cosplay), new string[] {"Имя героя"}, CommandType.Hidden)},
-                { "заказигра", new Command("ЗаказИгры", $"Заказать игру на трансляцию, цена: {PriceList.Game} {ChannelCurrency.Incline(PriceList.Game)}", CreateOrder(PriceList.Game), new string[] {"Название игры"}, CommandType.Order )},
+                { "заказигра", new Command("ЗаказИгра", $"Заказать игру на трансляцию, цена: {PriceList.Game} {ChannelCurrency.Incline(PriceList.Game)}", CreateOrder(PriceList.Game), new string[] {"Название игры"}, CommandType.Order )},
                 { "заказvip", new Command("ЗаказVIP", $"Купить VIP, цена: {PriceList.VIP} {ChannelCurrency.Incline(PriceList.VIP)}", CreateOrder(PriceList.VIP, "VIP"), CommandType.Order)},
                 { "заказгруппы", new Command("ЗаказГруппы", $"Заказать совместную игру со стримером, цена: {PriceList.Group} {ChannelCurrency.Incline(PriceList.Group)}", CreateOrder(PriceList.Group, "Group"), CommandType.Order)},
                 { "заказбуст", new Command("ЗаказБуст", $"Заказать буст, 1 трансляция, цена: {PriceList.Boost} {ChannelCurrency.Incline(PriceList.Boost)}", CreateOrder(PriceList.Boost, "Буст"), CommandType.Order)},
@@ -762,7 +762,7 @@ namespace StriBot
                 { "gohapsp",  new Command("Gohapsp","Показывает ссылку на twitch Gohapsp",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage("Специалист по хоррорам, twitch.tv/gohapsp"); }, CommandType.Streamers)},
-                { "stone", new Command("Камушек","Показывает ссылку на twitch Камушка",
+                { "stone", new Command("Stone","Показывает ссылку на twitch Камушка",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage("Самый очаровательный камушек! <3 , twitch.tv/sayyees"); }, CommandType.Streamers)},
                 { "бескрыл", new Command("Бескрыл","Показывает ссылку на twitch Бескрыл-а",
@@ -774,9 +774,9 @@ namespace StriBot
                 { "stryk", new Command("StrykOFF","Показывает ссылку на twitch StrykOFF",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage("Владелец таверны, создатель лучших шаверм! Для ламповых посиделок :) twitch.tv/strykoff"); }, CommandType.Streamers)},
-                { "tilttena", new Command("Tilttena","Показывает ссылку на twitch Tilltena",
+                { "tilttena", new Command("Tilttena","Показывает ссылку на twitch Tilttena",
                 delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Горящая Алёна!, twitch.tv/tilltena"); }, CommandType.Streamers)},
+                    SendMessage("Горящая Алёна!, twitch.tv/tilttena"); }, CommandType.Streamers)},
                 { "bezumnaya", new Command("Bezumnaya","Показывает ссылку на twitch Bezumnaya",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage("Безумно любит своих зрителей, twitch.tv/bezumnaya"); }, CommandType.Streamers)},

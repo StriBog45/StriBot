@@ -42,7 +42,7 @@ namespace StriBot
             CommandReport(InteractiveName, commands, CommandType.Interactive);
             CommandReport(OrdersName, commands, CommandType.Order);
             CommandReport(ModeratorsName, commands, Role.Moderator);
-            CommandReport(StreamersName, commands, CommandType.Order);
+            CommandReport(StreamersName, commands, CommandType.Streamers);
         }
 
         private static void CommandReport(string fileName, Dictionary<string, Command> commands, CommandType commandType)
