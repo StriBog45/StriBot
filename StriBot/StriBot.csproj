@@ -203,10 +203,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Burger.cs" />
     <Compile Include="CollectionHelper.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandType.cs" />
+    <Compile Include="CustomData\Burger.cs" />
+    <Compile Include="CustomData\CustomArray.cs" />
+    <Compile Include="CustomData\Heroes.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -214,7 +216,6 @@
     <Compile Include="Form1.designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Heroes.cs" />
     <Compile Include="Language\Cases.cs" />
     <Compile Include="Language\CasesExtension.cs" />
     <Compile Include="Language\Currency.cs" />
