@@ -12,6 +12,7 @@ using TwitchLib.Api.V5.Models.Subscriptions;
 using TwitchLib.Api;
 using TwitchLib.Client.Extensions;
 using StriBot.Language;
+using StriBot.CustomData;
 
 namespace StriBot
 {
@@ -34,13 +35,7 @@ namespace StriBot
         private TwitchClient twitchClient;
         private TwitchAPI api;
         private Random random;
-        readonly private string[] AnswersOfBall = new string[]{ "Бесспорно", "Разумеется", "Никаких сомнений", "Определённо да", "Можешь быть уверен в этом", "Мне кажется — «да»", "Вероятнее всего", "Хорошие перспективы", "Знаки говорят — «да»",
-            "Да", "Пока не ясно, попробуй снова", "Спроси позже", "Лучше не рассказывать", "Сейчас нельзя предсказать", "Сконцентрируйся и спроси опять", "Даже не думай", "Мой ответ — «нет»", "По моим данным — «нет»",
-            "Перспективы не очень хорошие", "Весьма сомнительно" };
-        readonly private string[] Hited = new string[] { "в ухо", "по попке PogChamp ", "в плечо", "в пузо", "в ноутбук", "в спину", "в глаз и оставил фингал" };
-        readonly private string[] UnderpantsType = new string[] { "Слипы", "Тонг", "Танга", "Панталоны", "Бикини", "Бразилиано", "Шорты", "Мини-стринги", "Классические трусы", "Хипсстерсы" };
-        readonly private string[] UnderpantsColor = new string[] { "синие", "красные", "желтые", "черные", "розовые", "зеленые", "в горошек", "в цветочек", "в полоску", "прозрачные", "львица", "тигрица", "слоник", "армейка" };
-        readonly private string[] Bucket = new string[] { "Ромашек", "Тюльпанов", "Алых роз", "Белых роз", "Гладиолусов", "Лилий", "Калл" };
+        private CustomArray customArray;
         private Tuple<ChatMessage, int> duelMember;
         private List<string> ReceivedUsers;
         private string[] BettingOptions;
@@ -72,6 +67,7 @@ namespace StriBot
             DeathUpdate = deathUpdate;
 
             ChannelCurrency = new Currency();
+            customArray = new CustomArray();
 
             CreateCommands();
 
@@ -132,7 +128,7 @@ namespace StriBot
             if (timer == 15)
                 SendMessage("Если увидел крутой момент, запечатли это! Сделай клип! striboF ");
             if (timer == 30)
-                SendMessage("У стримера все под контролем! wlgDen ");
+                SendMessage("У стримера все под контролем! striboPled ");
             if (timer == 45)
                 SendMessage("Спасибо за вашу поддержку! HolidaySanta ");
 
@@ -178,7 +174,7 @@ namespace StriBot
             subBonus = bonus;
             DistributionAmountPerUsers = perUser;
             DistributionAmountUsers = maxUsers;
-            SendMessage($"Замечены {ChannelCurrency.NominativeMultiple} без присмотра! Время полоскать! Пиши !стащить wlgF ");
+            SendMessage($"Замечены {ChannelCurrency.NominativeMultiple} без присмотра! Время полоскать! Пиши !стащить striboF ");
             ReceivedUsers.Clear();
         }
 
@@ -324,9 +320,9 @@ namespace StriBot
                         if(accuracy < 10)
                             snowResult = "и... промазал";
                         if(accuracy >= 10 && accuracy <= 20)
-                            snowResult = "но цель уклонилась wlgDuck ";
+                            snowResult = "но цель уклонилась kekw ";
                         if(accuracy > 30)
-                            snowResult = String.Format("и попал {0}",RandomHelper.GetRandomOfArray(Hited));
+                            snowResult = String.Format("и попал {0}", customArray.GetHited());
                         SendMessage(String.Format("{0} бросил снежок в {1} {2}", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString,snowResult));
                     }
                 },
@@ -344,7 +340,7 @@ namespace StriBot
                     else
                     {
                         SendMessage(String.Format("{0} подул на {1}, поднимается юбка и мы обнаруживаем {2} {3}! PogChamp ",
-                            e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString,RandomHelper.GetRandomOfArray(UnderpantsType),RandomHelper.GetRandomOfArray(UnderpantsColor)));
+                            e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString, customArray.GetUnderpantsType(), customArray.GetUnderpantsColor()));
                     }
                 },
                 new string[] {"Цель"}, CommandType.Interactive )},
@@ -359,9 +355,9 @@ namespace StriBot
                 { "цветы", new Command("Цветы","Дарит букет цветов объекту",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(String.Format("{0} приобрел букет {1} PepoFlower ", e.Command.ChatMessage.DisplayName, RandomHelper.GetRandomOfArray(Bucket)));
+                        SendMessage(String.Format("{0} приобрел букет {1} PepoFlower ", e.Command.ChatMessage.DisplayName, customArray.GetBucket()));
                     else
-                        SendMessage(String.Format("{0} дарит {1} букет {2} PepoFlower ", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, RandomHelper.GetRandomOfArray(Bucket)));
+                        SendMessage(String.Format("{0} дарит {1} букет {2} PepoFlower ", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, customArray.GetBucket()));
                 },
                 new string[] {"Объект"}, CommandType.Interactive )},
                 { "люблю", new Command("Люблю","Показывает насколько вы любите объект",
@@ -369,7 +365,7 @@ namespace StriBot
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
                         SendMessage(String.Format("{0} любит себя на {1}% <3 ", e.Command.ChatMessage.DisplayName, random.Next(0,101)));
                     else
-                        SendMessage(String.Format("{0} любит {1} на {2}% <3 ", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, random.Next(0,101)));
+                        SendMessage(String.Format("{0} любит {1} на {2}% <3 ", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString, random.Next(0,101)));
                 },
                 new string[] {"Объект"}, CommandType.Interactive )},
                 {"duel", new Command("Duel","Вызывает объект на дуэль в доте 1х1",
@@ -379,7 +375,7 @@ namespace StriBot
                         var duelAccuraccy = random.Next(0,100);
                         string duelResult = string.Empty;
                         if(duelAccuraccy <= 10)
-                            duelResult = "Побеждает в сухую! wlgEz ";
+                            duelResult = "Побеждает в сухую! striboTea ";
                         if(duelAccuraccy > 10 && duelAccuraccy <= 20)
                             duelResult = "Проиграл в сухую. striboCry ";
                         if(duelAccuraccy >20 && duelAccuraccy <= 40)
@@ -405,9 +401,9 @@ namespace StriBot
                 { "бутерброд", new Command("Бутерброд","Выдает бутерброд тебе или объекту",
                 delegate (OnChatCommandReceivedArgs e) {
                         if(String.IsNullOrEmpty( e.Command.ArgumentsAsString))
-                            SendMessage(String.Format("Несу {0} для {1}! wlgMug ", Burger.BurgerCombiner(),e.Command.ChatMessage.DisplayName));
+                            SendMessage(String.Format("Несу {0} для {1}! HahaCat ", Burger.BurgerCombiner(),e.Command.ChatMessage.DisplayName));
                         else
-                            SendMessage(String.Format("Несу {0} для {1}! wlgMug ", Burger.BurgerCombiner(),e.Command.ArgumentsAsString));
+                            SendMessage(String.Format("Несу {0} для {1}! HahaCat ", Burger.BurgerCombiner(),e.Command.ArgumentsAsString));
                 },new string[] {"Объект"}, CommandType.Interactive)},
                 { "checkmmr", new Command("CheckMMR","Узнать рейтинг объекта",
                 delegate (OnChatCommandReceivedArgs e) {
@@ -423,7 +419,7 @@ namespace StriBot
                         SendMessage(String.Format("IQ {0} составляет: {1}! SeemsGood ", e.Command.ArgumentsAsString,random.Next(1,200)));}, new string[] {"Объект"}, CommandType.Interactive)},
                 { "шар", new Command("Шар","Шар предсказаний, формулируйте вопрос для ответа \"да\" или \"нет\" ",
                 delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage(String.Format("Шар говорит... {0}", RandomHelper.GetRandomOfArray(AnswersOfBall))); },new string[]{"Вопрос" }, CommandType.Interactive)},
+                    SendMessage($"Шар говорит... {customArray.GetBallAnswer()}"); },new string[]{"Вопрос" }, CommandType.Interactive)},
                 { "монетка", new Command("Монетка","Орел или решка?",
                 delegate (OnChatCommandReceivedArgs e) {
                     int coin = random.Next(0,101);
@@ -436,15 +432,15 @@ namespace StriBot
                     int size = random.Next(0,7);
 
                     if(size == 0)
-                        SendMessage(String.Format("0 размер... Извините, {0}, а что мерить? wlgThonk ",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("0 размер... Извините, {0}, а что мерить? kekw ",e.Command.ChatMessage.DisplayName));
                     if(size == 1)
-                        SendMessage(String.Format("1 размер... Не переживай {0}, ещё вырастут wlgDuck ",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("1 размер... Не переживай {0}, ещё вырастут striboCry ",e.Command.ChatMessage.DisplayName));
                     if(size == 2)
                         SendMessage(String.Format("2 размер... {0}, ваши груди отлично помещаются в ладошки! billyReady ",e.Command.ChatMessage.DisplayName));
                     if(size == 3)
                         SendMessage(String.Format("3 размер... Идеально... Kreygasm , {0} оставьте мне ваш номерок",e.Command.ChatMessage.DisplayName));
                     if(size == 4)
-                        SendMessage(String.Format("4 размер... Внимание мужчин к {0} обеспечено wlgDen ",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("4 размер... Внимание мужчин к {0} обеспечено striboPled ",e.Command.ChatMessage.DisplayName));
                     if(size == 5)
                         SendMessage(String.Format("5 размер... В грудях {0} можно утонуть счастливым Kreygasm", e.Command.ChatMessage.DisplayName));
                     if(size == 6)
@@ -455,13 +451,13 @@ namespace StriBot
                     int size = random.Next(10,21);
 
                     if(size < 13)
-                        SendMessage(String.Format("{0} сантиметров... {1}, не переживай, размер не главное! ",e.Command.ChatMessage.DisplayName,size));
+                        SendMessage(String.Format("{0} сантиметров... {1}, не переживай, размер не главное! ", e.Command.ChatMessage.DisplayName,size));
                     else if(size == 13)
-                        SendMessage(String.Format("13 сантиметров... {0}, поздравляю, у вас стандарт!  wlgF ",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("13 сантиметров... {0}, поздравляю, у вас стандарт!  striboF ", e.Command.ChatMessage.DisplayName));
                     else if(size == 20)
-                        SendMessage(String.Format("20 сантиметров... {0}, вы можете завернуть свой шланг обратно wlgScared ",e.Command.ChatMessage.DisplayName));
+                        SendMessage(String.Format("20 сантиметров... {0}, вы можете завернуть свой шланг обратно monkaS ", e.Command.ChatMessage.DisplayName));
                     else
-                        SendMessage(String.Format("{0} сантиметров... {1}, ваша девушка... или мужчина, будет в восторге! wlgAsm ",e.Command.ChatMessage.DisplayName,size));
+                        SendMessage(String.Format("{0} сантиметров... {1}, ваша девушка... или мужчина, будет в восторге! striboTea ", e.Command.ChatMessage.DisplayName,size));
                 }, CommandType.Interactive)},
                 { "смерть", new Command("Смерть","Добавляет смерть", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
