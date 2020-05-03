@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,8 @@ using TwitchLib.Api;
 using TwitchLib.Client.Extensions;
 using StriBot.Language;
 using StriBot.CustomData;
+using StriBot.Speakers;
+using System.Speech.Synthesis;
 
 namespace StriBot
 {
@@ -57,6 +59,7 @@ namespace StriBot
         private Action BossUpdate;
         private Action DeathUpdate;
         private TwitchInfo twitchInfo;
+        private Speaker speaker;
         public List<(string, string, int)> ListOrders { get; set; }
         private ConcurrentDictionary<string, int> HalberdDictionary { get; set; }
 
@@ -89,22 +92,34 @@ namespace StriBot
             twitchClient.OnJoinedChannel += OnJoinedChannel;
             twitchClient.OnNewSubscriber += OnNewSubscriber;
             twitchClient.OnReSubscriber += OnReSubscriber;
+            twitchClient.OnGiftedSubscription += OnGiftedSubscription;
             twitchClient.OnRaidNotification += OnRaidNotification;
-            twitchClient.OnGiftedSubscription += TwitchClient_OnGiftedSubscription;
+            twitchClient.OnMessageReceived += OnMessageReceived;
             twitchClient.Connect();
 
             api = new TwitchAPI();
             api.Settings.ClientId = twitchInfo.ClientId;
             api.Settings.AccessToken = twitchInfo.AccessToken;
 
-            //ExampleCallsAsync();
+            speaker = new Speaker();
+            speaker.Say("Бот подключился!");
 
+            //ExampleCallsAsync();
+        }
+
+        private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        {
+            if(e.ChatMessage.IsHighlighted)
+            {
+                speaker.Say(e.ChatMessage.Message);
+            }
         }
 
         private void OnReSubscriber(object sender, OnReSubscriberArgs e)
         {
             SendMessage($"{e.ReSubscriber.DisplayName} подписался! PogChamp Срочно плед этому господину! А пока возьми {toysForSub} {ChannelCurrency.Incline(toysForSub, true)} :)");
             DataBase.AddMoneyToUser(e.ReSubscriber.DisplayName, toysForSub);
+            speaker.Say("Спасибо за подписку!");
         }
 
         public void SendMessage(string message)
@@ -160,6 +175,7 @@ namespace StriBot
         {
             twitchClient.Disconnect();
             twitchClient.Reconnect();
+            speaker.Say("Бот переподключился");
         }
 
         public void StopBetsProcess()
@@ -192,7 +208,7 @@ namespace StriBot
             StringBuilder messageBuilder = new StringBuilder(String.Format("{0}: ", options[0]));
             for (int i = 0; i < BettingOptions.Length; i++)
             {
-                messageBuilder.Append(String.Format("{0} - {1}, ", i, BettingOptions[i]));
+                messageBuilder.Append($"{i} - {BettingOptions[i]}");
             }
             messageBuilder.Remove(messageBuilder.Length - 2, 2);
             SendMessage(messageBuilder.ToString());
@@ -252,10 +268,11 @@ namespace StriBot
         /// e.GiftedSubscription.DisplayName - кто подарил "Добро пожаловать OrloffNY"
         /// e.GiftedSubscription.MsgParamRecipientUserName - кому подарили "Добро пожаловать syndicatereara!"
         /// </summary>
-        private void TwitchClient_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
+        private void OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
         {
             SendMessage($"{e.GiftedSubscription.DisplayName} подарил подписку для {e.GiftedSubscription.MsgParamRecipientUserName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {toysForSub} {ChannelCurrency.Incline(toysForSub)}");
             DataBase.AddMoneyToUser(e.GiftedSubscription.DisplayName, toysForSub);
+            speaker.Say("Спасибо за подарочную подписку!");
         }
 
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
@@ -265,13 +282,15 @@ namespace StriBot
 
         private void OnRaidNotification(object sender, OnRaidNotificationArgs e)
         {
-            SendMessage(String.Format("Нас атакует армия под руководством {0}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ", e.RaidNotification.DisplayName));
+            SendMessage($"Нас атакует армия под руководством {e.RaidNotification.DisplayName}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ");
+            speaker.Say("Нас атакуют! Поднимайте щиты!");
         }
 
         private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
             SendMessage($"{e.Subscriber.DisplayName} подписался! PogChamp Срочно плед этому господину! А пока возьми {toysForSub} {ChannelCurrency.Incline(toysForSub, true)} :)");
             DataBase.AddMoneyToUser(e.Subscriber.DisplayName, toysForSub);
+            speaker.Say("Спасибо за подписку!");
         }
 
         private void CreateCommands()
@@ -309,7 +328,7 @@ namespace StriBot
                 #endregion
 
                 #region Интерактив
-                    { "снежок", new Command("Снежок","Бросает снежок в объект",
+                { "снежок", new Command("Снежок","Бросает снежок в объект",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
                         SendMessage(String.Format("{0} бросил снежок и попал в себя!", e.Command.ChatMessage.DisplayName));
@@ -325,14 +344,12 @@ namespace StriBot
                             snowResult = String.Format("и попал {0}", customArray.GetHited());
                         SendMessage(String.Format("{0} бросил снежок в {1} {2}", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString,snowResult));
                     }
-                },
-                new string[] {"Объект"}, CommandType.Interactive )},
+                }, new string[] {"Объект"}, CommandType.Interactive )},
                 {"roll", new Command("Roll","Бросить Roll",
                 delegate (OnChatCommandReceivedArgs e) {
                         var accuracy = random.Next(0,100);
                         SendMessage(String.Format("{0} получает число: {1}", e.Command.ChatMessage.DisplayName, accuracy));
-                },
-                new string[] {"Объект"}, CommandType.Interactive )},
+                }, new string[] {"Объект"}, CommandType.Interactive )},
                 { "подуть", new Command("Подуть","Дует на цель",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
@@ -342,32 +359,28 @@ namespace StriBot
                         SendMessage(String.Format("{0} подул на {1}, поднимается юбка и мы обнаруживаем {2} {3}! PogChamp ",
                             e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString, customArray.GetUnderpantsType(), customArray.GetUnderpantsColor()));
                     }
-                },
-                new string[] {"Цель"}, CommandType.Interactive )},
+                }, new string[] {"Цель"}, CommandType.Interactive )},
                 { "совместимость", new Command("Совместимость","Проверяет вашу совместимость с объектом",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
                         SendMessage(String.Format("Совместимость {0} с собой составляет {1}%", e.Command.ChatMessage.DisplayName, random.Next(0,101)));
                     else
                         SendMessage(String.Format("{0} совместим с {1} на {2}%", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, random.Next(0,101)));
-                },
-                new string[] {"Объект"}, CommandType.Interactive )},
+                }, new string[] {"Объект"}, CommandType.Interactive )},
                 { "цветы", new Command("Цветы","Дарит букет цветов объекту",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
                         SendMessage(String.Format("{0} приобрел букет {1} PepoFlower ", e.Command.ChatMessage.DisplayName, customArray.GetBucket()));
                     else
                         SendMessage(String.Format("{0} дарит {1} букет {2} PepoFlower ", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, customArray.GetBucket()));
-                },
-                new string[] {"Объект"}, CommandType.Interactive )},
+                }, new string[] {"Объект"}, CommandType.Interactive )},
                 { "люблю", new Command("Люблю","Показывает насколько вы любите объект",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
                         SendMessage(String.Format("{0} любит себя на {1}% <3 ", e.Command.ChatMessage.DisplayName, random.Next(0,101)));
                     else
                         SendMessage(String.Format("{0} любит {1} на {2}% <3 ", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString, random.Next(0,101)));
-                },
-                new string[] {"Объект"}, CommandType.Interactive )},
+                }, new string[] {"Объект"}, CommandType.Interactive )},
                 {"duel", new Command("Duel","Вызывает объект на дуэль в доте 1х1",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(!String.IsNullOrEmpty(e.Command.ArgumentsAsString))
@@ -396,15 +409,14 @@ namespace StriBot
                     }
                     else
                         SendMessage("Нельзя бросить дуэль самому себе!");
-                },
-                new string[] {"Объект"}, CommandType.Interactive)},
+                }, new string[] {"Объект"}, CommandType.Interactive)},
                 { "бутерброд", new Command("Бутерброд","Выдает бутерброд тебе или объекту",
                 delegate (OnChatCommandReceivedArgs e) {
                         if(String.IsNullOrEmpty( e.Command.ArgumentsAsString))
                             SendMessage(String.Format("Несу {0} для {1}! HahaCat ", Burger.BurgerCombiner(),e.Command.ChatMessage.DisplayName));
                         else
                             SendMessage(String.Format("Несу {0} для {1}! HahaCat ", Burger.BurgerCombiner(),e.Command.ArgumentsAsString));
-                },new string[] {"Объект"}, CommandType.Interactive)},
+                }, new string[] {"Объект"}, CommandType.Interactive)},
                 { "checkmmr", new Command("CheckMMR","Узнать рейтинг объекта",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(String.IsNullOrEmpty(e.Command.ArgumentsAsString))
