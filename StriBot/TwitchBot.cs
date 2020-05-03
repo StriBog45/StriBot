@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -507,6 +507,8 @@ namespace StriBot
                 { "заказгерой", new Command("ЗаказГерой", $"Заказать героя на игру, цена: {PriceList.Hero} {ChannelCurrency.Incline(PriceList.Hero)}", CreateOrder(PriceList.Hero), new string[] {"Имя героя"}, CommandType.Order)},
                 { "заказкосплей", new Command("ЗаказКосплей", $"Заказать косплей на трансляцию, цена: {PriceList.Cosplay} {ChannelCurrency.Incline(PriceList.Cosplay)}", CreateOrder(PriceList.Cosplay), new string[] {"Имя героя"}, CommandType.Hidden)},
                 { "заказигра", new Command("ЗаказИгра", $"Заказать игру на трансляцию, цена: {PriceList.Game} {ChannelCurrency.Incline(PriceList.Game)}", CreateOrder(PriceList.Game), new string[] {"Название игры"}, CommandType.Order )},
+                { "заказфильм", new Command("ЗаказФильм", $"Заказать фильм на трансляцию, цена: {PriceList.Movie} {ChannelCurrency.Incline(PriceList.Movie)}", CreateOrder(PriceList.Movie), new string[] {"Название фильма"}, CommandType.Order )},
+                { "заказаниме", new Command("ЗаказАниме", $"Заказать серию аниме на трансляцию, цена: {PriceList.Anime} {ChannelCurrency.Incline(PriceList.Anime)}", CreateOrder(PriceList.Anime), new string[] {"Название аниме"}, CommandType.Order )},
                 { "заказvip", new Command("ЗаказVIP", $"Купить VIP, цена: {PriceList.VIP} {ChannelCurrency.Incline(PriceList.VIP)}", CreateOrder(PriceList.VIP, "VIP"), CommandType.Order)},
                 { "заказгруппы", new Command("ЗаказГруппы", $"Заказать совместную игру со стримером, цена: {PriceList.Group} {ChannelCurrency.Incline(PriceList.Group)}", CreateOrder(PriceList.Group, "Group"), CommandType.Order)},
                 { "заказбуст", new Command("ЗаказБуст", $"Заказать буст, 1 трансляция, цена: {PriceList.Boost} {ChannelCurrency.Incline(PriceList.Boost)}", CreateOrder(PriceList.Boost, "Буст"), CommandType.Order)},
