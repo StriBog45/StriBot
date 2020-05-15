@@ -123,9 +123,7 @@ namespace StriBot
         }
 
         public void SendMessage(string message)
-        {
-            twitchClient.SendMessage(twitchInfo.Channel, message);
-        }
+            => twitchClient.SendMessage(twitchInfo.Channel, $"/me {message}");
 
         public void TimerTick()
         {
@@ -276,9 +274,7 @@ namespace StriBot
         }
 
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
-        {
-            twitchClient.SendMessage(e.Channel, "Бот успешно подключился!");
-        }
+            => SendMessage("Бот успешно подключился!");
 
         private void OnRaidNotification(object sender, OnRaidNotificationArgs e)
         {
