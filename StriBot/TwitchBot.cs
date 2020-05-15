@@ -26,7 +26,7 @@ namespace StriBot
         public int Deaths { get; set; } = 0;
         public int Wins { get; set; } = 0;
         public int Losses { get; set; } = 0;
-        public int MMR { get; set; } = 4000;
+        public int MMR { get; set; } = 4400;
         public string TextReminder { get; set; } = string.Empty;
         public Dictionary<string, (int, int)> UsersBetted { get; set; }
         public Currency ChannelCurrency { get; }
@@ -54,7 +54,7 @@ namespace StriBot
         private int SubCoefficient { get => subBonus ? subCoefficient : 1; }
         private bool subBonus;
         private bool chatModeEnabled = false;
-        private string medallion = "Властелин 2";
+        private string medallion = "Властелин 5";
         private Action<List<(string, string, int)>> OrdersUpdate;
         private Action BossUpdate;
         private Action DeathUpdate;
