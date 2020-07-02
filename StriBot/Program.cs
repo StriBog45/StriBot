@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using StriBot.DryIoc;
+using System;
 using System.Windows.Forms;
 
 namespace StriBot
@@ -16,6 +14,7 @@ namespace StriBot
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            var container = GlobalContainer.Initialize();
             Application.Run(new Form1());
         }
     }
