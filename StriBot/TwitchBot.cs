@@ -10,11 +10,11 @@ using TwitchLib.Client.Models;
 using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.V5.Models.Subscriptions;
 using TwitchLib.Api;
+using TwitchLib.PubSub;
 using TwitchLib.Client.Extensions;
 using StriBot.Language;
 using StriBot.CustomData;
 using StriBot.Speakers;
-using System.Speech.Synthesis;
 
 namespace StriBot
 {
@@ -27,6 +27,7 @@ namespace StriBot
         public int Wins { get; set; } = 0;
         public int Losses { get; set; } = 0;
         public int MMR { get; set; } = 4400;
+        public int MMRChange { get; set; } = 30;
         public string TextReminder { get; set; } = string.Empty;
         public Dictionary<string, (int, int)> UsersBetted { get; set; }
         public Currency ChannelCurrency { get; }
@@ -54,12 +55,14 @@ namespace StriBot
         private int SubCoefficient { get => subBonus ? subCoefficient : 1; }
         private bool subBonus;
         private bool chatModeEnabled = false;
-        private string medallion = "Властелин 5";
+        private string medallion = "Властелин 3";
         private Action<List<(string, string, int)>> OrdersUpdate;
         private Action BossUpdate;
         private Action DeathUpdate;
         private TwitchInfo twitchInfo;
         private Speaker speaker;
+        private TwitchPubSub twitchPub;
+
         public List<(string, string, int)> ListOrders { get; set; }
         private ConcurrentDictionary<string, int> HalberdDictionary { get; set; }
 
@@ -101,10 +104,33 @@ namespace StriBot
             api.Settings.ClientId = twitchInfo.ClientId;
             api.Settings.AccessToken = twitchInfo.AccessToken;
 
+            //twitchPub = new TwitchPubSub();
+            //twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected; ;
+            //twitchPub.OnRewardRedeemed += OnRewardRedeemed;
+            //twitchPub.OnChannelCommerceReceived += TwitchPub_OnChannelCommerceReceived;
+            //twitchPub.ListenToRewards(twitchInfo.Channel);
+            //twitchPub.ListenToCommerce(twitchInfo.Channel);
+            //twitchPub.Connect();
+
             speaker = new Speaker();
             speaker.Say("Бот подключился!");
 
             //ExampleCallsAsync();
+        }
+
+        private void TwitchPub_OnChannelCommerceReceived(object sender, TwitchLib.PubSub.Events.OnChannelCommerceReceivedArgs e)
+        {
+            SendMessage($"Тест: произошла коммерция {e.DisplayName} {e.ItemDescription} {e.Username} {e.PurchaseMessage}");
+        }
+
+        private void TwitchPub_OnPubSubServiceConnected(object sender, EventArgs e)
+        {
+            ;
+        }
+
+        private void OnRewardRedeemed(object sender, TwitchLib.PubSub.Events.OnRewardRedeemedArgs e)
+        {
+            SendMessage($"Тест: произошла награда {e.DisplayName} {e.RewardTitle} {e.RewardCost} {e.RewardPrompt} {e.RewardId}");
         }
 
         private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
@@ -498,12 +524,12 @@ namespace StriBot
                 { "победа", new Command("Победа","Добавляет победу", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     Wins++;
-                    MMR += 25;
+                    MMR += MMRChange;
                     SendMessage(String.Format("Побед: {0}, Поражений: {1}", Wins, Losses)); }, CommandType.Interactive)},
                 { "поражение", new Command("Поражение","Добавляет поражение", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     Losses++;
-                    MMR -= 25;
+                    MMR -= MMRChange;
                     SendMessage(String.Format("Побед: {0}, Поражений: {1}", Wins, Losses)); }, CommandType.Interactive)},
                 { "счет", new Command("Счет","Текущий счет побед и поражений",
                 delegate (OnChatCommandReceivedArgs e) {

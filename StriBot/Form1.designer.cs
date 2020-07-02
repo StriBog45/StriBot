@@ -36,6 +36,10 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonUnfollowMode = new System.Windows.Forms.Button();
+            this.buttonFollowMode = new System.Windows.Forms.Button();
+            this.SubMode = new System.Windows.Forms.Button();
+            this.buttonSmileMode = new System.Windows.Forms.Button();
             this.buttonReconnect = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.buttonBetsDota2 = new System.Windows.Forms.Button();
@@ -81,10 +85,6 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.buttonSmileMode = new System.Windows.Forms.Button();
-            this.SubMode = new System.Windows.Forms.Button();
-            this.buttonFollowMode = new System.Windows.Forms.Button();
-            this.buttonUnfollowMode = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -175,6 +175,46 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Меню";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonUnfollowMode
+            // 
+            this.buttonUnfollowMode.Location = new System.Drawing.Point(419, 436);
+            this.buttonUnfollowMode.Name = "buttonUnfollowMode";
+            this.buttonUnfollowMode.Size = new System.Drawing.Size(75, 23);
+            this.buttonUnfollowMode.TabIndex = 15;
+            this.buttonUnfollowMode.Text = "UnfollowM";
+            this.buttonUnfollowMode.UseVisualStyleBackColor = true;
+            this.buttonUnfollowMode.Click += new System.EventHandler(this.buttonUnfollowMode_Click);
+            // 
+            // buttonFollowMode
+            // 
+            this.buttonFollowMode.Location = new System.Drawing.Point(338, 436);
+            this.buttonFollowMode.Name = "buttonFollowMode";
+            this.buttonFollowMode.Size = new System.Drawing.Size(75, 23);
+            this.buttonFollowMode.TabIndex = 15;
+            this.buttonFollowMode.Text = "FollowMode";
+            this.buttonFollowMode.UseVisualStyleBackColor = true;
+            this.buttonFollowMode.Click += new System.EventHandler(this.buttonFollowMode_Click);
+            // 
+            // SubMode
+            // 
+            this.SubMode.Location = new System.Drawing.Point(257, 436);
+            this.SubMode.Name = "SubMode";
+            this.SubMode.Size = new System.Drawing.Size(75, 23);
+            this.SubMode.TabIndex = 15;
+            this.SubMode.Text = "SubMode";
+            this.SubMode.UseVisualStyleBackColor = true;
+            this.SubMode.Click += new System.EventHandler(this.SubMode_Click);
+            // 
+            // buttonSmileMode
+            // 
+            this.buttonSmileMode.Location = new System.Drawing.Point(176, 436);
+            this.buttonSmileMode.Name = "buttonSmileMode";
+            this.buttonSmileMode.Size = new System.Drawing.Size(75, 23);
+            this.buttonSmileMode.TabIndex = 14;
+            this.buttonSmileMode.Text = "SmileMode";
+            this.buttonSmileMode.UseVisualStyleBackColor = true;
+            this.buttonSmileMode.Click += new System.EventHandler(this.buttonSmileMode_Click);
             // 
             // buttonReconnect
             // 
@@ -487,7 +527,7 @@
             this.textBoxMMR.Name = "textBoxMMR";
             this.textBoxMMR.Size = new System.Drawing.Size(75, 20);
             this.textBoxMMR.TabIndex = 0;
-            this.textBoxMMR.Text = "4000";
+            this.textBoxMMR.Text = "4400";
             // 
             // textBox1
             // 
@@ -623,46 +663,6 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // buttonSmileMode
-            // 
-            this.buttonSmileMode.Location = new System.Drawing.Point(176, 436);
-            this.buttonSmileMode.Name = "buttonSmileMode";
-            this.buttonSmileMode.Size = new System.Drawing.Size(75, 23);
-            this.buttonSmileMode.TabIndex = 14;
-            this.buttonSmileMode.Text = "SmileMode";
-            this.buttonSmileMode.UseVisualStyleBackColor = true;
-            this.buttonSmileMode.Click += new System.EventHandler(this.buttonSmileMode_Click);
-            // 
-            // SubMode
-            // 
-            this.SubMode.Location = new System.Drawing.Point(257, 436);
-            this.SubMode.Name = "SubMode";
-            this.SubMode.Size = new System.Drawing.Size(75, 23);
-            this.SubMode.TabIndex = 15;
-            this.SubMode.Text = "SubMode";
-            this.SubMode.UseVisualStyleBackColor = true;
-            this.SubMode.Click += new System.EventHandler(this.SubMode_Click);
-            // 
-            // buttonFollowMode
-            // 
-            this.buttonFollowMode.Location = new System.Drawing.Point(338, 436);
-            this.buttonFollowMode.Name = "buttonFollowMode";
-            this.buttonFollowMode.Size = new System.Drawing.Size(75, 23);
-            this.buttonFollowMode.TabIndex = 15;
-            this.buttonFollowMode.Text = "FollowMode";
-            this.buttonFollowMode.UseVisualStyleBackColor = true;
-            this.buttonFollowMode.Click += new System.EventHandler(this.buttonFollowMode_Click);
-            // 
-            // buttonUnfollowMode
-            // 
-            this.buttonUnfollowMode.Location = new System.Drawing.Point(419, 436);
-            this.buttonUnfollowMode.Name = "buttonUnfollowMode";
-            this.buttonUnfollowMode.Size = new System.Drawing.Size(75, 23);
-            this.buttonUnfollowMode.TabIndex = 15;
-            this.buttonUnfollowMode.Text = "UnfollowM";
-            this.buttonUnfollowMode.UseVisualStyleBackColor = true;
-            this.buttonUnfollowMode.Click += new System.EventHandler(this.buttonUnfollowMode_Click);
             // 
             // Form1
             // 
