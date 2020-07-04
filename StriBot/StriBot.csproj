@@ -210,6 +210,7 @@
     <Compile Include="CollectionHelper.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommonFunctions\ReadyMadePhrases.cs" />
+    <Compile Include="Commands\CurrencyBaseManager.cs" />
     <Compile Include="Commands\MMRManager.cs" />
     <Compile Include="Commands\OrderManager.cs" />
     <Compile Include="CommandType.cs" />
@@ -218,7 +219,7 @@
     <Compile Include="CustomData\Heroes.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="DryIoc\GlobalContainer.cs" />
-    <Compile Include="DryIoc\Implementations\CommandCommonFunctions.cs" />
+    <Compile Include="DryIoc\Implementations\CommandCommonFunctionsFiller.cs" />
     <Compile Include="DryIoc\Implementations\CommandsFiller.cs" />
     <Compile Include="DryIoc\Implementations\FillPriorityAttribute.cs" />
     <Compile Include="DryIoc\Implementations\LanguageFiller.cs" />

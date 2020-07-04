@@ -19,8 +19,6 @@ namespace StriBot.TwitchBot.Interfaces
 
         void SetBetsWinner(int winner);
 
-        void DistributionMoney(int perUser, int maxUsers, bool bonus = true);
-
         string TextReminder { get; set; }
 
         void Reconnect();

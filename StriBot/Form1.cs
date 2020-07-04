@@ -16,6 +16,7 @@ namespace StriBot
         private ITwitchBot twitchBot;
         private MMRManager managerMMR;
         private OrderManager orderManager;
+        private CurrencyBaseManager currencyBaseManager;
 
         public Form1()
         {
@@ -26,6 +27,7 @@ namespace StriBot
             twitchBot.CreateCommands();
             managerMMR = GlobalContainer.Default.Resolve<MMRManager>();
             orderManager = GlobalContainer.Default.Resolve<OrderManager>();
+            currencyBaseManager = GlobalContainer.Default.Resolve<CurrencyBaseManager>();
             orderManager.SafeCallConnector(UpdateOrderList);
         }
 
@@ -50,7 +52,7 @@ namespace StriBot
 
         private void buttonDistribution_Click(object sender, EventArgs e)
         {
-            twitchBot.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text));
+            currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text));
         }
         private void buttonCreateOptions_Click(object sender, EventArgs e)
         {

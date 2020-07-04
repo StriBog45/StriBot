@@ -3,9 +3,6 @@ using StriBot.Language;
 using StriBot.TwitchBot.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TwitchLib.Client.Events;
 
 namespace StriBot.Commands
@@ -34,7 +31,7 @@ namespace StriBot.Commands
         }
 
         public Command CreateOrder()
-            => new Command("Заказ", String.Format("Предложить свой заказ", PriceList.Hero), CreateOrderDelegate(), new string[] { currency.NominativeMultiple.Title(), "Заказ" }, 
+            => new Command("Заказ", String.Format("Предложить свой заказ", PriceList.Hero), CreateCustomOrderDelegate(), new string[] { currency.NominativeMultiple.Title(), "Заказ" }, 
                 CommandType.Order);
 
         public Command CreateOrderHero()
@@ -73,9 +70,7 @@ namespace StriBot.Commands
                 new string[] { "Ссылка на песню" }, CommandType.Order);
 
         public void OrderRemove(string orderName, string customer, int price)
-        {
-            listOrders.Remove((orderName, customer, price));
-        }
+            => listOrders.Remove((orderName, customer, price));
 
         private Action<OnChatCommandReceivedArgs> CreateOrderDelegate(int price, string product)
         {
@@ -112,7 +107,7 @@ namespace StriBot.Commands
             };
         }
 
-        private Action<OnChatCommandReceivedArgs> CreateOrderDelegate()
+        private Action<OnChatCommandReceivedArgs> CreateCustomOrderDelegate()
         {
             return delegate (OnChatCommandReceivedArgs e)
             {

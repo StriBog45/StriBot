@@ -4,7 +4,7 @@ using StriBot.DryIoc.Interfaces;
 
 namespace StriBot.DryIoc.Implementations
 {
-    class CommandCommonFunctions : IContainerFiller
+    class CommandCommonFunctionsFiller : IContainerFiller
     {
         public void Fill(IContainer container)
         {
