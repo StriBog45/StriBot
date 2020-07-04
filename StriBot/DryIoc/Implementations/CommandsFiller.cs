@@ -8,7 +8,8 @@ namespace StriBot.DryIoc.Implementations
     {
         public void Fill(IContainer container)
         {
-            container.Register<ManagerMMR>(Reuse.Singleton);
+            container.Register<MMRManager>(Reuse.Singleton);
+            container.Register<OrderManager>(Reuse.Singleton);
         }
     }
 }

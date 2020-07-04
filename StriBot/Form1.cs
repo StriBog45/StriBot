@@ -14,16 +14,19 @@ namespace StriBot
         private delegate void SafeCallDelegate();
         private delegate void SafeCallDelegateOrders(List<(string, string, int)> orders);
         private ITwitchBot twitchBot;
-        private ManagerMMR managerMMR;
+        private MMRManager managerMMR;
+        private OrderManager orderManager;
 
         public Form1()
         {
             InitializeComponent();
 
             twitchBot = GlobalContainer.Default.Resolve<ITwitchBot>();
-            twitchBot.SetConstructorSettings(UpdateOrderList, BossUpdate, DeathUpdate);
+            twitchBot.SetConstructorSettings(BossUpdate, DeathUpdate);
             twitchBot.CreateCommands();
-            managerMMR = GlobalContainer.Default.Resolve<ManagerMMR>();
+            managerMMR = GlobalContainer.Default.Resolve<MMRManager>();
+            orderManager = GlobalContainer.Default.Resolve<OrderManager>();
+            orderManager.SafeCallConnector(UpdateOrderList);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -101,7 +104,7 @@ namespace StriBot
             {
                 if(selected.SubItems[0].Text.Contains("youtube"))
                     webBrowser.Navigate(selected.SubItems[0].Text);
-                twitchBot.ListOrders.Remove((selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text)));
+                orderManager.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text));
                 DataBase.AddMoneyToUser(selected.SubItems[1].Text, -Int32.Parse(selected.SubItems[2].Text));
                 twitchBot.SendMessage(String.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text));
                 listViewOrder.Items.Remove(selected);
@@ -111,7 +114,7 @@ namespace StriBot
         {
             foreach (ListViewItem selected in listViewOrder.SelectedItems)
             {
-                twitchBot.ListOrders.Remove((selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text)));
+                orderManager.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text));
                 twitchBot.SendMessage(String.Format("Заказ @{0} отменен", selected.SubItems[1].Text));
                 listViewOrder.Items.Remove(selected);
             }

@@ -4,7 +4,7 @@ using TwitchLib.Client.Events;
 
 namespace StriBot.Commands
 {
-    public class ManagerMMR
+    public class MMRManager
     {
         public int MMR { get; set; } = 4400;
         public int Wins { get; set; } = 0;
@@ -14,7 +14,7 @@ namespace StriBot.Commands
         private int MMRChange = 30;
         private string medallion = "Властелин 3";
 
-        public ManagerMMR(ITwitchBot twitchBot)
+        public MMRManager(ITwitchBot twitchBot)
         {
             this.twitchBot = twitchBot;
         }

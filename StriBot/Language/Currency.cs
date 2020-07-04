@@ -1,6 +1,6 @@
 ﻿namespace StriBot.Language
 {
-    public class Currency : Cases
+    public class Currency : ICases
     {
         public string Nominative => "игрушка";
 

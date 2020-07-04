@@ -11,7 +11,7 @@ namespace StriBot.TwitchBot.Interfaces
 
         void TimerTick();
 
-        void SetConstructorSettings(Action<List<(string, string, int)>> ordersUpdate, Action bossUpdate, Action deathUpdate);
+        void SetConstructorSettings(Action bossUpdate, Action deathUpdate);
 
         void CreateBets(string[] options);
 
@@ -36,8 +36,6 @@ namespace StriBot.TwitchBot.Interfaces
         int Deaths { get; set; }
 
         CollectionHelper Bosses { get; set; }
-
-        List<(string, string, int)> ListOrders { get; set; }
 
         Dictionary<string, Command> Commands { get; set; }
     }

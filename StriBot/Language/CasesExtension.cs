@@ -2,7 +2,7 @@
 {
     public static class CasesExtension
     {
-        public static string Incline(this Cases cases, int number, bool secondDeclension = false)
+        public static string Incline(this ICases cases, int number, bool secondDeclension = false)
         {
             string result = string.Empty;
 

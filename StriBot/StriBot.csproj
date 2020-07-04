@@ -209,15 +209,19 @@
   <ItemGroup>
     <Compile Include="CollectionHelper.cs" />
     <Compile Include="Command.cs" />
-    <Compile Include="Commands\ManagerMMR.cs" />
+    <Compile Include="Commands\CommonFunctions\ReadyMadePhrases.cs" />
+    <Compile Include="Commands\MMRManager.cs" />
+    <Compile Include="Commands\OrderManager.cs" />
     <Compile Include="CommandType.cs" />
     <Compile Include="CustomData\Burger.cs" />
     <Compile Include="CustomData\CustomArray.cs" />
     <Compile Include="CustomData\Heroes.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="DryIoc\GlobalContainer.cs" />
+    <Compile Include="DryIoc\Implementations\CommandCommonFunctions.cs" />
     <Compile Include="DryIoc\Implementations\CommandsFiller.cs" />
     <Compile Include="DryIoc\Implementations\FillPriorityAttribute.cs" />
+    <Compile Include="DryIoc\Implementations\LanguageFiller.cs" />
     <Compile Include="DryIoc\Implementations\TwitchBotFiller.cs" />
     <Compile Include="DryIoc\Interfaces\IContainerFiller.cs" />
     <Compile Include="DryIoc\Registrators\Fillers.cs" />
@@ -227,7 +231,7 @@
     <Compile Include="Form1.designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Language\Cases.cs" />
+    <Compile Include="Language\ICases.cs" />
     <Compile Include="Language\CasesExtension.cs" />
     <Compile Include="Language\Currency.cs" />
     <Compile Include="Language\StringExtension.cs" />
