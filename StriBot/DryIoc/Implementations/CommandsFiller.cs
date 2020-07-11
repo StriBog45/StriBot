@@ -11,6 +11,7 @@ namespace StriBot.DryIoc.Implementations
             container.Register<MMRManager>(Reuse.Singleton);
             container.Register<OrderManager>(Reuse.Singleton);
             container.Register<CurrencyBaseManager>(Reuse.Singleton);
+            container.Register<HalberdManager>(Reuse.Singleton);
         }
     }
 }

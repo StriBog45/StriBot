@@ -9,6 +9,7 @@ namespace StriBot.DryIoc.Implementations
         public void Fill(IContainer container)
         {
             container.Register<Currency>(Reuse.Singleton);
+            container.Register<Minute>(Reuse.Singleton);
         }
     }
 }

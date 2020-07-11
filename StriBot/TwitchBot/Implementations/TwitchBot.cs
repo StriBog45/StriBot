@@ -48,23 +48,24 @@ namespace StriBot.TwitchBot.Implementations
         private int toysForSub = 30;
         private int timeoutTime = 120;
         private int timeoutTimeInMinute = 2;
-        private int halberdTime = 10;
+        
         private bool chatModeEnabled = false;
         private Action BossUpdate;
         private Action DeathUpdate;
         private TwitchInfo twitchInfo;
         private Speaker speaker;
         private TwitchPubSub twitchPub;
+        private HalberdManager halberdManager;
 
-        private ConcurrentDictionary<string, int> HalberdDictionary { get; set; }
+        
 
-        public TwitchBot(Currency currency)
+        public TwitchBot(Currency currency, Speaker speaker)
         {
             this.currency = currency;
+            this.speaker = speaker;
 
             customArray = new CustomArray();
             UsersBetted = new Dictionary<string, (int, int)>();
-            HalberdDictionary = new ConcurrentDictionary<string, int>();
 
             twitchInfo = new TwitchInfo();
 
@@ -95,8 +96,7 @@ namespace StriBot.TwitchBot.Implementations
             //twitchPub.ListenToRewards(twitchInfo.Channel);
             //twitchPub.ListenToCommerce(twitchInfo.Channel);
             //twitchPub.Connect();
-
-            speaker = new Speaker();
+            
             speaker.Say("Бот подключился!");
 
             //ExampleCallsAsync();
@@ -161,7 +161,7 @@ namespace StriBot.TwitchBot.Implementations
             if (timer == 45)
                 SendMessage("Спасибо за вашу поддержку! HolidaySanta ");
 
-            if (timer % 10 == 0 && !String.IsNullOrEmpty(TextReminder))
+            if (timer % 10 == 0 && !string.IsNullOrEmpty(TextReminder))
                 SendMessage("Напоминание: " + TextReminder);
 
             if (timer == 61)
@@ -177,12 +177,7 @@ namespace StriBot.TwitchBot.Implementations
                 else
                     duelTimer++;
 
-            foreach (var user in HalberdDictionary)
-            {
-                HalberdDictionary[user.Key]--;
-                if (HalberdDictionary[user.Key] <= 0)
-                    HalberdDictionary.TryRemove(user.Key, out _);
-            }
+            halberdManager.Tick();
         }
 
         public void Reconnect()
@@ -303,6 +298,7 @@ namespace StriBot.TwitchBot.Implementations
             var managerMMR = container.Resolve<MMRManager>();
             var readyMadePhrases = container.Resolve<ReadyMadePhrases>();
             var orderManager = container.Resolve<OrderManager>();
+            halberdManager = container.Resolve<HalberdManager>();
             currencyBaseManager = container.Resolve<CurrencyBaseManager>();
 
             Commands = new Dictionary<string, Command>()
@@ -637,27 +633,7 @@ namespace StriBot.TwitchBot.Implementations
                         }
                     }
                 }, new string[]{"размер ставки" }, CommandType.Interactive)},
-                { "алебарда", new Command("Алебарда",$"Запретить использовать команды на {halberdTime} минут. Цена: {PriceList.Halberd} {currency.GenitiveMultiple}",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(e.Command.ArgumentsAsList.Count == 1 )
-                    {
-                        if (DataBase.CheckMoney(e.Command.ChatMessage.DisplayName) >= PriceList.Halberd)
-                        {
-                            DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName,-PriceList.Halberd);
-
-                            if(HalberdDictionary.ContainsKey(e.Command.ArgumentsAsList[0]))
-                                HalberdDictionary[DataBase.CleanNickname(e.Command.ArgumentsAsList[0])] += halberdTime;
-                            else
-                                HalberdDictionary.TryAdd(DataBase.CleanNickname(e.Command.ArgumentsAsList[0]), halberdTime);
-
-                            SendMessage(String.Format("{0} использовал алебарду на {1}! Цель обезаружена на {2} минут!",e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsList[0], halberdTime));
-                        }
-                        else
-                            readyMadePhrases.NoMoney(e.Command.ChatMessage.DisplayName);
-                    }
-                    else
-                        readyMadePhrases.IncorrectCommand();
-                }, new string[]{"цель"}, CommandType.Interactive)},
+                { "алебарда", halberdManager.CreateHalberdCommand() },
                 #endregion
 
                 #region Стримеры
@@ -703,45 +679,32 @@ namespace StriBot.TwitchBot.Implementations
         
         private void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
-            /*Индентификатор: !,Команда: test, Аргументы: commands hahaha, Сообщение: !test commands hahaha
-            twitchClient.SendMessage(TwitchInfo.Channel, String.Format("Индентификатор: {0},Команда: {1}, Аргументы: {2}, Сообщение: {3}", 
-                e.Command.CommandIdentifier, e.Command.CommandText, e.Command.ArgumentsAsString, e.Command.ChatMessage.Message));*/
             string lowerCommand = e.Command.CommandText.ToLower();
             if (Commands.ContainsKey(lowerCommand))
             {
-                bool canUseCommand = true;
-
-                canUseCommand = CheckRequires(Commands[lowerCommand].Requires, e, canUseCommand);
-                canUseCommand = CheckHalberd(e.Command.ChatMessage.DisplayName, canUseCommand);
-
-                if (canUseCommand)
+                if (IsAccessAllowed(Commands[lowerCommand].Requires, e) 
+                    && halberdManager.CanSendMessage(e.Command.ChatMessage.DisplayName))
                     Commands[lowerCommand].Action(e);
             }
         }
 
-        private bool CheckRequires(Role role, OnChatCommandReceivedArgs e, bool canUseCommand)
+        private bool IsAccessAllowed(Role role, OnChatCommandReceivedArgs e)
         {
+            var result = true;
+
             if (role != Role.Any)
                 if (!((role == Role.Subscriber && e.Command.ChatMessage.IsSubscriber) ||
                             (role == Role.Moderator && (e.Command.ChatMessage.IsModerator || e.Command.ChatMessage.IsBroadcaster)) ||
                             (role == Role.Broadcaster && e.Command.ChatMessage.IsBroadcaster)))
                 {
-                    SendMessage("У вас недостаточно прав!");
-                    canUseCommand = false;
+                    SendMessage($"{e.Command.ChatMessage.DisplayName} недостаточно прав для команды!");
+                    result = false;
                 }
-            return canUseCommand;
+
+            return result;
         }
 
-        private bool CheckHalberd(string name, bool canUseCommand)
-        {
-            if(HalberdDictionary.ContainsKey(name))
-            {
-                canUseCommand = false;
-                SendMessage($"{name} обезаружен ещё {HalberdDictionary[name]} минут(ы,у)!");
-            }
-
-            return HalberdDictionary.ContainsKey(name) ? false : canUseCommand;
-        }
+        
 
         public void SmileMode()
         {
@@ -781,7 +744,7 @@ namespace StriBot.TwitchBot.Implementations
         {
             string userId = GetUserId(twitchInfo.Channel);
 
-            return String.IsNullOrEmpty(userId) ? "Offline" : api.V5.Streams.GetUptimeAsync(userId).Result.Value.ToString(@"hh\:mm\:ss");
+            return string.IsNullOrEmpty(userId) ? "Offline" : api.V5.Streams.GetUptimeAsync(userId).Result.Value.ToString(@"hh\:mm\:ss");
         }
 
         string GetUserId(string username)

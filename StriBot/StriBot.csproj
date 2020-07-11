@@ -211,6 +211,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommonFunctions\ReadyMadePhrases.cs" />
     <Compile Include="Commands\CurrencyBaseManager.cs" />
+    <Compile Include="Commands\HalberdManager.cs" />
     <Compile Include="Commands\MMRManager.cs" />
     <Compile Include="Commands\OrderManager.cs" />
     <Compile Include="CommandType.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="DryIoc\Implementations\CommandsFiller.cs" />
     <Compile Include="DryIoc\Implementations\FillPriorityAttribute.cs" />
     <Compile Include="DryIoc\Implementations\LanguageFiller.cs" />
+    <Compile Include="DryIoc\Implementations\SpeakerFiller.cs" />
     <Compile Include="DryIoc\Implementations\TwitchBotFiller.cs" />
     <Compile Include="DryIoc\Interfaces\IContainerFiller.cs" />
     <Compile Include="DryIoc\Registrators\Fillers.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Language\ICases.cs" />
     <Compile Include="Language\CasesExtension.cs" />
     <Compile Include="Language\Currency.cs" />
+    <Compile Include="Language\Minute.cs" />
     <Compile Include="Language\StringExtension.cs" />
     <Compile Include="PriceList.cs" />
     <Compile Include="Program.cs" />
