@@ -53,12 +53,11 @@ namespace StriBot.TwitchBot.Implementations
         private HalberdManager halberdManager;
         private DuelManager duelManager;
 
-        public TwitchBot(Currency currency, Speaker speaker)
+        public TwitchBot(Currency currency, Speaker speaker, CustomArray customArray)
         {
+            this.customArray = customArray;
             this.currency = currency;
             this.speaker = speaker;
-
-            customArray = new CustomArray();
             UsersBetted = new Dictionary<string, (int, int)>();
 
             twitchInfo = new TwitchInfo();
@@ -286,6 +285,8 @@ namespace StriBot.TwitchBot.Implementations
             var readyMadePhrases = container.Resolve<ReadyMadePhrases>();
             var orderManager = container.Resolve<OrderManager>();
             var linkManager = container.Resolve<LinkManager>();
+            var randomAnswerManager = container.Resolve<RandomAnswerManager>();
+            var burgerManager = container.Resolve<BurgerManager>();
             halberdManager = container.Resolve<HalberdManager>();
             currencyBaseManager = container.Resolve<CurrencyBaseManager>();
             duelManager = container.Resolve<DuelManager>();
@@ -294,123 +295,20 @@ namespace StriBot.TwitchBot.Implementations
             {
                 linkManager.CreateCommands(),
                 managerMMR.CreateCommands(),
+                randomAnswerManager.CreateCommands(),
+                burgerManager.CreateCommands(),
 
                 { "uptime", new Command("Uptime","Длительность текущей трансляции",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage( $"Трансляция длится: { GetUptime()}"); }, CommandType.Info)},
 
                 #region Интерактив
-                { "снежок", new Command("Снежок","Бросает снежок в объект",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(string.Format("{0} бросил снежок и попал в себя!", e.Command.ChatMessage.DisplayName));
-                    else
-                    {
-                        var accuracy = RandomHelper.random.Next(0,100);
-                        string snowResult = string.Empty;
-                        if(accuracy < 10)
-                            snowResult = "и... промазал";
-                        if(accuracy >= 10 && accuracy <= 20)
-                            snowResult = "но цель уклонилась kekw ";
-                        if(accuracy > 30)
-                            snowResult = string.Format("и попал {0}", customArray.GetHited());
-                        SendMessage(string.Format("{0} бросил снежок в {1} {2}", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString,snowResult));
-                    }
-                }, new string[] {"Объект"}, CommandType.Interactive )},
-                { "roll", new Command("Roll","Бросить Roll",
-                delegate (OnChatCommandReceivedArgs e) {
-                        var accuracy = RandomHelper.random.Next(0,100);
-                        SendMessage(string.Format("{0} получает число: {1}", e.Command.ChatMessage.DisplayName, accuracy));
-                }, new string[] {"Объект"}, CommandType.Interactive )},
-                { "подуть", new Command("Подуть","Дует на цель",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(string.Format("{0} подул на свой нос SMOrc !", e.Command.ChatMessage.DisplayName));
-                    else
-                    {
-                        SendMessage(string.Format("{0} подул на {1}, поднимается юбка и мы обнаруживаем {2} {3}! PogChamp ",
-                            e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString, customArray.GetUnderpantsType(), customArray.GetUnderpantsColor()));
-                    }
-                }, new string[] {"Цель"}, CommandType.Interactive )},
-                { "совместимость", new Command("Совместимость","Проверяет вашу совместимость с объектом",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(string.Format("Совместимость {0} с собой составляет {1}%", e.Command.ChatMessage.DisplayName, RandomHelper.random.Next(0,101)));
-                    else
-                        SendMessage(string.Format("{0} совместим с {1} на {2}%", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, RandomHelper.random.Next(0,101)));
-                }, new string[] {"Объект"}, CommandType.Interactive )},
-                { "цветы", new Command("Цветы","Дарит букет цветов объекту",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(string.Format("{0} приобрел букет {1} PepoFlower ", e.Command.ChatMessage.DisplayName, customArray.GetBucket()));
-                    else
-                        SendMessage(string.Format("{0} дарит {1} букет {2} PepoFlower ", e.Command.ChatMessage.DisplayName,e.Command.ArgumentsAsString, customArray.GetBucket()));
-                }, new string[] {"Объект"}, CommandType.Interactive )},
-                { "люблю", new Command("Люблю","Показывает насколько вы любите объект",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(string.Format("{0} любит себя на {1}% <3 ", e.Command.ChatMessage.DisplayName, RandomHelper.random.Next(0,101)));
-                    else
-                        SendMessage(string.Format("{0} любит {1} на {2}% <3 ", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString, RandomHelper.random.Next(0,101)));
-                }, new string[] {"Объект"}, CommandType.Interactive )},
-                { "duel", new Command("Duel","Вызывает объект на дуэль в доте 1х1",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(!string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                    {
-                        var duelAccuraccy = RandomHelper.random.Next(0,100);
-                        string duelResult = string.Empty;
-                        if(duelAccuraccy <= 10)
-                            duelResult = "Побеждает в сухую! striboTea ";
-                        if(duelAccuraccy > 10 && duelAccuraccy <= 20)
-                            duelResult = "Проиграл в сухую. striboCry ";
-                        if(duelAccuraccy > 20 && duelAccuraccy <= 40)
-                            duelResult = "Удалось подловить противника с помощью руны. Победа.";
-                        if(duelAccuraccy > 40 && duelAccuraccy <= 50)
-                            duelResult = "Крипы зажали. Неловко. Поражение. CouldYouNot ";
-                        if(duelAccuraccy > 50 && duelAccuraccy <= 60)
-                            duelResult = "Противник проигнорировал дуэль. CouldYouNot ";
-                        if(duelAccuraccy > 60 && duelAccuraccy <=70)
-                            duelResult = "Перефармил противника и сломал башню. Победа. POGGERS ";
-                        if(duelAccuraccy > 70 && duelAccuraccy <= 80)
-                            duelResult = "Похоже противник намного опытнее на этом герое. Поражение.";
-                        if(duelAccuraccy > 80 && duelAccuraccy <= 90)
-                            duelResult = "Боже, что сейчас произошло!? Победа! striboLyc ";
-                        if(duelAccuraccy > 90)
-                            duelResult = "Жил до конца, умер как герой. Поражение. FeelsRainMan ";
-                        SendMessage(string.Format("{0} вызывает {1} на битву 1х1 на {2}! Итог: {3}", e.Command.ChatMessage.DisplayName, e.Command.ArgumentsAsString, Heroes.GetRandomHero(), duelResult));
-                    }
-                    else
-                        SendMessage("Нельзя бросить дуэль самому себе!");
-                }, new string[] {"Объект"}, CommandType.Interactive)},
-                { "бутерброд", new Command("Бутерброд","Выдает бутерброд тебе или объекту",
-                delegate (OnChatCommandReceivedArgs e) {
-                        if(string.IsNullOrEmpty( e.Command.ArgumentsAsString))
-                            SendMessage(string.Format("Несу {0} для {1}! HahaCat ", Burger.BurgerCombiner(),e.Command.ChatMessage.DisplayName));
-                        else
-                            SendMessage(string.Format("Несу {0} для {1}! HahaCat ", Burger.BurgerCombiner(),e.Command.ArgumentsAsString));
-                }, new string[] {"Объект"}, CommandType.Interactive)},
-                { "iq", new Command("IQ","Узнать IQ объекта или свой",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(string.Format("Ваш IQ: {0} SeemsGood ", RandomHelper.random.Next(1,200)));
-                    else
-                        SendMessage(string.Format("IQ {0} составляет: {1}! SeemsGood ", e.Command.ArgumentsAsString, RandomHelper.random.Next(1,200)));}, new string[] {"Объект"}, CommandType.Interactive)},
-                { "шар", new Command("Шар","Шар предсказаний, формулируйте вопрос для ответа \"да\" или \"нет\" ",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage($"Шар говорит... {customArray.GetBallAnswer()}"); },new string[]{"Вопрос" }, CommandType.Interactive)},
-                { "монетка", new Command("Монетка","Орел или решка?",
-                delegate (OnChatCommandReceivedArgs e) {
-                    int coin = RandomHelper.random.Next(0,101);
-                    if(coin == 100)
-                        SendMessage("Бросаю монетку... Ребро POGGERS ");
-                    else
-                        SendMessage(string.Format("Бросаю монетку... {0}", coin < 50 ? "Орел" : "Решка"));}, CommandType.Interactive)},
                 { "размерг", new Command("РазмерГ","Узнать размер вашей груди",
                 delegate (OnChatCommandReceivedArgs e) {
                     int size = RandomHelper.random.Next(0,7);
 
                     if(size == 0)
-                        SendMessage(string.Format("0 размер... Извините, {0}, а что мерить? kekw ",e.Command.ChatMessage.DisplayName));
+                        SendMessage(string.Format("0 размер... Извините, {0}, а что мерить? KEKW ",e.Command.ChatMessage.DisplayName));
                     if(size == 1)
                         SendMessage(string.Format("1 размер... Не переживай {0}, ещё вырастут striboCry ",e.Command.ChatMessage.DisplayName));
                     if(size == 2)
@@ -455,7 +353,7 @@ namespace StriBot.TwitchBot.Implementations
                 delegate (OnChatCommandReceivedArgs e) {
                     TextReminder = e.Command.ArgumentsAsString;
                     if(TextReminder.Length > 0)
-                        SendMessage(string.Format("Напоминание: \"{0}\" создано", e.Command.ArgumentsAsString));
+                        SendMessage($"Напоминание: \"{e.Command.ArgumentsAsString}\" создано");
                     else
                         SendMessage("Напоминание удалено");
                 }, new string[] {"текст"}, CommandType.Interactive )},

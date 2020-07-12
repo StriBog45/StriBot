@@ -66,6 +66,7 @@
         "Riki",
         "Shadow Fiend",
         "Slark",
+        "Snapfire",
         "Sniper",
         "Spectre",
         "Templar Assassin",
@@ -75,6 +76,7 @@
         "Vengeful Spirit",
         "Venomancer",
         "Viper",
+        "Void Spirit",
         "Weaver",
         "Ancient Apparation",
         "Bane",
@@ -115,7 +117,7 @@
         "Windranger",
         "Winter Wyvern",
         "Witch Doctor",
-        "Zeus"
+        "Zeus",
         };
         public static string GetRandomHero()
             => RandomHelper.GetRandomOfArray(ListHeroes);

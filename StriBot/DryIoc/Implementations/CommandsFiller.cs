@@ -1,5 +1,6 @@
 ﻿using DryIoc;
 using StriBot.Commands;
+using StriBot.CustomData;
 using StriBot.DryIoc.Interfaces;
 
 namespace StriBot.DryIoc.Implementations
@@ -14,6 +15,10 @@ namespace StriBot.DryIoc.Implementations
             container.Register<HalberdManager>(Reuse.Singleton);
             container.Register<DuelManager>(Reuse.Singleton);
             container.Register<LinkManager>(Reuse.Singleton);
+            container.Register<RandomAnswerManager>(Reuse.Singleton);
+            container.Register<BurgerManager>(Reuse.Singleton);
+
+            container.Register<CustomArray>(Reuse.Singleton);
         }
     }
 }

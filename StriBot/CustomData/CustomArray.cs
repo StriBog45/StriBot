@@ -11,10 +11,17 @@ namespace StriBot.CustomData
         readonly private string[] underpantsType = new string[] { "Слипы", "Тонг", "Танга", "Панталоны", "Бикини", "Бразилиано", "Шорты", "Мини-стринги", "Классические трусы", "Хипсстерсы" };
         readonly private string[] underpantsColor = new string[] { "синие", "красные", "желтые", "черные", "розовые", "зеленые", "в горошек", "в цветочек", "в полоску", "прозрачные", "львица", "тигрица", "слоник", "армейка" };
         readonly private string[] bucket = new string[] { "Ромашек", "Тюльпанов", "Алых роз", "Белых роз", "Гладиолусов", "Лилий", "Калл" };
-        
-        public CustomArray() 
-        {
-        }
+        readonly private string[] dotaDuelResult = new string[] {
+            "Побеждает в сухую! striboTea ", 
+            "Проиграл в сухую. striboCry ", 
+            "Удалось подловить противника с помощью руны. Победа.", 
+            "Крипы зажали. Неловко. Поражение. CouldYouNot ",
+            "Противник проигнорировал дуэль. CouldYouNot ",
+            "Перефармил противника и сломал башню. Победа. POGGERS ",
+            "Похоже противник намного опытнее на этом герое. Поражение.",
+            "Боже, что сейчас произошло!? Победа! striboLyc ",
+            "Жил до конца, умер как герой. Поражение. FeelsRainMan "
+        };
 
         public string GetRandomOfArray(string[] array)
             => RandomHelper.GetRandomOfArray(array);
@@ -33,5 +40,8 @@ namespace StriBot.CustomData
 
         public string GetBucket()
             => GetRandomOfArray(bucket);
+
+        public string GetDota2DuelResult()
+            => GetRandomOfArray(dotaDuelResult);
     }
 }

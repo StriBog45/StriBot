@@ -217,8 +217,9 @@
     <Compile Include="Commands\LinkManager.cs" />
     <Compile Include="Commands\MMRManager.cs" />
     <Compile Include="Commands\OrderManager.cs" />
+    <Compile Include="Commands\RandomAnswerManager.cs" />
     <Compile Include="CommandType.cs" />
-    <Compile Include="CustomData\Burger.cs" />
+    <Compile Include="Commands\BurgerManager.cs" />
     <Compile Include="CustomData\CustomArray.cs" />
     <Compile Include="CustomData\Heroes.cs" />
     <Compile Include="DataBase.cs" />
