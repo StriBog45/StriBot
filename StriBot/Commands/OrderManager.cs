@@ -69,6 +69,24 @@ namespace StriBot.Commands
             => new Command("ЗаказПесня", $"Заказать воспроизведение песни, цена: {PriceList.Song} {currency.Incline(PriceList.Song)}", CreateOrderDelegate(PriceList.Song),
                 new string[] { "Ссылка на песню" }, CommandType.Order);
 
+        public Dictionary<string, Command> CreateCommands()
+        {
+            var result = new Dictionary<string, Command>()
+            {
+                CreateOrder(),
+                CreateOrderHero(),
+                CreateOrderCosplay(),
+                CreateOrderGame(),
+                CreateOrderMovie(),
+                CreateOrderAnime(),
+                CreateOrderVip(),
+                CreateOrderParty(),
+                CreateOrderBoost(),
+                CreateOrderSong()
+            };
+            return result;
+        }
+
         public void OrderRemove(string orderName, string customer, int price)
             => listOrders.Remove((orderName, customer, price));
 

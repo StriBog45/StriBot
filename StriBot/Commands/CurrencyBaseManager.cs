@@ -186,5 +186,20 @@ namespace StriBot.Commands
             return new Command("Разбросать", $"Разбрасывает {currency.NominativeMultiple} в чате, любой желающий может стащить", action,
                 new string[] { "Сколько стащит за раз", "Сколько человек сможет стащить" }, CommandType.Interactive);
         }
+
+        public Dictionary<string, Command> CreateCommands()
+        {
+            var result = new Dictionary<string, Command>()
+            {
+                CreateStealCurrency(),
+                CreateReturnCurrency(),
+                CreateAddCurrency(),
+                CreateTransferCurrency(),
+                CreateRemoveCurrency(),
+                CreateCheckBalance(),
+                CreateDistributeCurrency()
+            };
+            return result;
+        }
     }
 }

@@ -2,6 +2,7 @@
 using StriBot.Language;
 using StriBot.TwitchBot.Interfaces;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using TwitchLib.Client.Events;
 
 namespace StriBot.Commands
@@ -66,6 +67,15 @@ namespace StriBot.Commands
                     }
                 }, new string[] { "цель" }, CommandType.Interactive);
 
+            return result;
+        }
+
+        public Dictionary<string, Command> CreateCommands()
+        {
+            var result = new Dictionary<string, Command>()
+            {
+                CreateHalberdCommand()
+            };
             return result;
         }
 

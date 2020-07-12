@@ -7,6 +7,8 @@ namespace StriBot.TwitchBot.Interfaces
     {
         void SendMessage(string message);
 
+        void UserTimeout(string userName, TimeSpan timeSpan, string timeoutText);
+
         void CreateCommands();
 
         void TimerTick();
