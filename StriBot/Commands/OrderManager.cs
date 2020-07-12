@@ -70,8 +70,7 @@ namespace StriBot.Commands
                 new string[] { "Ссылка на песню" }, CommandType.Order);
 
         public Dictionary<string, Command> CreateCommands()
-        {
-            var result = new Dictionary<string, Command>()
+            => new Dictionary<string, Command>()
             {
                 CreateOrder(),
                 CreateOrderHero(),
@@ -84,8 +83,6 @@ namespace StriBot.Commands
                 CreateOrderBoost(),
                 CreateOrderSong()
             };
-            return result;
-        }
 
         public void OrderRemove(string orderName, string customer, int price)
             => listOrders.Remove((orderName, customer, price));
@@ -126,8 +123,7 @@ namespace StriBot.Commands
         }
 
         private Action<OnChatCommandReceivedArgs> CreateCustomOrderDelegate()
-        {
-            return delegate (OnChatCommandReceivedArgs e)
+            => delegate (OnChatCommandReceivedArgs e)
             {
                 if (e.Command.ArgumentsAsList.Count > 1)
                 {
@@ -148,6 +144,5 @@ namespace StriBot.Commands
                         readyMadePhrases.IncorrectCommand();
                 }
             };
-        }
     }
 }

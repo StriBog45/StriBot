@@ -14,7 +14,7 @@ namespace StriBot
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var container = GlobalContainer.Initialize();
+            GlobalContainer.Initialize();
             Application.Run(new Form1());
         }
     }

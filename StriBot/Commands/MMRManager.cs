@@ -1,5 +1,6 @@
 ﻿using StriBot.TwitchBot.Interfaces;
 using System;
+using System.Collections.Generic;
 using TwitchLib.Client.Events;
 
 namespace StriBot.Commands
@@ -61,5 +62,25 @@ namespace StriBot.Commands
                 {
                     twitchBot.SendMessage($"Рейтинг: {MMR} Звание: {medallion}");
                 }, CommandType.Info);
+
+        public Command CheckMMR()
+            => new Command("CheckMMR", "Узнать рейтинг объекта",
+                delegate (OnChatCommandReceivedArgs e)
+                {
+                    if (string.IsNullOrEmpty(e.Command.ArgumentsAsString))
+                        twitchBot.SendMessage($"Ваш рейтинг: {RandomHelper.random.Next(1, 7000)}");
+                    else
+                        twitchBot.SendMessage($"Рейтинг {e.Command.ArgumentsAsString}: {RandomHelper.random.Next(1, 10000)}");
+                }, new string[] { "Объект" }, CommandType.Interactive);
+
+        public Dictionary<string, Command> CreateCommands()
+            => new Dictionary<string, Command>()
+            {
+                CurrentMMR(),
+                CurrentAccount(),
+                AddWin(),
+                AddLose(),
+                CheckMMR()
+            };
     }
 }

@@ -188,8 +188,7 @@ namespace StriBot.Commands
         }
 
         public Dictionary<string, Command> CreateCommands()
-        {
-            var result = new Dictionary<string, Command>()
+            => new Dictionary<string, Command>()
             {
                 CreateStealCurrency(),
                 CreateReturnCurrency(),
@@ -199,7 +198,5 @@ namespace StriBot.Commands
                 CreateCheckBalance(),
                 CreateDistributeCurrency()
             };
-            return result;
-        }
     }
 }

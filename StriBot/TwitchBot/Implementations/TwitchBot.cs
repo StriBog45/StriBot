@@ -285,40 +285,19 @@ namespace StriBot.TwitchBot.Implementations
             var managerMMR = container.Resolve<MMRManager>();
             var readyMadePhrases = container.Resolve<ReadyMadePhrases>();
             var orderManager = container.Resolve<OrderManager>();
+            var linkManager = container.Resolve<LinkManager>();
             halberdManager = container.Resolve<HalberdManager>();
             currencyBaseManager = container.Resolve<CurrencyBaseManager>();
             duelManager = container.Resolve<DuelManager>();
 
             Commands = new Dictionary<string, Command>()
             {
-                #region Информационные
-                { "команды", new Command("Команды","Ссылка на список команд",
-                delegate (OnChatCommandReceivedArgs e) {
-                        SendMessage("https://vk.cc/a6Giqf");}, CommandType.Info)},
-                { "mmr", managerMMR.CurrentMMR() },
-                { "счет", managerMMR.CurrentAccount() },
-                { "dotabuff", new Command("Dotabuff","Ссылка на dotabuff",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("https://ru.dotabuff.com/players/113554714"); }, CommandType.Info)},
-                { "vk", new Command("Vk","Наша группа в ВКонтакте",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("https://vk.com/stribog45"); }, CommandType.Info)},
-                { "youtube", new Command("Youtube","Архив ключевых записей",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("https://www.youtube.com/channel/UCrp75ozt9Spv5k7oVaRd5MQ"); }, CommandType.Info)},
-                { "gg", new Command("GoodGame","Ссылка на дополнительный канал на GoodGame",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("https://goodgame.ru/channel/StriBog45/"); }, CommandType.Info)},
-                { "discord", new Command("Discord","Наш discord для связи!",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("https://discord.gg/7Z6HGYZ"); }, CommandType.Info)},
-                { "steam", new Command("Steam","Ссылка на мой steam",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("https://steamcommunity.com/id/StriBog45"); }, CommandType.Info)},
+                linkManager.CreateCommands(),
+                managerMMR.CreateCommands(),
+
                 { "uptime", new Command("Uptime","Длительность текущей трансляции",
                 delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage( $"Трансляция длится: {GetUptime()}"); }, CommandType.Info)},
-                #endregion
+                    SendMessage( $"Трансляция длится: { GetUptime()}"); }, CommandType.Info)},
 
                 #region Интерактив
                 { "снежок", new Command("Снежок","Бросает снежок в объект",
@@ -464,21 +443,21 @@ namespace StriBot.TwitchBot.Implementations
                     else
                         SendMessage(string.Format("{0} сантиметров... {1}, ваша девушка... или мужчина, будет в восторге! striboTea ", e.Command.ChatMessage.DisplayName,size));
                 }, CommandType.Interactive)},
-                { "смерть", new Command("Смерть","Добавляет смерть", Role.Moderator,
+                { "смерть", new Command("Смерть", "Добавляет смерть", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     Deaths++;
                     DeathUpdate();
                     SendMessage(string.Format("Смертей: {0}", Deaths));
                     SendMessage("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ ……………..............……...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ…….……….........…..… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬"); }, CommandType.Interactive)},
-                { "смертей", new Command("Смертей","Показывает количество смертей",
+                { "смертей", new Command("Смертей", "Показывает количество смертей",
                 delegate (OnChatCommandReceivedArgs e) {
                     SendMessage(string.Format("Смертей: {0}",Deaths)); }, CommandType.Interactive)},
-                { "босс", new Command("Босс","Добавляет босса", Role.Moderator,
+                { "босс", new Command("Босс", "Добавляет босса", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     Bosses.Add(e.Command.ArgumentsAsString);
                     BossUpdate();
                 }, new string[] {"Имя босса"}, CommandType.Interactive )},
-                { "напомнить", new Command("Напомнить","Создает напоминалку. При использовании без указания текста, напоминание будет удалено", Role.Moderator,
+                { "напомнить", new Command("Напомнить", "Создает напоминалку. При использовании без указания текста, напоминание будет удалено", Role.Moderator,
                 delegate (OnChatCommandReceivedArgs e) {
                     TextReminder = e.Command.ArgumentsAsString;
                     if(TextReminder.Length > 0)
@@ -486,14 +465,12 @@ namespace StriBot.TwitchBot.Implementations
                     else
                         SendMessage("Напоминание удалено");
                 }, new string[] {"текст"}, CommandType.Interactive )},
-                { "боссы", new Command("Боссы","Список убитых боссов!",
+                { "боссы", new Command("Боссы", "Список убитых боссов!",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(Bosses.Count > 0)
                         SendMessage(Bosses.ToString());
                     else
                         SendMessage("Боссов нет"); }, CommandType.Interactive)},
-                { "победа", managerMMR.AddWin() },
-                { "поражение", managerMMR.AddLose() },
 
                 #endregion
 
@@ -503,7 +480,7 @@ namespace StriBot.TwitchBot.Implementations
                 halberdManager.CreateCommands(),
 
                 #region DateBase
-                { "ставка", new Command("Ставка","Сделать ставку",
+                { "ставка", new Command("Ставка", "Сделать ставку",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(betsProcessing)
                     {
@@ -531,64 +508,9 @@ namespace StriBot.TwitchBot.Implementations
                     else
                         SendMessage("В данный момент ставить нельзя!");
                 },
-                new string[] {"на что","сколько"}, CommandType.Interactive )},
-                { "s", new Command("S", $"Заказ музыки с Youtube или Sound Cloud. Цена: {PriceList.Song} {currency.Incline(PriceList.Song)}",
-                delegate (OnChatCommandReceivedArgs e) {
-
-                    if(e.Command.ArgumentsAsList.Count == 1)
-                    {
-                        var amount = DataBase.CheckMoney(e.Command.ChatMessage.DisplayName);
-                        if(amount >= PriceList.Song)
-                        {
-                            SendMessage(string.Format("!sr {0}", e.Command.ArgumentsAsString));
-                            DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName,-PriceList.Song);
-                        }
-                        else
-                            readyMadePhrases.NoMoney(e.Command.ChatMessage.DisplayName);
-                    }
-                    else
-                        SendMessage("Нужна ссылка на Sound Cloud");
-                }, new string[]{"ссылка"}, CommandType.Hidden)},
+                new string[] {"на что", "сколько"}, CommandType.Interactive )},
                 #endregion
-
-                #region Стримеры
-                { "daisy", new Command("Daisy","Показывает ссылку на twitch Daisy(roliepolietrolie)",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Любимая австралийка, обладает хорошим чувством юмора. Не понимает русский, но старается его переводить. А также обожает Dota 2 <3 , twitch.tv/roliepolietrolie"); },CommandType.Streamers)},
-                { "katenok", new Command("Katenok","Показывает ссылку на twitch Katenok",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Очаровашка Катенок(Ffunnya), улыбчивая и светлая персона! Любит DBD и Dota 2 <3 , twitch.tv/katenok"); }, CommandType.Streamers)},
-                { "gohapsp",  new Command("Gohapsp","Показывает ссылку на twitch Gohapsp",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Специалист по хоррорам, twitch.tv/gohapsp"); }, CommandType.Streamers)},
-                { "stone", new Command("Stone","Показывает ссылку на twitch Камушка",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Самый очаровательный камушек! <3 , twitch.tv/sayyees"); }, CommandType.Streamers)},
-                { "бескрыл", new Command("Бескрыл","Показывает ссылку на twitch Бескрыл-а",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Свежие одиночные игры на прохождение :) Добрый, отзывчивый, не оставит без внимания никого! К слову, он разработчик и у него уже есть своя игра! :) twitch.tv/beskr1l_"); }, CommandType.Streamers)},
-                { "wlg", new Command("Welovegames","Показывает ссылку на twitch Welovegames",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Хранитель убежища, харизматичный Денис! Если вы о нём ещё не знаете, крайне рекомендую посмотреть на его деятельность. p.s. обожаю его смайлы. twitch.tv/welovegames"); }, CommandType.Streamers)},
-                { "stryk", new Command("StrykOFF","Показывает ссылку на twitch StrykOFF",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Владелец таверны, создатель лучших шаверм! Для ламповых посиделок :) twitch.tv/strykoff"); }, CommandType.Streamers)},
-                { "tilttena", new Command("Tilttena","Показывает ссылку на twitch Tilttena",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Горящая Алёна!, twitch.tv/tilttena"); }, CommandType.Streamers)},
-                { "bezumnaya", new Command("Bezumnaya","Показывает ссылку на twitch Bezumnaya",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Безумно любит своих зрителей, twitch.tv/bezumnaya"); }, CommandType.Streamers)},
-                { "starval", new Command("Starval","Показывает ссылку на twitch Starval",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Лера. Киев. Стример. :), twitch.tv/starval"); }, CommandType.Streamers)},
-                { "aiana", new Command("Aiana","Показывает ссылку на twitch AianaKim",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Наша улыбашка-очаровашка Аяна BLELELE  twitch.tv/aianakim"); }, CommandType.Streamers)},
-                { "reara", new Command("SyndicateReara","Показывает ссылку на twitch SyndicateReara",
-                delegate (OnChatCommandReceivedArgs e) {
-                    SendMessage("Незабудь выполнить воинское приветствие striboF twitch.tv/syndicatereara"); }, CommandType.Streamers)}
-                #endregion
+                
             };
         }
         

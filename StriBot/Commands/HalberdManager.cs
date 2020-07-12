@@ -71,13 +71,10 @@ namespace StriBot.Commands
         }
 
         public Dictionary<string, Command> CreateCommands()
-        {
-            var result = new Dictionary<string, Command>()
+            => new Dictionary<string, Command>()
             {
                 CreateHalberdCommand()
             };
-            return result;
-        }
 
         public bool CanSendMessage(string name)
         {
