@@ -389,12 +389,6 @@ namespace StriBot.TwitchBot.Implementations
                         else
                             SendMessage(string.Format("Несу {0} для {1}! HahaCat ", Burger.BurgerCombiner(),e.Command.ArgumentsAsString));
                 }, new string[] {"Объект"}, CommandType.Interactive)},
-                { "checkmmr", new Command("CheckMMR","Узнать рейтинг объекта",
-                delegate (OnChatCommandReceivedArgs e) {
-                    if(string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        SendMessage(string.Format("Ваш рейтинг: {0}", RandomHelper.random.Next(1,7000)));
-                    else
-                        SendMessage(string.Format("Рейтинг {0}: {1}", e.Command.ArgumentsAsString, RandomHelper.random.Next(1,10000)));}, new string[] {"Объект"}, CommandType.Interactive)},
                 { "iq", new Command("IQ","Узнать IQ объекта или свой",
                 delegate (OnChatCommandReceivedArgs e) {
                     if(string.IsNullOrEmpty(e.Command.ArgumentsAsString))
