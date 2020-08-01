@@ -1,23 +1,22 @@
-﻿using StriBot.Language;
-using StriBot.TwitchBot.Interfaces;
+﻿using StriBot.Bots.Enums;
+using StriBot.EventConainers;
+using StriBot.Language;
 
 namespace StriBot.Commands.CommonFunctions
 {
     public class ReadyMadePhrases
     {
-        private readonly ITwitchBot twitchBot;
         private readonly Currency currency;
 
-        public ReadyMadePhrases(ITwitchBot twitchBot, Currency currency)
+        public ReadyMadePhrases(Currency currency)
         {
-            this.twitchBot = twitchBot;
             this.currency = currency;
         }
 
-        public void NoMoney(string displayName)
-            => twitchBot.SendMessage($"{displayName} у вас недостаточно {currency.GenitiveMultiple}! striboCry ");
+        public void NoMoney(string displayName, Platform platform)
+            => GlobalEventContainer.Message($"{displayName} у вас недостаточно {currency.GenitiveMultiple}! striboCry ", platform);
 
-        public void IncorrectCommand()
-            => twitchBot.SendMessage("Некорректное использование команды!");
+        public void IncorrectCommand(Platform platform)
+            => GlobalEventContainer.Message("Некорректное использование команды!", platform);
     }
 }

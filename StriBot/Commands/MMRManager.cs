@@ -1,7 +1,7 @@
-﻿using StriBot.TwitchBot.Interfaces;
-using System;
+﻿using StriBot.Bots.Enums;
+using StriBot.EventConainers;
+using StriBot.EventConainers.Models;
 using System.Collections.Generic;
-using TwitchLib.Client.Events;
 
 namespace StriBot.Commands
 {
@@ -10,40 +10,37 @@ namespace StriBot.Commands
         public int MMR { get; set; } = 4400;
         public int Wins { get; set; } = 0;
         public int Losses { get; set; } = 0;
-
-        private readonly ITwitchBot twitchBot;
         private int MMRChange = 30;
         private string medallion = "Властелин 3";
 
-        public MMRManager(ITwitchBot twitchBot)
+        public MMRManager()
         {
-            this.twitchBot = twitchBot;
         }
 
         public Command AddWin()
         {
             var result = new Command("Победа", "Добавляет победу", Role.Moderator,
-                delegate (OnChatCommandReceivedArgs e)
+                delegate (CommandInfo commandInfo)
                 {
                     Wins++;
                     MMR += MMRChange;
-                    twitchBot.SendMessage($"Побед: {Wins}, Поражений: {Losses}");
+                    GlobalEventContainer.Message($"Побед: {Wins}, Поражений: {Losses}", commandInfo.Platform);
                 }, CommandType.Interactive);
 
             return result;
         }
 
-        private void SendCurrentAccount()
-            => twitchBot.SendMessage($"Побед: {Wins}, Поражений: {Losses}");
+        private void SendCurrentAccount(Platform platform)
+            => GlobalEventContainer.Message($"Побед: {Wins}, Поражений: {Losses}", platform);
 
         public Command AddLose()
         {
             var result = new Command("Поражение", "Добавляет поражение", Role.Moderator,
-                delegate (OnChatCommandReceivedArgs e)
+                delegate (CommandInfo commandInfo)
                 {
                     Losses++;
                     MMR -= MMRChange;
-                    SendCurrentAccount();
+                    SendCurrentAccount(commandInfo.Platform);
                 }, CommandType.Interactive);
 
             return result;
@@ -51,26 +48,26 @@ namespace StriBot.Commands
 
         public Command CurrentAccount()
             => new Command("Счет", "Текущий счет побед и поражений",
-                delegate (OnChatCommandReceivedArgs e)
+                delegate (CommandInfo commandInfo)
                 {
-                    SendCurrentAccount();
+                    SendCurrentAccount(commandInfo.Platform);
                 }, CommandType.Info);
 
         public Command CurrentMMR()
             => new Command("mmr", "Узнать рейтинг стримера в Dota 2",
-                delegate (OnChatCommandReceivedArgs e)
+                delegate (CommandInfo commandInfo)
                 {
-                    twitchBot.SendMessage($"Рейтинг: {MMR} Звание: {medallion}");
+                    GlobalEventContainer.Message($"Рейтинг: {MMR} Звание: {medallion}", commandInfo.Platform);
                 }, CommandType.Info);
 
         public Command CheckMMR()
             => new Command("CheckMMR", "Узнать рейтинг объекта",
-                delegate (OnChatCommandReceivedArgs e)
+                delegate (CommandInfo commandInfo)
                 {
-                    if (string.IsNullOrEmpty(e.Command.ArgumentsAsString))
-                        twitchBot.SendMessage($"Ваш рейтинг: {RandomHelper.random.Next(1, 7000)}");
+                    if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
+                        GlobalEventContainer.Message($"Ваш рейтинг: {RandomHelper.random.Next(1, 7000)}", commandInfo.Platform);
                     else
-                        twitchBot.SendMessage($"Рейтинг {e.Command.ArgumentsAsString}: {RandomHelper.random.Next(1, 10000)}");
+                        GlobalEventContainer.Message($"Рейтинг {commandInfo.ArgumentsAsString}: {RandomHelper.random.Next(1, 10000)}", commandInfo.Platform);
                 }, new string[] { "Объект" }, CommandType.Interactive);
 
         public Dictionary<string, Command> CreateCommands()

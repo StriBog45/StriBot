@@ -1,93 +1,107 @@
 ﻿using StriBot.Commands.CommonFunctions;
+using StriBot.EventConainers;
+using StriBot.EventConainers.Models;
 using StriBot.Language;
-using StriBot.TwitchBot.Interfaces;
 using System;
 using System.Collections.Generic;
-using TwitchLib.Client.Events;
-using TwitchLib.Client.Models;
 
 namespace StriBot.Commands
 {
     public class DuelManager
     {
         private Currency currency;
-        private ITwitchBot twitchBot;
         private ReadyMadePhrases readyMadePhrases;
 
+        private bool isDuelActive;
         private int duelTimer;
-        private Tuple<ChatMessage, int> duelMember;
+        private int duelBet;
+        private CommandInfo duelMember;
         private int timeoutTime = 120;
         private int timeoutTimeInMinute = 2;
 
-        public DuelManager(Currency currency, ITwitchBot twitchBot, ReadyMadePhrases readyMadePhrases)
+        public DuelManager(Currency currency, ReadyMadePhrases readyMadePhrases)
         {
             this.currency = currency;
-            this.twitchBot = twitchBot;
             this.readyMadePhrases = readyMadePhrases;
+
+            CleanDuelMember();
         }
 
         public Command CreateDuelCommand()
         {
             var result = new Command("Дуэль", $"Дуэль с {currency.InstrumentalMultiple} или без, с timeout, проигравший в дуэли отправляется на {timeoutTime} секунд в timeout",
-                delegate (OnChatCommandReceivedArgs e)
+                delegate (CommandInfo commandInfo)
                 {
-                    int amount = 0;
-                    if (duelMember == null)
+                    if (!isDuelActive)
                     {
-                        if (e.Command.ArgumentsAsList.Count > 0)
+                        if (commandInfo.ArgumentsAsList.Count > 0)
                         {
-                            Int32.TryParse(e.Command.ArgumentsAsString, out amount);
-                            if (amount > 0)
+                            if (Int32.TryParse(commandInfo.ArgumentsAsString, out int amount) && amount > 0)
                             {
-                                if (amount <= DataBase.CheckMoney(e.Command.ChatMessage.DisplayName))
+                                if (amount <= DataBase.CheckMoney(commandInfo.DisplayName))
                                 {
-                                    twitchBot.SendMessage($"Кто осмелится принять вызов {e.Command.ChatMessage.DisplayName} в смертельной дуэли со ставкой в {amount} {currency.Incline(amount, true)}?");
-                                    duelMember = new Tuple<ChatMessage, int>(e.Command.ChatMessage, amount);
-                                    duelTimer = 0;
+                                    GlobalEventContainer.Message($"Кто осмелится принять вызов {commandInfo.DisplayName} в смертельной дуэли со ставкой в {currency.Incline(amount, true)}?", 
+                                        commandInfo.Platform);
+                                    StartDuel(commandInfo,  amount);
                                 }
                                 else
-                                    readyMadePhrases.NoMoney(e.Command.ChatMessage.DisplayName);
+                                    readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                             }
                             else
-                                readyMadePhrases.IncorrectCommand();
+                                readyMadePhrases.IncorrectCommand(commandInfo.Platform);
                         }
                         else
                         {
-                            twitchBot.SendMessage($"Кто осмелится принять вызов {e.Command.ChatMessage.DisplayName} в смертельной дуэли?");
-                            duelMember = new Tuple<ChatMessage, int>(e.Command.ChatMessage, amount);
-                            duelTimer = 0;
+                            GlobalEventContainer.Message($"Кто осмелится принять вызов {commandInfo.DisplayName} в смертельной дуэли?", commandInfo.Platform);
+                            StartDuel(commandInfo, 0);
                         }
-
                     }
                     else
                     {
-                        if (duelMember.Item1.DisplayName == e.Command.ChatMessage.DisplayName)
-                            twitchBot.SendMessage($"@{duelMember.Item1.DisplayName} не торопись! Твоё время ещё не пришло");
-                        else if (DataBase.CheckMoney(e.Command.ChatMessage.DisplayName) < duelMember.Item2)
-                            readyMadePhrases.NoMoney(e.Command.ChatMessage.DisplayName);
+                        if (duelMember.DisplayName == commandInfo.DisplayName)
+                            GlobalEventContainer.Message($"@{duelMember.DisplayName} не торопись! Твоё время ещё не пришло", commandInfo.Platform);
+                        else if (DataBase.CheckMoney(commandInfo.DisplayName) < duelBet)
+                            readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                         else
                         {
-                            twitchBot.SendMessage($"Смертельная дуэль между {duelMember.Item1.DisplayName} и {e.Command.ChatMessage.DisplayName}!");
-                            ChatMessage winner = duelMember.Item1;
-                            ChatMessage looser = duelMember.Item1;
+                            GlobalEventContainer.Message($"Смертельная дуэль между {duelMember.DisplayName} и {commandInfo.DisplayName}!", commandInfo.Platform);
+                            var winner = duelMember;
+                            var looser = duelMember;
                             if (RandomHelper.random.Next(2) == 0)
-                                winner = e.Command.ChatMessage;
+                                winner = commandInfo;
                             else
-                                looser = e.Command.ChatMessage;
-                            DataBase.AddMoneyToUser(winner.DisplayName, duelMember.Item2);
-                            DataBase.AddMoneyToUser(looser.DisplayName, -duelMember.Item2);
-                            if (amount != 0)
-                                twitchBot.SendMessage($"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. {winner.DisplayName} получил за победу {duelMember.Item2} {currency.GenitiveMultiple}! Kappa )/");
+                                looser = commandInfo;
+                            DataBase.AddMoneyToUser(winner.DisplayName, duelBet);
+                            DataBase.AddMoneyToUser(looser.DisplayName, -duelBet);
+
+                            if (duelBet > 0)
+                                GlobalEventContainer.Message($"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. {winner.DisplayName} получил за победу {duelBet} {currency.GenitiveMultiple}! Kappa )/",
+                                    commandInfo.Platform);
                             else
-                                twitchBot.SendMessage($"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. Поздравляем победителя {winner.DisplayName} Kappa )/");
-                            if (!looser.IsModerator)
-                                twitchBot.UserTimeout(looser.Username, new TimeSpan(0, timeoutTimeInMinute, 0), "Ваш противник - (凸ಠ益ಠ)凸");
-                            duelMember = null;
+                                GlobalEventContainer.Message($"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. Поздравляем победителя {winner.DisplayName} Kappa )/", commandInfo.Platform);
+                            //if (!looser.IsModerator)
+                            //    twitchBot.UserTimeout(looser.DisplayName, new TimeSpan(0, timeoutTimeInMinute, 0), "Ваш противник - (凸ಠ益ಠ)凸");
+                            CleanDuelMember();
                         }
                     }
                 }, new string[] { "размер ставки" }, CommandType.Interactive);
 
             return result;
+        }
+
+        private void StartDuel(CommandInfo commandInfo, int bet)
+        {
+            duelMember = commandInfo;
+            duelTimer = 0;
+            duelBet = bet;
+            isDuelActive = true;
+        }
+
+        private void CleanDuelMember()
+        {
+            duelBet = 0;
+            duelMember = null;
+            isDuelActive = false;
         }
 
         public Dictionary<string, Command> CreateCommands()
@@ -100,12 +114,12 @@ namespace StriBot.Commands
 
         public void Tick()
         {
-            if (duelMember != null)
+            if (isDuelActive)
                 if (duelTimer >= 3)
                 {
-                    twitchBot.SendMessage($"Дуэль {duelMember.Item1.DisplayName} никто не принял");
+                    GlobalEventContainer.Message($"Дуэль {duelMember.DisplayName} никто не принял", duelMember.Platform);
                     duelTimer = 0;
-                    duelMember = null;
+                    CleanDuelMember();
                 }
                 else
                     duelTimer++;

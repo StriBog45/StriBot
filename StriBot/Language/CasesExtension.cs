@@ -2,6 +2,13 @@
 {
     public static class CasesExtension
     {
+        /// <summary>
+        /// Склоняет текс. Пример: 5 минут
+        /// </summary>
+        /// <param name="cases"></param>
+        /// <param name="number"></param>
+        /// <param name="secondDeclension"></param>
+        /// <returns></returns>
         public static string Incline(this ICases cases, int number, bool secondDeclension = false)
         {
             string result = string.Empty;
@@ -23,7 +30,7 @@
             else if (number % 10 >= 5 && number % 10 <= 9 || number % 10 == 0)
                 result = cases.GenitiveMultiple;
 
-            return result;
+            return $"{number} {result}";
         }
     }
 }

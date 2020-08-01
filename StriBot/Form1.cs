@@ -1,7 +1,9 @@
 ﻿using DryIoc;
+using StriBot.Bots;
+using StriBot.Bots.Enums;
 using StriBot.Commands;
 using StriBot.DryIoc;
-using StriBot.TwitchBot.Interfaces;
+using StriBot.EventConainers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,18 +15,19 @@ namespace StriBot
     {
         private delegate void SafeCallDelegate();
         private delegate void SafeCallDelegateOrders(List<(string, string, int)> orders);
-        private ITwitchBot twitchBot;
         private MMRManager managerMMR;
         private OrderManager orderManager;
         private CurrencyBaseManager currencyBaseManager;
+        private ChatBot chatBot;
 
         public Form1()
         {
             InitializeComponent();
 
-            twitchBot = GlobalContainer.Default.Resolve<ITwitchBot>();
-            twitchBot.SetConstructorSettings(BossUpdate, DeathUpdate);
-            twitchBot.CreateCommands();
+            chatBot = GlobalContainer.Default.Resolve<ChatBot>();
+            chatBot.SetConstructorSettings(BossUpdate, DeathUpdate);
+            chatBot.CreateCommands();
+            chatBot.Connect(new Platform[] { Platform.Twitch });
             managerMMR = GlobalContainer.Default.Resolve<MMRManager>();
             orderManager = GlobalContainer.Default.Resolve<OrderManager>();
             currencyBaseManager = GlobalContainer.Default.Resolve<CurrencyBaseManager>();
@@ -43,45 +46,45 @@ namespace StriBot
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            twitchBot.TimerTick();
+            chatBot.TimerTick();
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Reporter.CreateCommands(twitchBot.Commands);
+            Reporter.CreateCommands(chatBot.Commands);
         }
 
         private void buttonDistribution_Click(object sender, EventArgs e)
         {
-            currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text));
+            currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text), Bots.Enums.Platform.Twitch);
         }
         private void buttonCreateOptions_Click(object sender, EventArgs e)
         {
             var options = TextBoxOptions.Text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-            twitchBot.CreateBets(options);
+            chatBot.CreateBets(options);
         }
         private void buttonBetsOfManiac_Click(object sender, EventArgs e)
         {
-            twitchBot.CreateBets(new string[] { "Количество повешанных","0", "1", "2", "3", "4" });
+            chatBot.CreateBets(new string[] { "Количество повешанных", "0", "1", "2", "3", "4" });
         }
         private void buttonBetsOfSurvivors_Click(object sender, EventArgs e)
         {
-            twitchBot.CreateBets(new string[] { "Количество сбежавших","0", "1", "2", "3", "4" });
+            chatBot.CreateBets(new string[] { "Количество сбежавших", "0", "1", "2", "3", "4" });
         }
         private void buttonBetsOfSurvivor_Click(object sender, EventArgs e)
         {
-            twitchBot.CreateBets(new string[] { "Выживание стримера","выжил", "погиб" });
+            chatBot.CreateBets(new string[] { "Выживание стримера", "выжил", "погиб" });
         }
         private void buttonBetsDota2_Click(object sender, EventArgs e)
         {
-            twitchBot.CreateBets(new string[] { "Победа в матче","radiant", "dire" });
+            chatBot.CreateBets(new string[] { "Победа в матче", "radiant", "dire" });
         }
         private void buttonStopBets_Click(object sender, EventArgs e)
         {
-            twitchBot.StopBetsProcess();
+            chatBot.StopBetsProcess();
         }
         private void buttonSelectWinner_Click(object sender, EventArgs e)
         {
-            twitchBot.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value));
+            chatBot.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value));
         }
 
         void UpdateOrderList(List<(string, string, int)> orders)
@@ -104,11 +107,11 @@ namespace StriBot
         {
             foreach (ListViewItem selected in listViewOrder.SelectedItems)
             {
-                if(selected.SubItems[0].Text.Contains("youtube"))
+                if (selected.SubItems[0].Text.Contains("youtube"))
                     webBrowser.Navigate(selected.SubItems[0].Text);
                 orderManager.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text));
                 DataBase.AddMoneyToUser(selected.SubItems[1].Text, -Int32.Parse(selected.SubItems[2].Text));
-                twitchBot.SendMessage(String.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text));
+                GlobalEventContainer.Message(String.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text), Bots.Enums.Platform.Twitch);
                 listViewOrder.Items.Remove(selected);
             }
         }
@@ -117,7 +120,7 @@ namespace StriBot
             foreach (ListViewItem selected in listViewOrder.SelectedItems)
             {
                 orderManager.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, Int32.Parse(selected.SubItems[2].Text));
-                twitchBot.SendMessage(String.Format("Заказ @{0} отменен", selected.SubItems[1].Text));
+                GlobalEventContainer.Message(String.Format("Заказ @{0} отменен", selected.SubItems[1].Text), Bots.Enums.Platform.Twitch);
                 listViewOrder.Items.Remove(selected);
             }
         }
@@ -149,7 +152,7 @@ namespace StriBot
             else
             {
                 listView1.Items.Clear();
-                foreach (var boss in twitchBot.Bosses)
+                foreach (var boss in chatBot.Bosses)
                     listView1.Items.Add(new ListViewItem(boss));
             }
         }
@@ -157,14 +160,14 @@ namespace StriBot
         private void buttonBossDelete_Click(object sender, EventArgs e)
         {
             foreach (int item in listView1.SelectedIndices)
-                twitchBot.Bosses.RemoveAt(item);
+                chatBot.Bosses.RemoveAt(item);
         }
 
         private void buttonDeathAdd_Click(object sender, EventArgs e)
-            => twitchBot.Deaths++;
+            => chatBot.Deaths++;
 
         private void buttonDeathReduce_Click(object sender, EventArgs e)
-            => twitchBot.Deaths--;
+            => chatBot.Deaths--;
 
         void DeathUpdate()
         {
@@ -174,7 +177,7 @@ namespace StriBot
                 listView1.Invoke(d);
             else
             {
-                label1.Text = String.Format("Смертей: {0}", twitchBot.Deaths);
+                label1.Text = String.Format("Смертей: {0}", chatBot.Deaths);
             }
         }
 
@@ -186,23 +189,31 @@ namespace StriBot
 
         private void buttonReminderClear_Click(object sender, EventArgs e)
         {
-            twitchBot.TextReminder = string.Empty;
-            twitchBot.SendMessage("Напоминание удалено");
+            chatBot.TextReminder = string.Empty;
+            GlobalEventContainer.Message("Напоминание удалено", Bots.Enums.Platform.Twitch);
         }
 
         private void buttonReconnect_Click(object sender, EventArgs e)
-            => twitchBot.Reconnect();
+            => chatBot.Reconnect(new Platform[] { Platform.Twitch });
 
         private void buttonSmileMode_Click(object sender, EventArgs e)
-            => twitchBot.SmileMode();
+        {
+            //chatBot.SmileMode();
+        }
 
         private void SubMode_Click(object sender, EventArgs e)
-            => twitchBot.SubMode();
+        {
+            //chatBot.SubMode();
+        }
 
         private void buttonFollowMode_Click(object sender, EventArgs e)
-            => twitchBot.FollowersMode();
+        {
+            //chatBot.FollowersMode();
+        }
 
         private void buttonUnfollowMode_Click(object sender, EventArgs e)
-            => twitchBot.FollowersModeOff();
+        {
+            //chatBot.FollowersModeOff();
+        }
     }
 }

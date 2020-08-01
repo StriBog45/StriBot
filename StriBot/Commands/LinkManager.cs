@@ -1,16 +1,13 @@
-﻿using StriBot.TwitchBot.Interfaces;
+﻿using StriBot.EventConainers;
+using StriBot.EventConainers.Models;
 using System.Collections.Generic;
-using TwitchLib.Client.Events;
 
 namespace StriBot.Commands
 {
     public class LinkManager
     {
-        private ITwitchBot twitchBot;
-
-        public LinkManager(ITwitchBot twitchBot)
+        public LinkManager()
         {
-            this.twitchBot = twitchBot;
         }
 
         public Dictionary<string, Command> CreateCommands()
@@ -18,65 +15,68 @@ namespace StriBot.Commands
             {
                 #region Информационные
                 { "команды", new Command("Команды","Ссылка на список команд",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("https://vk.cc/a6Giqf");}, CommandType.Info)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("https://vk.cc/a6Giqf", e.Platform);}, CommandType.Info)},
                 { "dotabuff", new Command("Dotabuff","Ссылка на dotabuff",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("https://ru.dotabuff.com/players/113554714"); }, CommandType.Info)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("https://ru.dotabuff.com/players/113554714", e.Platform); }, CommandType.Info)},
                 { "vk", new Command("Vk","Наша группа в ВКонтакте",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("https://vk.com/stribog45"); }, CommandType.Info)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("https://vk.com/stribog45", e.Platform); }, CommandType.Info)},
                 { "youtube", new Command("Youtube","Архив некоторых записей",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("https://www.youtube.com/channel/UCrp75ozt9Spv5k7oVaRd5MQ"); }, CommandType.Info)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("https://www.youtube.com/channel/UCrp75ozt9Spv5k7oVaRd5MQ", e.Platform); }, CommandType.Info)},
                 { "gg", new Command("GoodGame","Ссылка на дополнительный канал на GoodGame",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("https://goodgame.ru/channel/StriBog45/"); }, CommandType.Info)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("https://goodgame.ru/channel/StriBog45/", e.Platform); }, CommandType.Info)},
                 { "discord", new Command("Discord","Наш discord для связи!",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("https://discord.gg/7Z6HGYZ"); }, CommandType.Info)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("https://discord.gg/7Z6HGYZ", e.Platform); }, CommandType.Info)},
                 { "steam", new Command("Steam","Ссылка на мой steam",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("https://steamcommunity.com/id/StriBog45"); }, CommandType.Info)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("https://steamcommunity.com/id/StriBog45", e.Platform); }, CommandType.Info)},
                 #endregion
 
                 #region Стримеры
                 { "daisy", new Command("Daisy","Показывает ссылку на twitch Daisy(roliepolietrolie)",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Любимая австралийка, обладает хорошим чувством юмора. Не понимает русский, но старается его переводить. А также обожает Dota 2 <3 , twitch.tv/squintee"); },CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Любимая австралийка, обладает хорошим чувством юмора. Не понимает русский, но старается его переводить. А также обожает Dota 2 <3 , twitch.tv/squintee", 
+                        e.Platform); },CommandType.Streamers)},
                 { "katenok", new Command("Katenok","Показывает ссылку на twitch Katenok",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Очаровашка Катенок(Ffunnya), улыбчивая и светлая персона! Любит DBD и Dota 2 <3 , twitch.tv/squintee"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Очаровашка Катенок(Ffunnya), улыбчивая и светлая персона! Любит DBD и Dota 2 <3 , twitch.tv/squintee", e.Platform); }, CommandType.Streamers)},
                 { "gohapsp",  new Command("Gohapsp","Показывает ссылку на twitch Gohapsp",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Специалист по хоррорам, twitch.tv/gohapsp"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Специалист по хоррорам, twitch.tv/gohapsp", e.Platform); }, CommandType.Streamers)},
                 { "stone", new Command("Stone","Показывает ссылку на twitch Камушка",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Самый очаровательный камушек! <3 , twitch.tv/sayyees"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Самый очаровательный камушек! <3 , twitch.tv/sayyees", e.Platform); }, CommandType.Streamers)},
                 { "бескрыл", new Command("Бескрыл","Показывает ссылку на twitch Бескрыл-а",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Свежие одиночные игры на прохождение :) Добрый, отзывчивый, не оставит без внимания никого! К слову, он разработчик и у него уже есть своя игра! :) twitch.tv/beskr1l_"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Свежие одиночные игры на прохождение :) Добрый, отзывчивый, не оставит без внимания никого! К слову, он разработчик и у него уже есть своя игра! :) twitch.tv/beskr1l_",
+                        e.Platform); }, CommandType.Streamers)},
                 { "wlg", new Command("Welovegames","Показывает ссылку на twitch Welovegames",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Хранитель убежища, харизматичный Денис! Если вы о нём ещё не знаете, крайне рекомендую посмотреть на его деятельность. p.s. обожаю его смайлы. twitch.tv/welovegames"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Хранитель убежища, харизматичный Денис! Если вы о нём ещё не знаете, крайне рекомендую посмотреть на его деятельность. p.s. обожаю его смайлы. twitch.tv/welovegames",
+                        e.Platform); }, CommandType.Streamers)},
                 { "stryk", new Command("StrykOFF","Показывает ссылку на twitch StrykOFF",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Владелец таверны, создатель лучших шаверм! Для ламповых посиделок :) twitch.tv/strykoff"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Владелец таверны, создатель лучших шаверм! Для ламповых посиделок :) twitch.tv/strykoff", e.Platform); }, CommandType.Streamers)},
                 { "tilttena", new Command("Tilttena","Показывает ссылку на twitch Tilttena",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Горящая Алёна!, twitch.tv/tilttena"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Горящая Алёна!, twitch.tv/tilttena", e.Platform); }, CommandType.Streamers)},
                 { "bezumnaya", new Command("Bezumnaya","Показывает ссылку на twitch Bezumnaya",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Безумно любит своих зрителей, twitch.tv/bezumnaya"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Безумно любит своих зрителей, twitch.tv/bezumnaya", e.Platform); }, CommandType.Streamers)},
                 { "starval", new Command("Starval","Показывает ссылку на twitch Starval",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Лера. Киев. Стример. :), twitch.tv/starval"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Лера. Киев. Стример. :), twitch.tv/starval", e.Platform); }, CommandType.Streamers)},
                 { "aiana", new Command("Aiana","Показывает ссылку на twitch AianaKim",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Наша улыбашка-очаровашка Аяна BLELELE  twitch.tv/aianakim"); }, CommandType.Streamers)},
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Наша улыбашка-очаровашка Аяна BLELELE  twitch.tv/aianakim", e.Platform); }, CommandType.Streamers)},
                 { "reara", new Command("SyndicateReara","Показывает ссылку на twitch SyndicateReara",
-                delegate (OnChatCommandReceivedArgs e) {
-                    twitchBot.SendMessage("Незабудь выполнить воинское приветствие striboF twitch.tv/syndicatereara"); }, CommandType.Streamers)}
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Незабудь выполнить воинское приветствие striboF twitch.tv/syndicatereara", e.Platform); }, CommandType.Streamers)}
                 #endregion
             };
     }

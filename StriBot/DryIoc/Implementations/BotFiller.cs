@@ -1,15 +1,16 @@
 ﻿using DryIoc;
+using StriBot.Bots;
 using StriBot.DryIoc.Interfaces;
-using StriBot.TwitchBot.Interfaces;
 
 namespace StriBot.DryIoc.Implementations
 {
     [FillPriority(1)]
-    class TwitchBotFiller : IContainerFiller
+    class BotFiller : IContainerFiller
     {
         public void Fill(IContainer container)
         {
-            container.Register<ITwitchBot, TwitchBot.Implementations.TwitchBot>(Reuse.Singleton);
+            container.Register<ChatBot>(Reuse.Singleton);
+            container.Register<TwitchBot>(Reuse.Singleton);
         }
     }
 }

@@ -1,18 +1,15 @@
-﻿using StriBot.TwitchBot.Interfaces;
+﻿using StriBot.EventConainers;
+using StriBot.EventConainers.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TwitchLib.Client.Events;
 
 namespace StriBot.Commands
 {
     public class BurgerManager
     {
-        private ITwitchBot twitchBot;
-
-        public BurgerManager(ITwitchBot twitchBot)
+        public BurgerManager()
         {
-            this.twitchBot = twitchBot;
         }
 
         static int MAX_BURGER_SIZE = 3;
@@ -85,11 +82,11 @@ namespace StriBot.Commands
             => new Dictionary<string, Command>()
             {
                 new Command("Бутерброд","Выдает бутерброд тебе или объекту",
-                delegate (OnChatCommandReceivedArgs e) {
-                        if(string.IsNullOrEmpty( e.Command.ArgumentsAsString))
-                            twitchBot.SendMessage(string.Format("Несу {0} для {1}! HahaCat ", BurgerManager.BurgerCombiner(),e.Command.ChatMessage.DisplayName));
+                delegate (CommandInfo commandInfo) {
+                        if(string.IsNullOrEmpty( commandInfo.ArgumentsAsString))
+                            GlobalEventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.DisplayName), commandInfo.Platform);
                         else
-                            twitchBot.SendMessage(string.Format("Несу {0} для {1}! HahaCat ", BurgerManager.BurgerCombiner(),e.Command.ArgumentsAsString));
+                            GlobalEventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.ArgumentsAsString), commandInfo.Platform);
                 }, new string[] {"Объект"}, CommandType.Interactive)
             };
     }

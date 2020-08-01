@@ -1,69 +1,79 @@
-﻿using StriBot.Commands.CommonFunctions;
+﻿using StriBot.Bots.Enums;
+using StriBot.Commands.CommonFunctions;
+using StriBot.EventConainers;
+using StriBot.EventConainers.Models;
 using StriBot.Language;
-using StriBot.TwitchBot.Interfaces;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using TwitchLib.Client.Events;
 
 namespace StriBot.Commands
 {
     public class HalberdManager
     {
-        private ConcurrentDictionary<string, int> halberdDictionary { get; set; }
-        private ReadyMadePhrases readyMadePhrases;
-        private ITwitchBot twitchBot;
-        private Currency currency;
-        private Minute minute;
+        private ConcurrentDictionary<string, (Platform Platform, int Time)> _halberdDictionary { get; set; }
+        private ReadyMadePhrases _readyMadePhrases;
+        private Currency _currency;
+        private Minute _minute;
 
         private int halberdTime = 5;
 
-        public HalberdManager(ReadyMadePhrases readyMadePhrases, ITwitchBot twitchBot, Currency currency, Minute minute)
+        public HalberdManager(ReadyMadePhrases readyMadePhrases, Currency currency, Minute minute)
         {
-            halberdDictionary = new ConcurrentDictionary<string, int>();
-            this.readyMadePhrases = readyMadePhrases;
-            this.twitchBot = twitchBot;
-            this.currency = currency;
-            this.minute = minute; 
+            _halberdDictionary = new ConcurrentDictionary<string, (Platform Platform, int Time)>();
+            _readyMadePhrases = readyMadePhrases;
+            _currency = currency;
+            _minute = minute; 
         }
 
         public void Tick()
         {
-            foreach (var user in halberdDictionary)
+            foreach (var user in _halberdDictionary)
             {
-                halberdDictionary[user.Key]--;
-                if (halberdDictionary[user.Key] <= 0)
+                var halberdValue = _halberdDictionary[user.Key];
+                halberdValue.Time--;
+                _halberdDictionary[user.Key] = halberdValue;
+
+                if (_halberdDictionary[user.Key].Time <= 0)
                 {
-                    twitchBot.SendMessage($"{user.Key} может использовать команды!");
-                    halberdDictionary.TryRemove(user.Key, out _);
+                    GlobalEventContainer.Message($"{user.Key} может использовать команды!", user.Value.Platform);
+                    _halberdDictionary.TryRemove(user.Key, out _);
                 }
             }
         }
 
         public Command CreateHalberdCommand()
         {
-            var result = new Command("Алебарда", $"Запретить указанному пользователю использовать команды на {halberdTime} {minute.Incline(halberdTime)}. Цена: {PriceList.Halberd} {currency.GenitiveMultiple}",
-                delegate (OnChatCommandReceivedArgs e)
+            var result = new Command("Алебарда", $"Запретить указанному пользователю использовать команды на {_minute.Incline(halberdTime)}. Цена: {PriceList.Halberd} {_currency.GenitiveMultiple}",
+                delegate (CommandInfo commandInfo)
                 {
-                    if (e.Command.ArgumentsAsList.Count == 1)
+                    if (commandInfo.ArgumentsAsList.Count == 1)
                     {
-                        if (DataBase.CheckMoney(e.Command.ChatMessage.DisplayName) >= PriceList.Halberd)
+                        if (DataBase.CheckMoney(commandInfo.DisplayName) >= PriceList.Halberd)
                         {
-                            DataBase.AddMoneyToUser(e.Command.ChatMessage.DisplayName, -PriceList.Halberd);
+                            DataBase.AddMoneyToUser(commandInfo.DisplayName, -PriceList.Halberd);
 
-                            if (halberdDictionary.ContainsKey(e.Command.ArgumentsAsList[0]))
-                                halberdDictionary[DataBase.CleanNickname(e.Command.ArgumentsAsList[0])] += halberdTime;
+                            if (_halberdDictionary.ContainsKey(commandInfo.ArgumentsAsList[0]))
+                            {
+                                var clearName = DataBase.CleanNickname(commandInfo.ArgumentsAsList[0]);
+                                var halberdValue = _halberdDictionary[clearName];
+                                halberdValue.Time += halberdTime;
+                                _halberdDictionary[clearName] = halberdValue;
+
+                            }
                             else
-                                halberdDictionary.TryAdd(DataBase.CleanNickname(e.Command.ArgumentsAsList[0]), halberdTime);
+                                _halberdDictionary.TryAdd(DataBase.CleanNickname(commandInfo.ArgumentsAsList[0]), (commandInfo.Platform, halberdTime));
 
-                            twitchBot.SendMessage($"{e.Command.ChatMessage.DisplayName} использовал алебарду на {e.Command.ArgumentsAsList[0]}! Цель обезаружена на {halberdTime} {minute.Incline(halberdTime)}!");
+                            GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на {commandInfo.ArgumentsAsList[0]}! Цель обезаружена на {_minute.Incline(halberdTime)}!",
+                                commandInfo.Platform);
                         }
                         else
-                            readyMadePhrases.NoMoney(e.Command.ChatMessage.DisplayName);
+                            _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                     }
                     else
                     {
-                        halberdDictionary.TryAdd(DataBase.CleanNickname(e.Command.ChatMessage.DisplayName), halberdTime);
-                        twitchBot.SendMessage($"{e.Command.ChatMessage.DisplayName} использовал алебарду на себя и не может использовать команды в течении {halberdTime} {minute.Incline(halberdTime)}!");
+                        _halberdDictionary.TryAdd(DataBase.CleanNickname(commandInfo.DisplayName), (commandInfo.Platform, halberdTime));
+                        GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на себя и не может использовать команды в течении {_minute.Incline(halberdTime)}!", 
+                            commandInfo.Platform);
                     }
                 }, new string[] { "цель" }, CommandType.Interactive);
 
@@ -76,14 +86,14 @@ namespace StriBot.Commands
                 CreateHalberdCommand()
             };
 
-        public bool CanSendMessage(string name)
+        public bool CanSendMessage(CommandInfo commandInfo)
         {
-            var clearName = DataBase.CleanNickname(name);
-            var result = !halberdDictionary.ContainsKey(clearName);
+            var clearName = DataBase.CleanNickname(commandInfo.DisplayName);
+            var result = !_halberdDictionary.ContainsKey(clearName);
 
             if (!result)
             {
-                twitchBot.SendMessage($"{name} не может использовать команды ещё {halberdDictionary[clearName]} {minute.Incline(halberdDictionary[clearName])}!");
+                GlobalEventContainer.Message($"{commandInfo.DisplayName} не может использовать команды ещё {_minute.Incline(_halberdDictionary[clearName].Time)}!", commandInfo.Platform);
             }
 
             return result;

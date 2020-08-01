@@ -207,6 +207,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bots\ChatBot.cs" />
+    <Compile Include="Bots\Enums\Platform.cs" />
     <Compile Include="CollectionHelper.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommonFunctions\ReadyMadePhrases.cs" />
@@ -229,9 +231,11 @@
     <Compile Include="DryIoc\Implementations\FillPriorityAttribute.cs" />
     <Compile Include="DryIoc\Implementations\LanguageFiller.cs" />
     <Compile Include="DryIoc\Implementations\SpeakerFiller.cs" />
-    <Compile Include="DryIoc\Implementations\TwitchBotFiller.cs" />
+    <Compile Include="DryIoc\Implementations\BotFiller.cs" />
     <Compile Include="DryIoc\Interfaces\IContainerFiller.cs" />
     <Compile Include="DryIoc\Registrators\Fillers.cs" />
+    <Compile Include="EventConainers\Models\CommandInfo.cs" />
+    <Compile Include="EventConainers\GlobalEventContainer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -250,8 +254,7 @@
     <Compile Include="Reporter.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Speakers\Speaker.cs" />
-    <Compile Include="TwitchBot\Implementations\TwitchBot.cs" />
-    <Compile Include="TwitchBot\Interfaces\ITwitchBot.cs" />
+    <Compile Include="Bots\TwitchBot.cs" />
     <Compile Include="TwitchInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
