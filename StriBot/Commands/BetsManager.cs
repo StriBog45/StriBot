@@ -11,16 +11,17 @@ namespace StriBot.Commands
 {
     public class BetsManager
     {
+        private readonly Currency _currency;
+
         private bool _betsProcessing;
         private string[] _bettingOptions;
         private int _betsTimer;
         private double _betsCoefficient;
-        private readonly Currency _currency;
-        public Dictionary<string, (int, int)> UsersBetted { get; set; }
+        private Dictionary<string, (int Choice, int BetSize)> _usersBetted;
 
         public BetsManager(Currency currency)
         {
-            UsersBetted = new Dictionary<string, (int, int)>();
+            _usersBetted = new Dictionary<string, (int, int)>();
             _currency = currency;
         }
 
@@ -43,21 +44,31 @@ namespace StriBot.Commands
 
         public void SetBetsWinner(int winner, Platform[] platforms)
         {
-            foreach (var bet in UsersBetted)
+            foreach (var bet in _usersBetted)
             {
-                if (bet.Value.Item1 == winner)
-                    DataBase.AddMoneyToUser(bet.Key, (int)(bet.Value.Item2 * _betsCoefficient) + (bet.Value.Item2 * (-1)));
+                if (bet.Value.Choice == winner)
+                    DataBase.AddMoneyToUser(bet.Key, (int)(bet.Value.BetSize * _betsCoefficient) + (bet.Value.BetSize * (-1)));
                 else
-                    DataBase.AddMoneyToUser(bet.Key, bet.Value.Item2 * (-1));
+                    DataBase.AddMoneyToUser(bet.Key, bet.Value.BetSize * (-1));
             }
-            GlobalEventContainer.Message($"Победила ставка под номером {winner}! В ставках участвовало {UsersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
+            GlobalEventContainer.Message($"Победила ставка под номером {winner}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
 
-            GlobalEventContainer.Message("Победили: " + UsersBetted.Where(x => x.Value.Item1 == winner)
-                .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.Item2}")).ToString(), platforms);
-            GlobalEventContainer.Message("Проиграли: " + UsersBetted.Where(x => x.Value.Item1 != winner)
-                .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.Item2}")).ToString(), platforms);
+            var winers = _usersBetted.Where(x => x.Value.Choice == winner)
+                .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
+            var loosers = _usersBetted.Where(x => x.Value.Choice != winner)
+                .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
 
-            UsersBetted.Clear();
+            if (!string.IsNullOrEmpty(winers))
+                GlobalEventContainer.Message("Победили: " + winers, platforms);
+            else
+                GlobalEventContainer.Message("Победителей нет", platforms);
+
+            if (!string.IsNullOrEmpty(loosers))
+                GlobalEventContainer.Message("Проиграли: " +  loosers, platforms);
+            else
+                GlobalEventContainer.Message("Проигравших нет", platforms);
+
+            _usersBetted.Clear();
             _betsProcessing = false;
         }
 
@@ -68,7 +79,7 @@ namespace StriBot.Commands
                 _bettingOptions[i] = options[i + 1];
             _betsProcessing = true;
             _betsTimer = 0;
-            UsersBetted.Clear();
+            _usersBetted.Clear();
             _betsCoefficient = (options.Length * 0.5);
 
             GlobalEventContainer.Message(string.Format("Время ставок! Коэффициент {0}. Для участия необходимо написать !ставка [номер ставки] [сколько ставите]", _betsCoefficient), platforms);
@@ -89,17 +100,17 @@ namespace StriBot.Commands
                 if (_betsProcessing)
                 {
                     int numberOfBets = 0;
-                    int amountOfBets = 0;
-                    if (e.ArgumentsAsList.Count == 2 && Int32.TryParse(e.ArgumentsAsList[0], out numberOfBets) && Int32.TryParse(e.ArgumentsAsList[1], out amountOfBets)
-                    && numberOfBets < _bettingOptions.Length && amountOfBets > 0)
+                    int betSize = 0;
+                    if (e.ArgumentsAsList.Count == 2 && Int32.TryParse(e.ArgumentsAsList[0], out numberOfBets) && Int32.TryParse(e.ArgumentsAsList[1], out betSize)
+                    && numberOfBets < _bettingOptions.Length && betSize > 0)
                     {
-                        if (DataBase.CheckMoney(e.DisplayName) < amountOfBets)
+                        if (DataBase.CheckMoney(e.DisplayName) < betSize)
                             GlobalEventContainer.Message($"{e.DisplayName} у тебя недостаточно {_currency.GenitiveMultiple} для такой ставки!", platforms);
                         else
                         {
-                            if (!UsersBetted.ContainsKey(e.DisplayName))
+                            if (!_usersBetted.ContainsKey(e.DisplayName))
                             {
-                                UsersBetted.Add(e.DisplayName, (numberOfBets, amountOfBets));
+                                _usersBetted.Add(e.DisplayName, (numberOfBets, betSize));
                                 GlobalEventContainer.Message($"{e.DisplayName} успешно сделал ставку!", platforms);
                             }
                             else
