@@ -27,7 +27,9 @@ namespace StriBot.Commands
                 CreateDuelCommand(),
                 CreateIqCommand(),
                 CreateMagic8Ball(),
-                CommandCoin()
+                CommandCoin(),
+                CreateCommandBreastSize(),
+                CreateCommandPenisSize()
             };
 
         private Command CreateSnowCommand()
@@ -140,6 +142,59 @@ namespace StriBot.Commands
                         SendMessage("Бросаю монетку... Ребро POGGERS ", commandInfo.Platform);
                     else
                         SendMessage($"Бросаю монетку... {(coin < 50 ? "Орел" : "Решка")}", commandInfo.Platform);
+                }, CommandType.Interactive);
+
+        private Command CreateCommandBreastSize()
+            => new Command("РазмерГ", "Узнать размер вашей груди",
+                delegate (CommandInfo commandInfo) {
+                    int breastSize = RandomHelper.random.Next(0, 7);
+                    var result = string.Empty;
+
+                    switch (breastSize)
+                    {
+                        case 0:
+                            result = string.Format("0 размер... Извините, {0}, а что мерить? KEKW ", commandInfo.DisplayName);
+                            break;
+                        case 1:
+                            result = string.Format("1 размер... Не переживай {0}, ещё вырастут striboCry ", commandInfo.DisplayName);
+                            break;
+                        case 2:
+                            result = string.Format("2 размер... {0}, ваши груди отлично помещаются в ладошки! billyReady ", commandInfo.DisplayName);
+                            break;
+                        case 3:
+                            result = string.Format("3 размер... Идеально... Kreygasm , {0} оставьте мне ваш номерок", commandInfo.DisplayName);
+                            break;
+                        case 4:
+                            result = string.Format("4 размер... Внимание мужчин к {0} обеспечено striboPled ", commandInfo.DisplayName);
+                            break;
+                        case 5:
+                            result = string.Format("5 размер... В грудях {0} можно утонуть счастливым Kreygasm", commandInfo.DisplayName);
+                            break;
+                        case 6:
+                            result = string.Format("6 размер... В ваших руках... Кхм, на грудной клетке {0} две убийственные груши", commandInfo.DisplayName);
+                            break;
+                    }
+
+                    SendMessage(result, commandInfo.Platform);
+                }, CommandType.Interactive);
+
+        private Command CreateCommandPenisSize()
+            => new Command("РазмерП", "Узнать размер вашего писюна",
+                delegate (CommandInfo commandInfo)
+                {
+                    int penisSize = RandomHelper.random.Next(10, 21);
+                    var result = string.Empty;
+
+                    if (penisSize < 13)
+                        result = string.Format("{0} сантиметров... {1}, не переживай, размер не главное! ", commandInfo.DisplayName, penisSize);
+                    else if (penisSize == 13)
+                        result = string.Format("13 сантиметров... {0}, поздравляю, у вас стандарт!  striboF ", commandInfo.DisplayName);
+                    else if (penisSize == 20)
+                        result = string.Format("20 сантиметров... {0}, вы можете завернуть свой шланг обратно monkaS ", commandInfo.DisplayName);
+                    else
+                        result = string.Format("{0} сантиметров... {1}, ваша девушка... или мужчина, будет в восторге! striboTea ", commandInfo.DisplayName, penisSize);
+
+                    SendMessage(result, commandInfo.Platform);
                 }, CommandType.Interactive);
 
         private void SendMessage(string message, Platform platform)

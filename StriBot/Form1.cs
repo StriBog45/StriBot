@@ -20,15 +20,17 @@ namespace StriBot
         private readonly CurrencyBaseManager _currencyBaseManager;
         private readonly BetsManager _betsManager;
         private readonly ChatBot _chatBot;
+        private readonly ProgressManager _progressManager;
 
         public Form1()
         {
             InitializeComponent();
 
             _chatBot = GlobalContainer.Default.Resolve<ChatBot>();
-            _chatBot.SetConstructorSettings(BossUpdate, DeathUpdate);
             _chatBot.CreateCommands();
             _chatBot.Connect(new Platform[] { Platform.Twitch });
+            _progressManager = GlobalContainer.Default.Resolve<ProgressManager>();
+            _progressManager.SetConstructorSettings(BossUpdate, DeathUpdate);
             _managerMMR = GlobalContainer.Default.Resolve<MMRManager>();
             _orderManager = GlobalContainer.Default.Resolve<OrderManager>();
             _currencyBaseManager = GlobalContainer.Default.Resolve<CurrencyBaseManager>();
@@ -154,7 +156,7 @@ namespace StriBot
             else
             {
                 listView1.Items.Clear();
-                foreach (var boss in _chatBot.Bosses)
+                foreach (var boss in _progressManager.Bosses)
                     listView1.Items.Add(new ListViewItem(boss));
             }
         }
@@ -162,14 +164,14 @@ namespace StriBot
         private void buttonBossDelete_Click(object sender, EventArgs e)
         {
             foreach (int item in listView1.SelectedIndices)
-                _chatBot.Bosses.RemoveAt(item);
+                _progressManager.Bosses.RemoveAt(item);
         }
 
         private void buttonDeathAdd_Click(object sender, EventArgs e)
-            => _chatBot.Deaths++;
+            => _progressManager.Deaths++;
 
         private void buttonDeathReduce_Click(object sender, EventArgs e)
-            => _chatBot.Deaths--;
+            => _progressManager.Deaths--;
 
         void DeathUpdate()
         {
@@ -179,7 +181,7 @@ namespace StriBot
                 listView1.Invoke(d);
             else
             {
-                label1.Text = string.Format("Смертей: {0}", _chatBot.Deaths);
+                label1.Text = string.Format("Смертей: {0}", _progressManager.Deaths);
             }
         }
 

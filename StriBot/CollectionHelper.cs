@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace StriBot
 {
-    public class CollectionHelper : List<String>
+    public class CollectionHelper : List<string>
     {
         public override string ToString()
-        {
-            return string.Join(", ", this);
-        }
+            => string.Join(", ", this);
+
         public string ToString(string Separator)
-        {
-            return string.Join(Separator, this);
-        }
+            => string.Join(Separator, this);
     }
 }

@@ -15,12 +15,9 @@ namespace StriBot.Bots
     public class ChatBot
     {
         public Dictionary<string, Command> Commands { get; set; }
-        public CollectionHelper Bosses { get; set; }
-        public int Deaths { get; set; } = 0;
+        
         public string TextReminder { get; set; } = string.Empty;
-
-        private Action BossUpdate;
-        private Action DeathUpdate;
+        
         private AnswerOptions _customArray;
         private int _timer;
         private int toysForSub = 30;
@@ -40,8 +37,6 @@ namespace StriBot.Bots
             _currencyBaseManager = currencyBaseManager;
             _duelManager = duelManager;
             _betsManager = betsManager;
-
-            Bosses = new CollectionHelper();
 
             GlobalEventContainer.CommandReceived += OnChatCommandReceived;
         }
@@ -97,12 +92,6 @@ namespace StriBot.Bots
             }
         }
 
-        public void SetConstructorSettings(Action bossUpdate, Action deathUpdate)
-        {
-            BossUpdate = bossUpdate;
-            DeathUpdate = deathUpdate;
-        }
-
         public void CreateCommands()
         {
             var container = GlobalContainer.Default;
@@ -112,6 +101,7 @@ namespace StriBot.Bots
             var linkManager = container.Resolve<LinkManager>();
             var randomAnswerManager = container.Resolve<RandomAnswerManager>();
             var burgerManager = container.Resolve<BurgerManager>();
+            var progressManager = container.Resolve<ProgressManager>();
 
             Commands = new Dictionary<string, Command>()
             {
@@ -119,58 +109,11 @@ namespace StriBot.Bots
                 managerMMR.CreateCommands(),
                 randomAnswerManager.CreateCommands(),
                 burgerManager.CreateCommands(),
-
+                progressManager.CreateCommands(),
                 //{ "uptime", new Command("Uptime","Длительность текущей трансляции",
                 //delegate (CommandInfo e) {
                 //    SendMessage( $"Трансляция длится: { GetUptime()}"); }, CommandType.Info)},
 
-                #region Интерактив
-                { "размерг", new Command("РазмерГ","Узнать размер вашей груди",
-                delegate (CommandInfo e) {
-                    int size = RandomHelper.random.Next(0,7);
-
-                    if(size == 0)
-                        SendMessage(string.Format("0 размер... Извините, {0}, а что мерить? KEKW ", e.DisplayName));
-                    if(size == 1)
-                        SendMessage(string.Format("1 размер... Не переживай {0}, ещё вырастут striboCry ", e.DisplayName));
-                    if(size == 2)
-                        SendMessage(string.Format("2 размер... {0}, ваши груди отлично помещаются в ладошки! billyReady ", e.DisplayName));
-                    if(size == 3)
-                        SendMessage(string.Format("3 размер... Идеально... Kreygasm , {0} оставьте мне ваш номерок", e.DisplayName));
-                    if(size == 4)
-                        SendMessage(string.Format("4 размер... Внимание мужчин к {0} обеспечено striboPled ", e.DisplayName));
-                    if(size == 5)
-                        SendMessage(string.Format("5 размер... В грудях {0} можно утонуть счастливым Kreygasm", e.DisplayName));
-                    if(size == 6)
-                        SendMessage(string.Format("6 размер... В ваших руках... Кхм, на грудной клетке {0} две убийственные груши", e.DisplayName));
-                }, CommandType.Interactive)},
-                { "размерп", new Command("РазмерП","Узнать размер вашего писюна",
-                delegate (CommandInfo e) {
-                    int size = RandomHelper.random.Next(10,21);
-
-                    if(size < 13)
-                        SendMessage(string.Format("{0} сантиметров... {1}, не переживай, размер не главное! ", e.DisplayName,size));
-                    else if(size == 13)
-                        SendMessage(string.Format("13 сантиметров... {0}, поздравляю, у вас стандарт!  striboF ", e.DisplayName));
-                    else if(size == 20)
-                        SendMessage(string.Format("20 сантиметров... {0}, вы можете завернуть свой шланг обратно monkaS ", e.DisplayName));
-                    else
-                        SendMessage(string.Format("{0} сантиметров... {1}, ваша девушка... или мужчина, будет в восторге! striboTea ", e.DisplayName,size));
-                }, CommandType.Interactive)},
-                { "смерть", new Command("Смерть", "Добавляет смерть", Role.Moderator,
-                delegate (CommandInfo e) {
-                    Deaths++;
-                    DeathUpdate();
-                    SendMessage(string.Format("Смертей: {0}", Deaths));
-                    SendMessage("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ ……………..............……...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ…….……….........…..… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬"); }, CommandType.Interactive)},
-                { "смертей", new Command("Смертей", "Показывает количество смертей",
-                delegate (CommandInfo e) {
-                    SendMessage(string.Format("Смертей: {0}",Deaths)); }, CommandType.Interactive)},
-                { "босс", new Command("Босс", "Добавляет босса", Role.Moderator,
-                delegate (CommandInfo e) {
-                    Bosses.Add(e.ArgumentsAsString);
-                    BossUpdate();
-                }, new string[] {"Имя босса"}, CommandType.Interactive )},
                 { "напомнить", new Command("Напомнить", "Создает напоминалку. При использовании без указания текста, напоминание будет удалено", Role.Moderator,
                 delegate (CommandInfo e) {
                     TextReminder = e.ArgumentsAsString;
@@ -179,14 +122,6 @@ namespace StriBot.Bots
                     else
                         SendMessage("Напоминание удалено");
                 }, new string[] {"текст"}, CommandType.Interactive )},
-                { "боссы", new Command("Боссы", "Список убитых боссов!",
-                delegate (CommandInfo e) {
-                    if(Bosses.Count > 0)
-                        SendMessage(Bosses.ToString());
-                    else
-                        SendMessage("Боссов нет"); }, CommandType.Interactive)},
-
-                #endregion
 
                 orderManager.CreateCommands(),
                 _currencyBaseManager.CreateCommands(),
@@ -227,8 +162,6 @@ namespace StriBot.Bots
         }
 
         private void SendMessage(string text)
-        {
-            GlobalEventContainer.Message(text, Platform.Twitch);
-        }
+            => GlobalEventContainer.Message(text, Platform.Twitch);
     }
 }
