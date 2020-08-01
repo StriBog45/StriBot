@@ -211,6 +211,7 @@
     <Compile Include="Bots\Enums\Platform.cs" />
     <Compile Include="CollectionHelper.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Commands\BetsManager.cs" />
     <Compile Include="Commands\CommonFunctions\ReadyMadePhrases.cs" />
     <Compile Include="Commands\CurrencyBaseManager.cs" />
     <Compile Include="Commands\DictionaryExtensions.cs" />
@@ -222,7 +223,7 @@
     <Compile Include="Commands\RandomAnswerManager.cs" />
     <Compile Include="CommandType.cs" />
     <Compile Include="Commands\BurgerManager.cs" />
-    <Compile Include="CustomData\CustomArray.cs" />
+    <Compile Include="CustomData\AnswerOptions.cs" />
     <Compile Include="CustomData\Heroes.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="DryIoc\GlobalContainer.cs" />

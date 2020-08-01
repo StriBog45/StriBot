@@ -13,12 +13,12 @@ namespace StriBot.Commands
     {
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
-        private List<string> receivedUsers;
-        private int distributionAmountUsers { get; set; }
-        private int distributionAmountPerUsers { get; set; }
-        private int SubCoefficient { get => subBonus ? subCoefficient : 1; }
+        private List<string> _receivedUsers;
+        private int _distributionAmountUsers;
+        private int _distributionAmountPerUsers;
+        private int SubCoefficient { get => _subBonus ? subCoefficient : 1; }
         private int subCoefficient = 2;
-        private bool subBonus;
+        private bool _subBonus;
         public Dictionary<string, (int, int)> UsersBetted { get; set; }
 
         public CurrencyBaseManager(Currency currency, ReadyMadePhrases readyMadePhrases)
@@ -26,25 +26,25 @@ namespace StriBot.Commands
             _currency = currency;
             _readyMadePhrases = readyMadePhrases;
 
-            receivedUsers = new List<string>();
+            _receivedUsers = new List<string>();
         }
 
         public Command CreateStealCurrency()
         {
             Action<CommandInfo> action = delegate (CommandInfo commandInfo)
             {
-                if (distributionAmountUsers > 0)
+                if (_distributionAmountUsers > 0)
                 {
-                    if (receivedUsers.Where(x => x.CompareTo(commandInfo.DisplayName) == 0).ToArray().Count() == 0)
+                    if (_receivedUsers.Where(x => x.CompareTo(commandInfo.DisplayName) == 0).ToArray().Count() == 0)
                     {
                         if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
-                            DataBase.AddMoneyToUser(commandInfo.DisplayName, distributionAmountPerUsers * SubCoefficient);
+                            DataBase.AddMoneyToUser(commandInfo.DisplayName, _distributionAmountPerUsers * SubCoefficient);
                         else
-                            DataBase.AddMoneyToUser(commandInfo.DisplayName, distributionAmountPerUsers);
+                            DataBase.AddMoneyToUser(commandInfo.DisplayName, _distributionAmountPerUsers);
 
                         GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно стащил {_currency.Dative}!", commandInfo.Platform);
-                        distributionAmountUsers--;
-                        receivedUsers.Add(commandInfo.DisplayName);
+                        _distributionAmountUsers--;
+                        _receivedUsers.Add(commandInfo.DisplayName);
                     }
                     else
                         GlobalEventContainer.Message($"{commandInfo.DisplayName} вы уже забрали {_currency.Dative}! Не жадничайте!", commandInfo.Platform);
@@ -58,11 +58,11 @@ namespace StriBot.Commands
 
         public void DistributionMoney(int perUser, int maxUsers, Platform platform, bool bonus = true)
         {
-            subBonus = bonus;
-            distributionAmountPerUsers = perUser;
-            distributionAmountUsers = maxUsers;
+            _subBonus = bonus;
+            _distributionAmountPerUsers = perUser;
+            _distributionAmountUsers = maxUsers;
             GlobalEventContainer.Message($"Замечены {_currency.NominativeMultiple} без присмотра! Время полоскать! Пиши !стащить striboF ", platform);
-            receivedUsers.Clear();
+            _receivedUsers.Clear();
         }
 
         public Command CreateReturnCurrency()
@@ -71,16 +71,16 @@ namespace StriBot.Commands
             {
                 if (DataBase.CheckMoney(commandInfo.DisplayName) > 0)
                 {
-                    if (distributionAmountPerUsers == 0)
-                        distributionAmountPerUsers = 1;
+                    if (_distributionAmountPerUsers == 0)
+                        _distributionAmountPerUsers = 1;
 
                     if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.HasValue)
-                        DataBase.AddMoneyToUser(commandInfo.DisplayName, -distributionAmountPerUsers * SubCoefficient);
+                        DataBase.AddMoneyToUser(commandInfo.DisplayName, -_distributionAmountPerUsers * SubCoefficient);
                     else
-                        DataBase.AddMoneyToUser(commandInfo.DisplayName, -distributionAmountPerUsers);
+                        DataBase.AddMoneyToUser(commandInfo.DisplayName, -_distributionAmountPerUsers);
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} незаметно вернул {_currency.Dative}!", commandInfo.Platform);
-                    distributionAmountUsers++;
-                    receivedUsers.Remove(commandInfo.DisplayName);
+                    _distributionAmountUsers++;
+                    _receivedUsers.Remove(commandInfo.DisplayName);
                 }
                 else
                     _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);

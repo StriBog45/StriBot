@@ -25,7 +25,7 @@ namespace StriBot.Commands
 
         public void SafeCallConnector(Action<List<(string, string, int)>> updateOrders)
         {
-            this._updateOrders = updateOrders;
+            _updateOrders = updateOrders;
         }
 
         public Command CreateOrder()

@@ -10,8 +10,8 @@ namespace StriBot.Commands
         public int MMR { get; set; } = 4400;
         public int Wins { get; set; } = 0;
         public int Losses { get; set; } = 0;
-        private int MMRChange = 30;
-        private string medallion = "Властелин 3";
+        private int _MMRChange = 30;
+        private string _medallion = "Властелин 3";
 
         public MMRManager()
         {
@@ -23,7 +23,7 @@ namespace StriBot.Commands
                 delegate (CommandInfo commandInfo)
                 {
                     Wins++;
-                    MMR += MMRChange;
+                    MMR += _MMRChange;
                     GlobalEventContainer.Message($"Побед: {Wins}, Поражений: {Losses}", commandInfo.Platform);
                 }, CommandType.Interactive);
 
@@ -39,7 +39,7 @@ namespace StriBot.Commands
                 delegate (CommandInfo commandInfo)
                 {
                     Losses++;
-                    MMR -= MMRChange;
+                    MMR -= _MMRChange;
                     SendCurrentAccount(commandInfo.Platform);
                 }, CommandType.Interactive);
 
@@ -57,7 +57,7 @@ namespace StriBot.Commands
             => new Command("mmr", "Узнать рейтинг стримера в Dota 2",
                 delegate (CommandInfo commandInfo)
                 {
-                    GlobalEventContainer.Message($"Рейтинг: {MMR} Звание: {medallion}", commandInfo.Platform);
+                    GlobalEventContainer.Message($"Рейтинг: {MMR} Звание: {_medallion}", commandInfo.Platform);
                 }, CommandType.Info);
 
         public Command CheckMMR()

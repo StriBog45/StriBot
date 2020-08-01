@@ -10,10 +10,10 @@ namespace StriBot.Commands
 {
     public class HalberdManager
     {
-        private ConcurrentDictionary<string, (Platform Platform, int Time)> _halberdDictionary { get; set; }
-        private ReadyMadePhrases _readyMadePhrases;
-        private Currency _currency;
-        private Minute _minute;
+        private readonly ConcurrentDictionary<string, (Platform Platform, int Time)> _halberdDictionary;
+        private readonly ReadyMadePhrases _readyMadePhrases;
+        private readonly Currency _currency;
+        private readonly Minute _minute;
 
         private int halberdTime = 5;
 

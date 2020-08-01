@@ -8,11 +8,11 @@ namespace StriBot.Commands
 {
     public class RandomAnswerManager
     {
-        private readonly CustomArray customArray;
+        private readonly AnswerOptions _customArray;
 
-        public RandomAnswerManager (CustomArray customArray)
+        public RandomAnswerManager (AnswerOptions customArray)
         {
-            this.customArray = customArray;
+            _customArray = customArray;
         }
 
         public Dictionary<string, Command> CreateCommands()
@@ -45,7 +45,7 @@ namespace StriBot.Commands
                         if (accuracy >= 10 && accuracy <= 20)
                             snowResult = "но цель уклонилась KEKW ";
                         if (accuracy > 30)
-                            snowResult = $"и попал {customArray.GetHited()}";
+                            snowResult = $"и попал {_customArray.GetHited()}";
                         SendMessage($"{commandInfo.DisplayName} бросил снежок в {commandInfo.ArgumentsAsString} {snowResult}", commandInfo.Platform);
                     }
                 }, new string[] { "Объект" }, CommandType.Interactive);
@@ -65,7 +65,7 @@ namespace StriBot.Commands
                     else
                     {
                         SendMessage(string.Format("{0} подул на {1}, поднимается юбка и мы обнаруживаем {2} {3}! PogChamp ",
-                            commandInfo.DisplayName, commandInfo.ArgumentsAsString, customArray.GetUnderpantsType(), customArray.GetUnderpantsColor()), commandInfo.Platform);
+                            commandInfo.DisplayName, commandInfo.ArgumentsAsString, _customArray.GetUnderpantsType(), _customArray.GetUnderpantsColor()), commandInfo.Platform);
                     }
                 }, new string[] { "Цель" }, CommandType.Interactive);
 
@@ -84,9 +84,9 @@ namespace StriBot.Commands
                 delegate (CommandInfo commandInfo)
                 {
                     if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
-                        SendMessage($"{commandInfo.DisplayName} приобрел букет {customArray.GetBucket()} PepoFlower ", commandInfo.Platform);
+                        SendMessage($"{commandInfo.DisplayName} приобрел букет {_customArray.GetBucket()} PepoFlower ", commandInfo.Platform);
                     else
-                        SendMessage($"{commandInfo.DisplayName} дарит {commandInfo.ArgumentsAsString} букет {customArray.GetBucket()} PepoFlower ", commandInfo.Platform);
+                        SendMessage($"{commandInfo.DisplayName} дарит {commandInfo.ArgumentsAsString} букет {_customArray.GetBucket()} PepoFlower ", commandInfo.Platform);
                 }, new string[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateLoveCommand()
@@ -106,7 +106,7 @@ namespace StriBot.Commands
                     if (!string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
                     {
                         var duelAccuraccy = RandomHelper.random.Next(0, 100);
-                        string duelResult = customArray.GetDota2DuelResult();
+                        string duelResult = _customArray.GetDota2DuelResult();
                         SendMessage(string.Format("{0} вызывает {1} на битву 1х1 на {2}! Итог: {3}",
                             commandInfo.DisplayName, commandInfo.ArgumentsAsString, Heroes.GetRandomHero(), duelResult), commandInfo.Platform);
                     }
@@ -128,7 +128,7 @@ namespace StriBot.Commands
             => new Command("Шар", "Шар предсказаний, формулируйте вопрос для ответа \"да\" или \"нет\" ",
                 delegate (CommandInfo commandInfo)
                 {
-                    SendMessage($"Шар говорит... {customArray.GetBallAnswer()}", commandInfo.Platform);
+                    SendMessage($"Шар говорит... {_customArray.GetBallAnswer()}", commandInfo.Platform);
                 }, new string[] { "Вопрос" }, CommandType.Interactive);
 
         private Command CommandCoin()

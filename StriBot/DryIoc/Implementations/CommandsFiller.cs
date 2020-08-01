@@ -17,8 +17,9 @@ namespace StriBot.DryIoc.Implementations
             container.Register<LinkManager>(Reuse.Singleton);
             container.Register<RandomAnswerManager>(Reuse.Singleton);
             container.Register<BurgerManager>(Reuse.Singleton);
+            container.Register<BetsManager>(Reuse.Singleton);
 
-            container.Register<CustomArray>(Reuse.Singleton);
+            container.Register<AnswerOptions>(Reuse.Singleton);
         }
     }
 }

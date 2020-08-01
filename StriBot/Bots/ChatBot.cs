@@ -6,13 +6,9 @@ using StriBot.CustomData;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
-using StriBot.Language;
 using StriBot.Speakers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace StriBot.Bots
 {
@@ -22,35 +18,29 @@ namespace StriBot.Bots
         public CollectionHelper Bosses { get; set; }
         public int Deaths { get; set; } = 0;
         public string TextReminder { get; set; } = string.Empty;
-        public Dictionary<string, (int, int)> UsersBetted { get; set; }
 
         private Action BossUpdate;
         private Action DeathUpdate;
-        private CustomArray customArray;
-        private string[] BettingOptions;
-        private bool betsProcessing;
-        private int betsTimer;
-        private double betsCoefficient;
-        private int timer;
+        private AnswerOptions _customArray;
+        private int _timer;
         private int toysForSub = 30;
-        private readonly Currency currency;
         private readonly CurrencyBaseManager _currencyBaseManager;
         private readonly HalberdManager _halberdManager;
         private readonly DuelManager _duelManager;
         private readonly Speaker _speaker;
+        private readonly BetsManager _betsManager;
         private readonly TwitchBot _twitchBot;
 
-        public ChatBot(Currency currency, Speaker speaker, CustomArray customArray, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager)
+        public ChatBot(Speaker speaker, AnswerOptions customArray, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, BetsManager betsManager)
         {
-            this.customArray = customArray;
-            this.currency = currency;
-            this._speaker = speaker;
-            this._twitchBot = twitchBot;
+            _customArray = customArray;
+            _speaker = speaker;
+            _twitchBot = twitchBot;
             _halberdManager = halberdManager;
             _currencyBaseManager = currencyBaseManager;
             _duelManager = duelManager;
+            _betsManager = betsManager;
 
-            UsersBetted = new Dictionary<string, (int, int)>();
             Bosses = new CollectionHelper();
 
             GlobalEventContainer.CommandReceived += OnChatCommandReceived;
@@ -58,29 +48,24 @@ namespace StriBot.Bots
 
         public void TimerTick()
         {
-            timer++;
+            _timer++;
 
-            if (betsProcessing)
-            {
-                betsTimer++;
-                if (betsTimer == 5)
-                    StopBetsProcess();
-            }
+            _betsManager.Tick(new Platform[] { Platform.Twitch });
 
-            if (timer == 40)
+            if (_timer == 40)
                 _currencyBaseManager.DistributionMoney(1, 5, Enums.Platform.Twitch);
-            if (timer == 15)
+            if (_timer == 15)
                 SendMessage("Если увидел крутой момент, запечатли это! Сделай клип! striboF ");
-            if (timer == 30)
+            if (_timer == 30)
                 SendMessage("У стримера все под контролем! striboPled ");
-            if (timer == 45)
+            if (_timer == 45)
                 SendMessage("Спасибо за вашу поддержку! HolidaySanta ");
 
-            if (timer % 10 == 0 && !string.IsNullOrEmpty(TextReminder))
+            if (_timer % 10 == 0 && !string.IsNullOrEmpty(TextReminder))
                 SendMessage("Напоминание: " + TextReminder);
 
-            if (timer == 60)
-                timer = 0;
+            if (_timer == 60)
+                _timer = 0;
 
             _duelManager.Tick();
             _halberdManager.Tick();
@@ -112,60 +97,6 @@ namespace StriBot.Bots
             }
         }
 
-        public void StopBetsProcess()
-        {
-            betsProcessing = false;
-            betsTimer = 0;
-            SendMessage("Ставки больше не принимаются");
-        }
-
-        public void CreateBets(string[] options)
-        {
-            BettingOptions = new string[options.Length - 1];
-            for (int i = 0; i < BettingOptions.Length; i++)
-                BettingOptions[i] = options[i + 1];
-            betsProcessing = true;
-            betsTimer = 0;
-            UsersBetted.Clear();
-            betsCoefficient = (options.Length * 0.5);
-
-            SendMessage(string.Format("Время ставок! Коэффициент {0}. Для участия необходимо написать !ставка [номер ставки] [сколько ставите]", betsCoefficient));
-            StringBuilder messageBuilder = new StringBuilder(string.Format("{0}: ", options[0]));
-            for (int i = 0; i < BettingOptions.Length; i++)
-            {
-                messageBuilder.Append($"{i} - {BettingOptions[i]}");
-            }
-            messageBuilder.Remove(messageBuilder.Length - 2, 2);
-            SendMessage(messageBuilder.ToString());
-        }
-
-        public void SetBetsWinner(int winner)
-        {
-            try
-            {
-                foreach (var bet in UsersBetted)
-                {
-                    if (bet.Value.Item1 == winner)
-                        DataBase.AddMoneyToUser(bet.Key, (int)(bet.Value.Item2 * betsCoefficient) + (bet.Value.Item2 * (-1)));
-                    else
-                        DataBase.AddMoneyToUser(bet.Key, bet.Value.Item2 * (-1));
-                }
-                SendMessage($"Победила ставка под номером {winner}! В ставках участвовало {UsersBetted.Count} енотов! Вы можете проверить свой запас {currency.GenitiveMultiple}");
-
-                SendMessage("Победили: " + UsersBetted.Where(x => x.Value.Item1 == winner)
-                    .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.Item2}")).ToString());
-                SendMessage("Проиграли: " + UsersBetted.Where(x => x.Value.Item1 != winner)
-                    .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.Item2}")).ToString());
-
-                UsersBetted.Clear();
-                betsProcessing = false;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
         public void SetConstructorSettings(Action bossUpdate, Action deathUpdate)
         {
             BossUpdate = bossUpdate;
@@ -181,7 +112,6 @@ namespace StriBot.Bots
             var linkManager = container.Resolve<LinkManager>();
             var randomAnswerManager = container.Resolve<RandomAnswerManager>();
             var burgerManager = container.Resolve<BurgerManager>();
-            
 
             Commands = new Dictionary<string, Command>()
             {
@@ -262,38 +192,7 @@ namespace StriBot.Bots
                 _currencyBaseManager.CreateCommands(),
                 _duelManager.CreateCommands(),
                 _halberdManager.CreateCommands(),
-
-                #region DateBase
-                { "ставка", new Command("Ставка", "Сделать ставку",
-                delegate (CommandInfo e) {
-                    if(betsProcessing)
-                    {
-                        int numberOfBets = 0;
-                        int amountOfBets = 0;
-                        if (e.ArgumentsAsList.Count == 2 && Int32.TryParse(e.ArgumentsAsList[0], out numberOfBets) && Int32.TryParse(e.ArgumentsAsList[1],out amountOfBets)
-                        && numberOfBets < BettingOptions.Length && amountOfBets > 0)
-                        {
-                            if (DataBase.CheckMoney(e.DisplayName) < amountOfBets)
-                                SendMessage($"{e.DisplayName} у тебя недостаточно {currency.GenitiveMultiple} для такой ставки!");
-                            else
-                            {
-                                if (!UsersBetted.ContainsKey(e.DisplayName))
-                                {
-                                    UsersBetted.Add(e.DisplayName, (numberOfBets,amountOfBets));
-                                    SendMessage($"{e.DisplayName} успешно сделал ставку!");
-                                }
-                                else
-                                    SendMessage($"{e.DisplayName} уже сделал ставку!");
-                            }
-                        }
-                        else
-                            SendMessage($"{e.DisplayName} вы неправильно указали ставку");
-                    }
-                    else
-                        SendMessage("В данный момент ставить нельзя!");
-                },
-                new string[] {"на что", "сколько"}, CommandType.Interactive )},
-                #endregion
+                _betsManager.CreateCommands()
             };
         }
 
