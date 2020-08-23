@@ -1,7 +1,6 @@
 ﻿using DryIoc;
 using StriBot.Bots.Enums;
 using StriBot.Commands;
-using StriBot.Commands.CommonFunctions;
 using StriBot.CustomData;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
@@ -15,9 +14,7 @@ namespace StriBot.Bots
     public class ChatBot
     {
         public Dictionary<string, Command> Commands { get; set; }
-        private AnswerOptions _customArray;
         private int _timer;
-        private int toysForSub = 30;
         private readonly CurrencyBaseManager _currencyBaseManager;
         private readonly HalberdManager _halberdManager;
         private readonly DuelManager _duelManager;
@@ -26,10 +23,8 @@ namespace StriBot.Bots
         private readonly TwitchBot _twitchBot;
         private readonly RememberManager _rememberManager;
 
-        public ChatBot(Speaker speaker, AnswerOptions customArray, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, 
-            BetsManager betsManager, RememberManager rememberManager)
+        public ChatBot(Speaker speaker, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, BetsManager betsManager, RememberManager rememberManager)
         {
-            _customArray = customArray;
             _speaker = speaker;
             _twitchBot = twitchBot;
             _halberdManager = halberdManager;
@@ -75,6 +70,9 @@ namespace StriBot.Bots
                         break;
                 }
             }
+
+            if (_twitchBot.IsConnected())
+                _speaker.Say("Бот подключился к Twitch");
         }
 
         internal void Reconnect(Platform[] platforms)
@@ -94,7 +92,6 @@ namespace StriBot.Bots
         {
             var container = GlobalContainer.Default;
             var managerMMR = container.Resolve<MMRManager>();
-            var readyMadePhrases = container.Resolve<ReadyMadePhrases>();
             var orderManager = container.Resolve<OrderManager>();
             var linkManager = container.Resolve<LinkManager>();
             var randomAnswerManager = container.Resolve<RandomAnswerManager>();

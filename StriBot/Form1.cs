@@ -41,57 +41,41 @@ namespace StriBot
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            textBoxMMR.Text = _managerMMR.MMR.ToString();
-        }
+            => textBoxMMR.Text = _managerMMR.MMR.ToString();
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://www.twitch.tv/stribog45");
-        }
+            => System.Diagnostics.Process.Start("https://www.twitch.tv/stribog45");
 
         private void timer1_Tick(object sender, EventArgs e)
-        {
-            _chatBot.TimerTick();
-        }
+            => _chatBot.TimerTick();
+
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Reporter.CreateCommands(_chatBot.Commands);
-        }
+            => Reporter.CreateCommands(_chatBot.Commands);
 
         private void buttonDistribution_Click(object sender, EventArgs e)
-        {
-            _currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text), Bots.Enums.Platform.Twitch);
-        }
+            => _currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text), Bots.Enums.Platform.Twitch);
         private void buttonCreateOptions_Click(object sender, EventArgs e)
         {
             var options = TextBoxOptions.Text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
             _betsManager.CreateBets(options, new Platform[] { Platform.Twitch });
         }
         private void buttonBetsOfManiac_Click(object sender, EventArgs e)
-        {
-            _betsManager.CreateBets(new string[] { "Количество повешанных", "0", "1", "2", "3", "4" }, new Platform[] { Platform.Twitch });
-        }
+            => _betsManager.CreateBets(new string[] { "Количество повешанных", "0", "1", "2", "3", "4" }, new Platform[] { Platform.Twitch });
+
         private void buttonBetsOfSurvivors_Click(object sender, EventArgs e)
-        {
-            _betsManager.CreateBets(new string[] { "Количество сбежавших", "0", "1", "2", "3", "4" }, new Platform[] { Platform.Twitch });
-        }
+            => _betsManager.CreateBets(new string[] { "Количество сбежавших", "0", "1", "2", "3", "4" }, new Platform[] { Platform.Twitch });
+
         private void buttonBetsOfSurvivor_Click(object sender, EventArgs e)
-        {
-            _betsManager.CreateBets(new string[] { "Выживание стримера", "выжил", "погиб" }, new Platform[] { Platform.Twitch });
-        }
+            => _betsManager.CreateBets(new string[] { "Выживание стримера", "выжил", "погиб" }, new Platform[] { Platform.Twitch });
+
         private void buttonBetsDota2_Click(object sender, EventArgs e)
-        {
-            _betsManager.CreateBets(new string[] { "Победа команды", "radiant", "dire" }, new Platform[] { Platform.Twitch });
-        }
+            => _betsManager.CreateBets(new string[] { "Победа команды", "radiant", "dire" }, new Platform[] { Platform.Twitch });
+
         private void buttonStopBets_Click(object sender, EventArgs e)
-        {
-            _betsManager.StopBetsProcess(new Platform[] { Platform.Twitch });
-        }
+            => _betsManager.StopBetsProcess(new Platform[] { Platform.Twitch });
+
         private void buttonSelectWinner_Click(object sender, EventArgs e)
-        {
-            _betsManager.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value), new Platform[] { Platform.Twitch });
-        }
+            => _betsManager.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value), new Platform[] { Platform.Twitch });
 
         void UpdateOrderList(List<(string, string, int)> orders)
         {
@@ -131,13 +115,9 @@ namespace StriBot
             }
         }
         private void buttonMMRSet_Click(object sender, EventArgs e)
-        {
-            _managerMMR.MMR = Convert.ToInt32(textBoxMMR.Text);
-        }
+            => _managerMMR.MMR = Convert.ToInt32(textBoxMMR.Text);
         private void buttonMMRCheck_Click(object sender, EventArgs e)
-        {
-            textBoxMMR.Text = _managerMMR.MMR.ToString();
-        }
+            => textBoxMMR.Text = _managerMMR.MMR.ToString();
         private void buttonWinsCheck_Click(object sender, EventArgs e)
         {
             textBox1.Text = _managerMMR.Wins.ToString();

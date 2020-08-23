@@ -24,9 +24,7 @@ namespace StriBot.Commands
         }
 
         public void SafeCallConnector(Action<List<(string, string, int)>> updateOrders)
-        {
-            _updateOrders = updateOrders;
-        }
+            => _updateOrders = updateOrders;
 
         public Command CreateOrder()
             => new Command("Заказ", String.Format("Предложить свой заказ", PriceList.Hero), CreateCustomOrderDelegate(), new string[] { _currency.NominativeMultiple.Title(), "Заказ" }, 

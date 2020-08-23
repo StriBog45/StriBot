@@ -60,14 +60,13 @@ namespace StriBot.Bots
         }
 
         public void Connect()
-        {
-            _twitchClient.Connect();
-        }
+            => _twitchClient.Connect();
+
+        public bool IsConnected()
+            => _twitchClient.IsConnected;
 
         public void Disconnect()
-        {
-            _twitchClient.Disconnect();
-        }
+            => _twitchClient.Disconnect();
 
         private void SendMessage(Platform[] platforms, string message)
         {
@@ -76,9 +75,7 @@ namespace StriBot.Bots
         }
 
         private void TwitchPub_OnChannelCommerceReceived(object sender, TwitchLib.PubSub.Events.OnChannelCommerceReceivedArgs e)
-        {
-            SendMessage($"Тест: произошла коммерция {e.DisplayName} {e.ItemDescription} {e.Username} {e.PurchaseMessage}");
-        }
+            => SendMessage($"Тест: произошла коммерция {e.DisplayName} {e.ItemDescription} {e.Username} {e.PurchaseMessage}");
 
         private void TwitchPub_OnPubSubServiceConnected(object sender, EventArgs e)
         {
@@ -86,9 +83,7 @@ namespace StriBot.Bots
         }
 
         private void OnRewardRedeemed(object sender, TwitchLib.PubSub.Events.OnRewardRedeemedArgs e)
-        {
-            SendMessage($"Тест: произошла награда {e.DisplayName} {e.RewardTitle} {e.RewardCost} {e.RewardPrompt} {e.RewardId}");
-        }
+            => SendMessage($"Тест: произошла награда {e.DisplayName} {e.RewardTitle} {e.RewardCost} {e.RewardPrompt} {e.RewardId}");
 
         private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
