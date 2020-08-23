@@ -5,6 +5,7 @@ using StriBot.DryIoc;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Enums;
 using StriBot.EventConainers.Models;
+using StriBot.Language;
 using StriBot.Speakers;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,9 @@ namespace StriBot.Bots
         private readonly BetsManager _betsManager;
         private readonly TwitchBot _twitchBot;
         private readonly RememberManager _rememberManager;
+        private readonly Currency _currency;
 
-        public ChatBot(Speaker speaker, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, BetsManager betsManager, RememberManager rememberManager)
+        public ChatBot(Speaker speaker, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, BetsManager betsManager, RememberManager rememberManager, Currency currency)
         {
             _speaker = speaker;
             _twitchBot = twitchBot;
@@ -32,6 +34,7 @@ namespace StriBot.Bots
             _duelManager = duelManager;
             _betsManager = betsManager;
             _rememberManager = rememberManager;
+            _currency = currency;
 
             GlobalEventContainer.CommandReceived += OnChatCommandReceived;
             GlobalEventContainer.PlatformEventReceived += OnPlatformEventReceived;
@@ -44,11 +47,41 @@ namespace StriBot.Bots
                 case PlatformEventType.HighlightedMessage:
                     HighlightedMessage(platformEventInfo);
                     break;
+                case PlatformEventType.Raid:
+                    Raid(platformEventInfo);
+                    break;
+                case PlatformEventType.GiftSubscription:
+                    GiftSubscription(platformEventInfo);
+                    break;
+                case PlatformEventType.NewSubscription:
+                case PlatformEventType.ReSubsctiption:
+                    Subsctiption(platformEventInfo);
+                    break;
             }
+        }
+
+        private void Subsctiption(PlatformEventInfo platformEventInfo)
+        {
+            GlobalEventContainer.Message($"{platformEventInfo.UserName} подписался! PogChamp Срочно плед этому господину! А пока возьми {PriceList.ToysForSub} {_currency.Incline(PriceList.ToysForSub, true)} :)", platformEventInfo.Platform);
+            DataBase.AddMoneyToUser(platformEventInfo.UserName, PriceList.ToysForSub);
+            _speaker.Say("Спасибо за подписку!");
+        }
+
+        private void GiftSubscription(PlatformEventInfo platformEventInfo)
+        {
+            GlobalEventContainer.Message($"{platformEventInfo.UserName} подарил подписку для {platformEventInfo.SecondName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {PriceList.ToysForSub} {_currency.Incline(PriceList.ToysForSub)}", platformEventInfo.Platform);
+            DataBase.AddMoneyToUser(platformEventInfo.UserName, PriceList.ToysForSub);
+            _speaker.Say("Спасибо за подарочную подписку!");
         }
 
         private void HighlightedMessage(PlatformEventInfo platformEventInfo)
             => _speaker.Say(platformEventInfo.Message);
+
+        private void Raid(PlatformEventInfo platformEventInfo)
+        {
+            GlobalEventContainer.Message($"Нас атакует армия {platformEventInfo.UserName}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ", platformEventInfo.Platform);
+            _speaker.Say("Помогите! Нас атакуют! Поднимайте щиты!");
+        }
 
         public void TimerTick()
         {
@@ -122,6 +155,7 @@ namespace StriBot.Bots
                 randomAnswerManager.CreateCommands(),
                 burgerManager.CreateCommands(),
                 progressManager.CreateCommands(),
+#warning сделать команду uptime
                 //{ "uptime", new Command("Uptime","Длительность текущей трансляции",
                 //delegate (CommandInfo e) {
                 //    SendMessage( $"Трансляция длится: { GetUptime()}"); }, CommandType.Info)},

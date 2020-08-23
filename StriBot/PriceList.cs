@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StriBot
+﻿namespace StriBot
 {
     static public class PriceList
     {
@@ -18,5 +12,6 @@ namespace StriBot
         static public int Cosplay { get; } = 200;
         static public int VIP { get; } = 300;
         static public int Boost { get; } = 200;
+        static public int ToysForSub { get; } = 30;
     }
 }

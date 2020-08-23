@@ -2,6 +2,10 @@
 {
     public enum PlatformEventType
     {
-        HighlightedMessage
+        HighlightedMessage,
+        Raid,
+        GiftSubscription,
+        NewSubscription,
+        ReSubsctiption
     }
 }

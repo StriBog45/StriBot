@@ -86,16 +86,7 @@ namespace StriBot.Bots
         private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             if (e.ChatMessage.IsHighlighted)
-            {
                 GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.HighlightedMessage, Platform.Twitch, displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
-            }
-        }
-
-        private void OnReSubscriber(object sender, OnReSubscriberArgs e)
-        {
-            //SendMessage($"{e.ReSubscriber.DisplayName} подписался! PogChamp Срочно плед этому господину! А пока возьми {toysForSub} {currency.Incline(toysForSub, true)} :)");
-            //DataBase.AddMoneyToUser(e.ReSubscriber.DisplayName, toysForSub);
-            //speaker.Say("Спасибо за подписку!");
         }
 
         public void SendMessage(string message)
@@ -138,28 +129,22 @@ namespace StriBot.Bots
         /// e.GiftedSubscription.MsgParamRecipientUserName - кому подарили "Добро пожаловать syndicatereara!"
         /// </summary>
         private void OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
-        {
-            //SendMessage($"{e.GiftedSubscription.DisplayName} подарил подписку для {e.GiftedSubscription.MsgParamRecipientUserName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {toysForSub} {currency.Incline(toysForSub)}");
-            //DataBase.AddMoneyToUser(e.GiftedSubscription.DisplayName, toysForSub);
-            //speaker.Say("Спасибо за подарочную подписку!");
-        }
+            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.GiftSubscription, Platform.Twitch,
+                displayName: e.GiftedSubscription.DisplayName,
+                secondName: e.GiftedSubscription.MsgParamRecipientUserName));
 
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
             => SendMessage("Бот успешно подключился!");
 
         private void OnRaidNotification(object sender, OnRaidNotificationArgs e)
-        {
-            //SendMessage($"Нас атакует армия под руководством {e.RaidNotification.DisplayName}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ");
-            //speaker.Say("Нас атакуют! Поднимайте щиты!");
-        }
+            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.Raid, Platform.Twitch, displayName: e.RaidNotification.DisplayName));
 
         private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
-        {
-            //SendMessage($"{e.Subscriber.DisplayName} подписался! PogChamp Срочно плед этому господину! А пока возьми {toysForSub} {currency.Incline(toysForSub, true)} :)");
-            //DataBase.AddMoneyToUser(e.Subscriber.DisplayName, toysForSub);
-            //speaker.Say("Спасибо за подписку!");
-        }
-        
+            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, displayName: e.Subscriber.DisplayName));
+
+        private void OnReSubscriber(object sender, OnReSubscriberArgs e)
+            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, displayName: e.ReSubscriber.DisplayName));
+
         private void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
             GlobalEventContainer.CreateEventCommandCall(new CommandInfo(
