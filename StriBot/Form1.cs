@@ -21,6 +21,7 @@ namespace StriBot
         private readonly BetsManager _betsManager;
         private readonly ChatBot _chatBot;
         private readonly ProgressManager _progressManager;
+        private readonly RememberManager _rememberManager;
 
         public Form1()
         {
@@ -35,6 +36,7 @@ namespace StriBot
             _orderManager = GlobalContainer.Default.Resolve<OrderManager>();
             _currencyBaseManager = GlobalContainer.Default.Resolve<CurrencyBaseManager>();
             _betsManager = GlobalContainer.Default.Resolve<BetsManager>();
+            _rememberManager = GlobalContainer.Default.Resolve<RememberManager>();
             _orderManager.SafeCallConnector(UpdateOrderList);
         }
 
@@ -193,7 +195,7 @@ namespace StriBot
 
         private void buttonReminderClear_Click(object sender, EventArgs e)
         {
-            _chatBot.TextReminder = string.Empty;
+            _rememberManager.TextReminder = string.Empty;
             GlobalEventContainer.Message("Напоминание удалено", Bots.Enums.Platform.Twitch);
         }
 

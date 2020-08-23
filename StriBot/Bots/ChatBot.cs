@@ -15,9 +15,6 @@ namespace StriBot.Bots
     public class ChatBot
     {
         public Dictionary<string, Command> Commands { get; set; }
-        
-        public string TextReminder { get; set; } = string.Empty;
-        
         private AnswerOptions _customArray;
         private int _timer;
         private int toysForSub = 30;
@@ -27,8 +24,10 @@ namespace StriBot.Bots
         private readonly Speaker _speaker;
         private readonly BetsManager _betsManager;
         private readonly TwitchBot _twitchBot;
+        private readonly RememberManager _rememberManager;
 
-        public ChatBot(Speaker speaker, AnswerOptions customArray, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, BetsManager betsManager)
+        public ChatBot(Speaker speaker, AnswerOptions customArray, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, 
+            BetsManager betsManager, RememberManager rememberManager)
         {
             _customArray = customArray;
             _speaker = speaker;
@@ -37,6 +36,7 @@ namespace StriBot.Bots
             _currencyBaseManager = currencyBaseManager;
             _duelManager = duelManager;
             _betsManager = betsManager;
+            _rememberManager = rememberManager;
 
             GlobalEventContainer.CommandReceived += OnChatCommandReceived;
         }
@@ -56,14 +56,12 @@ namespace StriBot.Bots
             if (_timer == 45)
                 SendMessage("Спасибо за вашу поддержку! HolidaySanta ");
 
-            if (_timer % 10 == 0 && !string.IsNullOrEmpty(TextReminder))
-                SendMessage("Напоминание: " + TextReminder);
+            _rememberManager.Tick(_timer);
+            _duelManager.Tick();
+            _halberdManager.Tick();
 
             if (_timer == 60)
                 _timer = 0;
-
-            _duelManager.Tick();
-            _halberdManager.Tick();
         }
 
         public void Connect(Platform[] platforms)
@@ -114,15 +112,7 @@ namespace StriBot.Bots
                 //delegate (CommandInfo e) {
                 //    SendMessage( $"Трансляция длится: { GetUptime()}"); }, CommandType.Info)},
 
-                { "напомнить", new Command("Напомнить", "Создает напоминалку. При использовании без указания текста, напоминание будет удалено", Role.Moderator,
-                delegate (CommandInfo e) {
-                    TextReminder = e.ArgumentsAsString;
-                    if(TextReminder.Length > 0)
-                        SendMessage($"Напоминание: \"{e.ArgumentsAsString}\" создано");
-                    else
-                        SendMessage("Напоминание удалено");
-                }, new string[] {"текст"}, CommandType.Interactive )},
-
+                _rememberManager.CreateCommands(),
                 orderManager.CreateCommands(),
                 _currencyBaseManager.CreateCommands(),
                 _duelManager.CreateCommands(),

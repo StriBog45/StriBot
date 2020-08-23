@@ -222,6 +222,7 @@
     <Compile Include="Commands\OrderManager.cs" />
     <Compile Include="Commands\ProgressManager.cs" />
     <Compile Include="Commands\RandomAnswerManager.cs" />
+    <Compile Include="Commands\RememberManager.cs" />
     <Compile Include="CommandType.cs" />
     <Compile Include="Commands\BurgerManager.cs" />
     <Compile Include="CustomData\AnswerOptions.cs" />
