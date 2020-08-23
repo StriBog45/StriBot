@@ -19,7 +19,7 @@ namespace StriBot.EventConainers.Models
         public bool? IsMe { get; }
         public bool? IsBroadcaster { get; }
 
-        public CommandInfo(List<string> argumentsAsList, string argumentsAsString, string commandText, string message, string displayName, string userName, Platform platform,
+        public CommandInfo(Platform platform, List<string> argumentsAsList, string argumentsAsString, string commandText, string message, string displayName, string userName,
             bool? isVip = null, bool? isTurbo = null, bool? isSubscriber = null, bool? isModerator = null, bool? isMe = null, bool? isBroadcaster = null )
         {
             ArgumentsAsList = argumentsAsList;

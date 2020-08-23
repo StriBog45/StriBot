@@ -1,9 +1,9 @@
 ﻿using DryIoc;
 using StriBot.Bots.Enums;
 using StriBot.Commands;
-using StriBot.CustomData;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
+using StriBot.EventConainers.Enums;
 using StriBot.EventConainers.Models;
 using StriBot.Speakers;
 using System;
@@ -34,7 +34,21 @@ namespace StriBot.Bots
             _rememberManager = rememberManager;
 
             GlobalEventContainer.CommandReceived += OnChatCommandReceived;
+            GlobalEventContainer.PlatformEventReceived += OnPlatformEventReceived;
         }
+
+        private void OnPlatformEventReceived(PlatformEventInfo platformEventInfo)
+        {
+            switch (platformEventInfo.EventType)
+            {
+                case PlatformEventType.HighlightedMessage:
+                    HighlightedMessage(platformEventInfo);
+                    break;
+            }
+        }
+
+        private void HighlightedMessage(PlatformEventInfo platformEventInfo)
+            => _speaker.Say(platformEventInfo.Message);
 
         public void TimerTick()
         {
@@ -72,7 +86,7 @@ namespace StriBot.Bots
             }
 
             if (_twitchBot.IsConnected())
-                _speaker.Say("Бот подключился к Twitch");
+                _speaker.Say("Бот подключился");
         }
 
         internal void Reconnect(Platform[] platforms)
@@ -86,6 +100,9 @@ namespace StriBot.Bots
                         break;
                 }
             }
+
+            if (_twitchBot.IsConnected())
+                _speaker.Say("Бот переподключился");
         }
 
         public void CreateCommands()

@@ -1,5 +1,4 @@
 ﻿using System;
-using DryIoc;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
@@ -8,12 +7,11 @@ using TwitchLib.Api.V5.Models.Subscriptions;
 using TwitchLib.Api;
 using TwitchLib.PubSub;
 using TwitchLib.Client.Extensions;
-using StriBot.Speakers;
-using StriBot.DryIoc;
 using StriBot.EventConainers;
 using StriBot.Bots.Enums;
 using System.Linq;
 using StriBot.EventConainers.Models;
+using StriBot.EventConainers.Enums;
 
 namespace StriBot.Bots
 {
@@ -87,10 +85,10 @@ namespace StriBot.Bots
 
         private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            //if(e.ChatMessage.IsHighlighted)
-            //{
-            //    speaker.Say(e.ChatMessage.Message);
-            //}
+            if (e.ChatMessage.IsHighlighted)
+            {
+                GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.HighlightedMessage, Platform.Twitch, displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
+            }
         }
 
         private void OnReSubscriber(object sender, OnReSubscriberArgs e)
@@ -110,7 +108,6 @@ namespace StriBot.Bots
         {
             _twitchClient.Disconnect();
             _twitchClient.Reconnect();
-            //speaker.Say("Бот переподключился");
         }
 
         private void ExampleCallsAsync()
@@ -166,13 +163,13 @@ namespace StriBot.Bots
         private void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
             GlobalEventContainer.CreateEventCommandCall(new CommandInfo(
+                Platform.Twitch,
                 e.Command.ArgumentsAsList, 
                 e.Command.ArgumentsAsString, 
                 e.Command.CommandText, 
                 e.Command.ChatMessage.Message, 
                 e.Command.ChatMessage.DisplayName, 
                 e.Command.ChatMessage.Username,
-                Platform.Twitch,
                 e.Command.ChatMessage.IsVip, 
                 e.Command.ChatMessage.IsTurbo, 
                 e.Command.ChatMessage.IsSubscriber, 

@@ -237,8 +237,10 @@
     <Compile Include="DryIoc\Implementations\BotFiller.cs" />
     <Compile Include="DryIoc\Interfaces\IContainerFiller.cs" />
     <Compile Include="DryIoc\Registrators\Fillers.cs" />
+    <Compile Include="EventConainers\Enums\PlatformEventType.cs" />
     <Compile Include="EventConainers\Models\CommandInfo.cs" />
     <Compile Include="EventConainers\GlobalEventContainer.cs" />
+    <Compile Include="EventConainers\Models\PlatformEventInfo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
