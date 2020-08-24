@@ -197,6 +197,7 @@ namespace StriBot.Bots
         public void FollowersModeOff()
             => _twitchClient.FollowersOnlyOff(_twitchInfo.Channel);
 
+#warning GetUptime создан, но не привязан к команде
         string GetUptime()
         {
             string userId = GetUserId(_twitchInfo.Channel);
