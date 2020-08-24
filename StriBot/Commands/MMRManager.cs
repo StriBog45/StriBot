@@ -1,4 +1,5 @@
 ﻿using StriBot.Bots.Enums;
+using StriBot.Commands.Extensions;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using System.Collections.Generic;
@@ -12,10 +13,6 @@ namespace StriBot.Commands
         public int Losses { get; set; } = 0;
         private int _MMRChange = 30;
         private string _medallion = "Властелин 3";
-
-        public MMRManager()
-        {
-        }
 
         public Command AddWin()
         {

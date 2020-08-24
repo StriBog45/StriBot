@@ -1,4 +1,5 @@
 ﻿using StriBot.Commands.CommonFunctions;
+using StriBot.Commands.Extensions;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using StriBot.Language;
@@ -105,12 +106,10 @@ namespace StriBot.Commands
         }
 
         public Dictionary<string, Command> CreateCommands()
-        {
-            var result = new Dictionary<string, Command>();
-            result.Add(CreateDuelCommand());
-
-            return result;
-        }
+            => new Dictionary<string, Command>()
+            { 
+                CreateDuelCommand()
+            };
 
         public void Tick()
         {

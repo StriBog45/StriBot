@@ -1,4 +1,5 @@
 ﻿using StriBot.Bots.Enums;
+using StriBot.Commands.Extensions;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using System.Collections.Generic;
@@ -11,12 +12,10 @@ namespace StriBot.Commands
         private Platform _platform;
 
         public Dictionary<string, Command> CreateCommands()
-        {
-            var result = new Dictionary<string, Command>();
-            result.Add(CreateRemindCommand());
-
-            return result;
-        }
+            => new Dictionary<string, Command>()
+            {
+                CreateRemindCommand()
+            };
 
         public Command CreateRemindCommand()
         {

@@ -1,4 +1,5 @@
 ﻿using StriBot.Bots.Enums;
+using StriBot.Commands.Extensions;
 using StriBot.CustomData;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;

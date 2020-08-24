@@ -214,7 +214,7 @@
     <Compile Include="Commands\BetsManager.cs" />
     <Compile Include="Commands\CommonFunctions\ReadyMadePhrases.cs" />
     <Compile Include="Commands\CurrencyBaseManager.cs" />
-    <Compile Include="Commands\DictionaryExtensions.cs" />
+    <Compile Include="Commands\Extensions\DictionaryExtensions.cs" />
     <Compile Include="Commands\DuelManager.cs" />
     <Compile Include="Commands\HalberdManager.cs" />
     <Compile Include="Commands\LinkManager.cs" />

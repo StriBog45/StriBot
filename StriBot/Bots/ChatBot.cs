@@ -1,6 +1,7 @@
 ﻿using DryIoc;
 using StriBot.Bots.Enums;
 using StriBot.Commands;
+using StriBot.Commands.Extensions;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Enums;
@@ -90,7 +91,7 @@ namespace StriBot.Bots
             _betsManager.Tick(new Platform[] { Platform.Twitch });
 
             if (_timer == 40)
-                _currencyBaseManager.DistributionMoney(1, 5, Enums.Platform.Twitch);
+                _currencyBaseManager.DistributionMoney(1, 5, Platform.Twitch);
             if (_timer == 15)
                 SendMessage("Если увидел крутой момент, запечатли это! Сделай клип! striboF ");
             if (_timer == 30)

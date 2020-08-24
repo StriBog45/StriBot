@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace StriBot.Commands
+namespace StriBot.Commands.Extensions
 {
     public static class DictionaryExtensions
     {

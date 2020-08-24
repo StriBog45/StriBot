@@ -1,6 +1,6 @@
-﻿using StriBot.EventConainers;
+﻿using StriBot.Commands.Extensions;
+using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,10 +8,6 @@ namespace StriBot.Commands
 {
     public class BurgerManager
     {
-        public BurgerManager()
-        {
-        }
-
         static int MAX_BURGER_SIZE = 3;
         static string[] ListStuffing =  {
         "сосисками",
@@ -74,7 +70,7 @@ namespace StriBot.Commands
                 else
                     burgerBuilder.Append(" и " + RandomHelper.GetRandomOfArray(ListStuffing));
             }
-            burgerBuilder.Append(String.Format(" на {0}", RandomHelper.GetRandomOfArray(ListFoundation)));
+            burgerBuilder.Append(string.Format(" на {0}", RandomHelper.GetRandomOfArray(ListFoundation)));
             return burgerBuilder.ToString();
         }
 
@@ -82,7 +78,8 @@ namespace StriBot.Commands
             => new Dictionary<string, Command>()
             {
                 new Command("Бутерброд","Выдает бутерброд тебе или объекту",
-                delegate (CommandInfo commandInfo) {
+                delegate (CommandInfo commandInfo)
+                {
                         if(string.IsNullOrEmpty( commandInfo.ArgumentsAsString))
                             GlobalEventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.DisplayName), commandInfo.Platform);
                         else
