@@ -2,28 +2,46 @@
 {
     public class Currency : ICases
     {
-        public string Nominative => "игрушка";
+        /// <summary>
+        ///  Кто? Что?
+        /// </summary>
+        public string Nominative => "кристалл";//"игрушка";
 
-        public string Genitive => "игрушки";
+        /// <summary>
+        /// Кого? Чего?
+        /// </summary>
+        public string Genitive => "кристалла";//"игрушки";
 
-        public string Dative => "игрушку";
+        /// <summary>
+        /// Кому? Чему?
+        /// </summary>
+        public string Dative => "кристаллу";//"игрушку";
 
-        public string Accusative => "игрушку";
+        /// <summary>
+        /// Кого? Что?
+        /// </summary>
+        public string Accusative => "кристалл";//"игрушку";
 
-        public string Instrumental => "игрушкой";
+        /// <summary>
+        /// Кем? Чем?
+        /// </summary>
+        public string Instrumental => "кристаллом";//"игрушкой";
 
-        public string Prepositional => "игрушке";
+        /// <summary>
+        /// О ком? О чем?
+        /// </summary>
+        public string Prepositional => "кристалле";//"игрушке";
 
-        public string NominativeMultiple => "игрушки";
+        public string NominativeMultiple => "кристаллы";//"игрушки";
 
-        public string GenitiveMultiple => "игрушек";
+        public string GenitiveMultiple => "кристаллов";//"игрушек";
 
-        public string DativeMultiple => "игрушкам";
+        public string DativeMultiple => "кристаллам";//"игрушкам";
 
-        public string AccusativeMultiple => "игрушки";
+        public string AccusativeMultiple => "кристаллы";//"игрушки";
 
-        public string InstrumentalMultiple => "игрушками";
+        public string InstrumentalMultiple => "кристаллами";//"игрушками";
 
-        public string PrepositionalMultiple => "игрушках";
+        public string PrepositionalMultiple => "кристаллах";//"игрушках";
     }
 }
