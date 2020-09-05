@@ -8,16 +8,16 @@ namespace StriBot
 {
     public static class Reporter
     {
-        private static string Catalog { get; set; } = "Отчеты";
-        private static string InfoName { get; } = "Информационные";
-        private static string InteractiveName { get; } = "Интерактив";
-        private static string OrdersName { get; } = "Заказы";
-        private static string ModeratorsName { get; } = "Модераторам";
-        private static string StreamersName { get; } = "Стримеры";
+        private static string _catalog = "Отчеты";
+        private static string _infoName = "Информационные";
+        private static string _interactiveName = "Интерактив";
+        private static string _ordersName = "Заказы";
+        private static string _moderatorsName = "Модераторам";
+        private static string _streamersName = "Стримеры";
 
         public static void CreateReport()
         {
-            string name = String.Format("{0}", DateTime.Now.ToString(new CultureInfo("ru-RU")).Split(' ')[0]);
+            string name = DateTime.Now.ToString(new CultureInfo("ru-RU")).Split(' ')[0];
 
             string path = GetPath(name);
 
@@ -26,23 +26,17 @@ namespace StriBot
                 name += "(1)";
                 path = GetPath(name);
             }
-
-            //List<string> report = new List<string>();
-            //report.Add(String.Format("Побед: {0}, Поражений: {1}", MyBot.Wins, MyBot.Losses));
-            //report.Add(String.Format("Смертей: {0}", MyBot.Deaths));
-            //report.Add(String.Format("Боссы: {0}", MyBot.bosses.ToString()));
-
         }
 
         public static void CreateCommands(Dictionary<string, Command> commands)
         {
             CreateCatalogIfNeed();
 
-            CommandReport(InfoName, commands, CommandType.Info);
-            CommandReport(InteractiveName, commands, CommandType.Interactive);
-            CommandReport(OrdersName, commands, CommandType.Order);
-            CommandReport(ModeratorsName, commands, Role.Moderator);
-            CommandReport(StreamersName, commands, CommandType.Streamers);
+            CommandReport(_infoName, commands, CommandType.Info);
+            CommandReport(_interactiveName, commands, CommandType.Interactive);
+            CommandReport(_ordersName, commands, CommandType.Order);
+            CommandReport(_moderatorsName, commands, Role.Moderator);
+            CommandReport(_streamersName, commands, CommandType.Streamers);
         }
 
         private static void CommandReport(string fileName, Dictionary<string, Command> commands, CommandType commandType)
@@ -92,12 +86,12 @@ namespace StriBot
         }
 
         private static string GetPath(string name)
-            => String.Format("{0}\\{1}.txt", Catalog, name);
+            => string.Format("{0}\\{1}.txt", _catalog, name);
 
         private static void CreateCatalogIfNeed()
         {
-            if (!Directory.Exists(Catalog))
-                Directory.CreateDirectory(Catalog);
+            if (!Directory.Exists(_catalog))
+                Directory.CreateDirectory(_catalog);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace StriBot.Commands
             _subBonus = bonus;
             _distributionAmountPerUsers = perUser;
             _distributionAmountUsers = maxUsers;
-            GlobalEventContainer.Message($"Замечены {_currency.NominativeMultiple} без присмотра! Время полоскать! Пиши !стащить striboF ", platform);
+            GlobalEventContainer.Message($"Замечены {_currency.NominativeMultiple} без присмотра! Пиши !стащить striboF ", platform);
             _receivedUsers.Clear();
         }
 

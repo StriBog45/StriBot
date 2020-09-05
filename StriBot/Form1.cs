@@ -138,7 +138,7 @@ namespace StriBot
             else
             {
                 listView1.Items.Clear();
-                foreach (var boss in _progressManager.Bosses)
+                foreach (var boss in _progressManager.GetBosses())
                     listView1.Items.Add(new ListViewItem(boss));
             }
         }
@@ -146,7 +146,7 @@ namespace StriBot
         private void buttonBossDelete_Click(object sender, EventArgs e)
         {
             foreach (int item in listView1.SelectedIndices)
-                _progressManager.Bosses.RemoveAt(item);
+                _progressManager.BossRemoveByIndex(item);
         }
 
         private void buttonDeathAdd_Click(object sender, EventArgs e)
