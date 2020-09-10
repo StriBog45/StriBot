@@ -43,18 +43,18 @@ namespace StriBot.Commands
                         else
                             DataBase.AddMoneyToUser(commandInfo.DisplayName, _distributionAmountPerUsers);
 
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно стащил {_currency.Dative}!", commandInfo.Platform);
+                        GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно стащил {_currency.Accusative}!", commandInfo.Platform);
                         _distributionAmountUsers--;
                         _receivedUsers.Add(commandInfo.DisplayName);
                     }
                     else
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} вы уже забрали {_currency.Dative}! Не жадничайте!", commandInfo.Platform);
+                        GlobalEventContainer.Message($"{commandInfo.DisplayName} вы уже забрали {_currency.Accusative}! Не жадничайте!", commandInfo.Platform);
                 }
                 else
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} {_currency.GenitiveMultiple} не осталось!", commandInfo.Platform);
             };
 
-            return new Command("Стащить", $"Крадет {_currency.Dative} без присмотра", action, CommandType.Interactive);
+            return new Command("Стащить", $"Крадет {_currency.Accusative} без присмотра", action, CommandType.Interactive);
         }
 
         public void DistributionMoney(int perUser, int maxUsers, Platform platform, bool bonus = true)
@@ -79,7 +79,7 @@ namespace StriBot.Commands
                         DataBase.AddMoneyToUser(commandInfo.DisplayName, -_distributionAmountPerUsers * SubCoefficient);
                     else
                         DataBase.AddMoneyToUser(commandInfo.DisplayName, -_distributionAmountPerUsers);
-                    GlobalEventContainer.Message($"{commandInfo.DisplayName} незаметно вернул {_currency.Dative}!", commandInfo.Platform);
+                    GlobalEventContainer.Message($"{commandInfo.DisplayName} незаметно вернул {_currency.Accusative}!", commandInfo.Platform);
                     _distributionAmountUsers++;
                     _receivedUsers.Remove(commandInfo.DisplayName);
                 }
@@ -87,7 +87,7 @@ namespace StriBot.Commands
                     _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
             };
 
-            return new Command("Вернуть", $"Возвращает {_currency.Dative} боту", action, CommandType.Interactive);
+            return new Command("Вернуть", $"Возвращает {_currency.Accusative} боту", action, CommandType.Interactive);
         }
 
         public Command CreateAddCurrency()
