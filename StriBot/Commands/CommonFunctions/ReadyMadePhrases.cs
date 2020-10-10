@@ -1,6 +1,6 @@
 ﻿using StriBot.Bots.Enums;
 using StriBot.EventConainers;
-using StriBot.Language;
+using StriBot.Language.Implementations;
 
 namespace StriBot.Commands.CommonFunctions
 {

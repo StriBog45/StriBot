@@ -2,7 +2,8 @@
 using StriBot.Commands.Extensions;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
-using StriBot.Language;
+using StriBot.Language.Extensions;
+using StriBot.Language.Implementations;
 using System;
 using System.Collections.Generic;
 

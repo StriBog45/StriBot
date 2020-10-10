@@ -4,6 +4,8 @@ using StriBot.Bots.Enums;
 using StriBot.Commands;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
+using StriBot.Language.Implementations;
+using StriBot.Language.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,7 @@ namespace StriBot
         private readonly ChatBot _chatBot;
         private readonly ProgressManager _progressManager;
         private readonly RememberManager _rememberManager;
+        private readonly Currency _currency;
 
         public Form1()
         {
@@ -30,6 +33,7 @@ namespace StriBot
             _chatBot = GlobalContainer.Default.Resolve<ChatBot>();
             _chatBot.CreateCommands();
             _chatBot.Connect(new Platform[] { Platform.Twitch });
+            _currency = GlobalContainer.Default.Resolve<Currency>();
             _progressManager = GlobalContainer.Default.Resolve<ProgressManager>();
             _progressManager.SetConstructorSettings(BossUpdate, DeathUpdate);
             _managerMMR = GlobalContainer.Default.Resolve<MMRManager>();
@@ -41,7 +45,34 @@ namespace StriBot
         }
 
         private void Form1_Load(object sender, EventArgs e)
-            => textBoxMMR.Text = _managerMMR.MMR.ToString();
+        {
+            textBoxMMR.Text = _managerMMR.MMR.ToString();
+            comboBoxCurrency.DataSource = _currency.GetCurrencies();
+
+            LoadCurrency();
+        }
+
+        private void LoadCurrency()
+        {
+            if (!string.IsNullOrEmpty(comboBoxCurrency.Text))
+            {
+                _currency.LoadCurrency(comboBoxCurrency.Text);
+
+                textBoxNominative.Text = _currency.Nominative;
+                textBoxGenitive.Text = _currency.Genitive;
+                textBoxDative.Text = _currency.Dative;
+                textBoxAccusative.Text = _currency.Accusative;
+                textBoxInstrumental.Text = _currency.Instrumental;
+                textBoxPrepositional.Text = _currency.Prepositional;
+
+                textBoxNominativeMultiple.Text = _currency.NominativeMultiple;
+                textBoxGenitiveMultiple.Text = _currency.GenitiveMultiple;
+                textBoxDativeMultiple.Text = _currency.DativeMultiple;
+                textBoxAccusativeMultiple.Text = _currency.AccusativeMultiple;
+                textBoxInstrumentalMultiple.Text = _currency.InstrumentalMultiple;
+                textBoxPrepositionalMultiple.Text = _currency.PrepositionalMultiple;
+            }
+        }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
             => System.Diagnostics.Process.Start("https://www.twitch.tv/stribog45");
@@ -200,6 +231,52 @@ namespace StriBot
         private void buttonUnfollowMode_Click(object sender, EventArgs e)
         {
             //chatBot.FollowersModeOff();
+        }
+
+        private void buttonCreateCurrency_Click(object sender, EventArgs e)
+        {
+            var currencyName = comboBoxCurrency.Text;
+            if (!string.IsNullOrWhiteSpace(textBoxCreateCurrency.Text))
+            {
+                currencyName = textBoxCreateCurrency.Text;
+            }
+            
+
+            var cases = new Cases
+            {
+                Nominative = textBoxNominative.Text,
+                Genitive = textBoxGenitive.Text,
+                Dative = textBoxDative.Text,
+                Accusative = textBoxAccusative.Text,
+                Instrumental = textBoxInstrumental.Text,
+                Prepositional = textBoxPrepositional.Text,
+
+                NominativeMultiple = textBoxNominativeMultiple.Text,
+                GenitiveMultiple = textBoxGenitiveMultiple.Text,
+                DativeMultiple = textBoxDativeMultiple.Text,
+                AccusativeMultiple = textBoxAccusativeMultiple.Text,
+                InstrumentalMultiple = textBoxInstrumentalMultiple.Text,
+                PrepositionalMultiple = textBoxPrepositionalMultiple.Text
+            };
+
+            if (_currency.CreateCurrency(currencyName, cases))
+            {
+                var phrase = comboBoxCurrency.Text != currencyName
+                    ? $"Валюта {currencyName} создана!"
+                    : $"Валюта {currencyName} перезаписана";
+                comboBoxCurrency.DataSource = _currency.GetCurrencies();
+                comboBoxCurrency.SelectedItem = currencyName;
+                MessageBox.Show(phrase);
+            }
+            else
+            {
+                MessageBox.Show("Некорректное название валюты!");
+            }
+        }
+
+        private void comboBoxCurrency_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadCurrency();
         }
     }
 }

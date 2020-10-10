@@ -1,4 +1,4 @@
-﻿namespace StriBot.Language
+﻿namespace StriBot.Language.Interfaces
 {
     /// <summary>
     /// Падежи
@@ -36,32 +36,32 @@
         string Prepositional { get; }
 
         /// <summary>
-        /// Именительный
+        /// Именительный мн. ч.
         /// </summary>
         string NominativeMultiple { get; }
 
         /// <summary>
-        /// Родительный
+        /// Родительный мн. ч.
         /// </summary>
         string GenitiveMultiple { get; }
 
         /// <summary>
-        /// Дательный
+        /// Дательный мн. ч.
         /// </summary>
         string DativeMultiple { get; }
 
         /// <summary>
-        /// Винительный
+        /// Винительный мн. ч.
         /// </summary>
         string AccusativeMultiple { get; }
 
         /// <summary>
-        /// Творительный
+        /// Творительный мн. ч.
         /// </summary>
         string InstrumentalMultiple { get; }
 
         /// <summary>
-        /// Предложный
+        /// Предложный мн. ч.
         /// </summary>
         string PrepositionalMultiple { get; }
     }

@@ -29,9 +29,9 @@ namespace StriBot.Commands
             var path = GetPath(_bossesFileName);
             try
             {
-                using (StreamReader sr = new StreamReader(path))
+                using (var streamReader = new StreamReader(path))
                 {
-                    var lines = sr.ReadToEnd().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    var lines = streamReader.ReadToEnd().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                     foreach (var line in lines)
                     {

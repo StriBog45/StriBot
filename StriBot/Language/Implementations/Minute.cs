@@ -1,4 +1,6 @@
-﻿namespace StriBot.Language
+﻿using StriBot.Language.Interfaces;
+
+namespace StriBot.Language.Implementations
 {
     public class Minute : ICases
     {
