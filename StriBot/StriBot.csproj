@@ -222,6 +222,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationSettings\Models\StoredSettings.cs" />
+    <Compile Include="ApplicationSettings\SettingsFileManager.cs" />
     <Compile Include="Bots\ChatBot.cs" />
     <Compile Include="Bots\Enums\Platform.cs" />
     <Compile Include="CollectionHelper.cs" />

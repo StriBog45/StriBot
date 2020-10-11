@@ -1,4 +1,5 @@
 ﻿using DryIoc;
+using StriBot.ApplicationSettings;
 using StriBot.Bots;
 using StriBot.Bots.Enums;
 using StriBot.Commands;
@@ -25,6 +26,7 @@ namespace StriBot
         private readonly ProgressManager _progressManager;
         private readonly RememberManager _rememberManager;
         private readonly Currency _currency;
+        private readonly SettingsFileManager _settingsFileManager;
 
         public Form1()
         {
@@ -33,6 +35,7 @@ namespace StriBot
             _chatBot = GlobalContainer.Default.Resolve<ChatBot>();
             _chatBot.CreateCommands();
             _chatBot.Connect(new Platform[] { Platform.Twitch });
+            _settingsFileManager = GlobalContainer.Default.Resolve<SettingsFileManager>();
             _currency = GlobalContainer.Default.Resolve<Currency>();
             _progressManager = GlobalContainer.Default.Resolve<ProgressManager>();
             _progressManager.SetConstructorSettings(BossUpdate, DeathUpdate);
@@ -49,6 +52,10 @@ namespace StriBot
             textBoxMMR.Text = _managerMMR.MMR.ToString();
             comboBoxCurrency.DataSource = _currency.GetCurrencies();
 
+            if (!string.IsNullOrEmpty(_settingsFileManager.CurrencyName))
+            {
+                comboBoxCurrency.SelectedItem = _settingsFileManager.CurrencyName;
+            }
             LoadCurrency();
         }
 
@@ -81,7 +88,11 @@ namespace StriBot
             => _chatBot.TimerTick();
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-            => Reporter.CreateCommands(_chatBot.Commands);
+        {
+            Reporter.CreateCommands(_chatBot.Commands);
+            _settingsFileManager.SetCurrencyName(comboBoxCurrency.Text);
+            _settingsFileManager.SaveSettings();
+        }
 
         private void buttonDistribution_Click(object sender, EventArgs e)
             => _currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text), Bots.Enums.Platform.Twitch);
@@ -275,8 +286,6 @@ namespace StriBot
         }
 
         private void comboBoxCurrency_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadCurrency();
-        }
+            => LoadCurrency();
     }
 }
