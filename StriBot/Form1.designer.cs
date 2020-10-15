@@ -84,38 +84,47 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
-            this.textBoxNominative = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBoxGenitive = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBoxDative = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBoxAccusative = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBoxInstrumental = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.textBoxPrepositional = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxCreateCurrency = new System.Windows.Forms.TextBox();
+            this.buttonCreateCurrency = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.textBoxNominativeMultiple = new System.Windows.Forms.TextBox();
             this.textBoxGenitiveMultiple = new System.Windows.Forms.TextBox();
             this.textBoxDativeMultiple = new System.Windows.Forms.TextBox();
             this.textBoxAccusativeMultiple = new System.Windows.Forms.TextBox();
             this.textBoxInstrumentalMultiple = new System.Windows.Forms.TextBox();
             this.textBoxPrepositionalMultiple = new System.Windows.Forms.TextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.textBoxNominative = new System.Windows.Forms.TextBox();
+            this.textBoxGenitive = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxDative = new System.Windows.Forms.TextBox();
+            this.textBoxAccusative = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxInstrumental = new System.Windows.Forms.TextBox();
+            this.textBoxPrepositional = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.buttonCreateCurrency = new System.Windows.Forms.Button();
-            this.textBoxCreateCurrency = new System.Windows.Forms.TextBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -130,8 +139,11 @@
             this.groupBox1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -693,14 +705,11 @@
             this.columnHeader4.Text = "Цена";
             this.columnHeader4.Width = 129;
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 60000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.groupBox9);
+            this.tabPage2.Controls.Add(this.groupBox8);
+            this.tabPage2.Controls.Add(this.groupBox7);
             this.tabPage2.Controls.Add(this.textBoxCreateCurrency);
             this.tabPage2.Controls.Add(this.buttonCreateCurrency);
             this.tabPage2.Controls.Add(this.label17);
@@ -714,275 +723,16 @@
             this.tabPage2.Text = "Валюта";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // comboBoxCurrency
+            // textBoxCreateCurrency
             // 
-            this.comboBoxCurrency.FormattingEnabled = true;
-            this.comboBoxCurrency.Items.AddRange(new object[] {
-            "название"});
-            this.comboBoxCurrency.Location = new System.Drawing.Point(79, 10);
-            this.comboBoxCurrency.Name = "comboBoxCurrency";
-            this.comboBoxCurrency.Size = new System.Drawing.Size(442, 21);
-            this.comboBoxCurrency.TabIndex = 0;
-            this.comboBoxCurrency.SelectedIndexChanged += new System.EventHandler(this.comboBoxCurrency_SelectedIndexChanged);
-            // 
-            // textBoxNominative
-            // 
-            this.textBoxNominative.Location = new System.Drawing.Point(101, 19);
-            this.textBoxNominative.Name = "textBoxNominative";
-            this.textBoxNominative.Size = new System.Drawing.Size(100, 20);
-            this.textBoxNominative.TabIndex = 1;
-            this.textBoxNominative.Text = "название";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(11, 22);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(84, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Именительный";
-            // 
-            // textBoxGenitive
-            // 
-            this.textBoxGenitive.Location = new System.Drawing.Point(101, 45);
-            this.textBoxGenitive.Name = "textBoxGenitive";
-            this.textBoxGenitive.Size = new System.Drawing.Size(100, 20);
-            this.textBoxGenitive.TabIndex = 1;
-            this.textBoxGenitive.Text = "название";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 48);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(75, 13);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "Родительный";
-            // 
-            // textBoxDative
-            // 
-            this.textBoxDative.Location = new System.Drawing.Point(101, 71);
-            this.textBoxDative.Name = "textBoxDative";
-            this.textBoxDative.Size = new System.Drawing.Size(100, 20);
-            this.textBoxDative.TabIndex = 1;
-            this.textBoxDative.Text = "название";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(11, 74);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(65, 13);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "Дательный";
-            // 
-            // textBoxAccusative
-            // 
-            this.textBoxAccusative.Location = new System.Drawing.Point(101, 97);
-            this.textBoxAccusative.Name = "textBoxAccusative";
-            this.textBoxAccusative.Size = new System.Drawing.Size(100, 20);
-            this.textBoxAccusative.TabIndex = 1;
-            this.textBoxAccusative.Text = "название";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(11, 100);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(75, 13);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "Винительный";
-            // 
-            // textBoxInstrumental
-            // 
-            this.textBoxInstrumental.Location = new System.Drawing.Point(101, 123);
-            this.textBoxInstrumental.Name = "textBoxInstrumental";
-            this.textBoxInstrumental.Size = new System.Drawing.Size(100, 20);
-            this.textBoxInstrumental.TabIndex = 1;
-            this.textBoxInstrumental.Text = "название";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(11, 126);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(81, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Творительный";
-            // 
-            // textBoxPrepositional
-            // 
-            this.textBoxPrepositional.Location = new System.Drawing.Point(101, 149);
-            this.textBoxPrepositional.Name = "textBoxPrepositional";
-            this.textBoxPrepositional.Size = new System.Drawing.Size(100, 20);
-            this.textBoxPrepositional.TabIndex = 1;
-            this.textBoxPrepositional.Text = "название";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(11, 152);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(73, 13);
-            this.label10.TabIndex = 2;
-            this.label10.Text = "Предложный";
-            // 
-            // textBoxNominativeMultiple
-            // 
-            this.textBoxNominativeMultiple.Location = new System.Drawing.Point(101, 19);
-            this.textBoxNominativeMultiple.Name = "textBoxNominativeMultiple";
-            this.textBoxNominativeMultiple.Size = new System.Drawing.Size(100, 20);
-            this.textBoxNominativeMultiple.TabIndex = 1;
-            this.textBoxNominativeMultiple.Text = "название";
-            // 
-            // textBoxGenitiveMultiple
-            // 
-            this.textBoxGenitiveMultiple.Location = new System.Drawing.Point(101, 45);
-            this.textBoxGenitiveMultiple.Name = "textBoxGenitiveMultiple";
-            this.textBoxGenitiveMultiple.Size = new System.Drawing.Size(100, 20);
-            this.textBoxGenitiveMultiple.TabIndex = 1;
-            this.textBoxGenitiveMultiple.Text = "название";
-            // 
-            // textBoxDativeMultiple
-            // 
-            this.textBoxDativeMultiple.Location = new System.Drawing.Point(101, 71);
-            this.textBoxDativeMultiple.Name = "textBoxDativeMultiple";
-            this.textBoxDativeMultiple.Size = new System.Drawing.Size(100, 20);
-            this.textBoxDativeMultiple.TabIndex = 1;
-            this.textBoxDativeMultiple.Text = "название";
-            // 
-            // textBoxAccusativeMultiple
-            // 
-            this.textBoxAccusativeMultiple.Location = new System.Drawing.Point(101, 97);
-            this.textBoxAccusativeMultiple.Name = "textBoxAccusativeMultiple";
-            this.textBoxAccusativeMultiple.Size = new System.Drawing.Size(100, 20);
-            this.textBoxAccusativeMultiple.TabIndex = 1;
-            this.textBoxAccusativeMultiple.Text = "название";
-            // 
-            // textBoxInstrumentalMultiple
-            // 
-            this.textBoxInstrumentalMultiple.Location = new System.Drawing.Point(101, 123);
-            this.textBoxInstrumentalMultiple.Name = "textBoxInstrumentalMultiple";
-            this.textBoxInstrumentalMultiple.Size = new System.Drawing.Size(100, 20);
-            this.textBoxInstrumentalMultiple.TabIndex = 1;
-            this.textBoxInstrumentalMultiple.Text = "название";
-            // 
-            // textBoxPrepositionalMultiple
-            // 
-            this.textBoxPrepositionalMultiple.Location = new System.Drawing.Point(101, 149);
-            this.textBoxPrepositionalMultiple.Name = "textBoxPrepositionalMultiple";
-            this.textBoxPrepositionalMultiple.Size = new System.Drawing.Size(100, 20);
-            this.textBoxPrepositionalMultiple.TabIndex = 1;
-            this.textBoxPrepositionalMultiple.Text = "название";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(11, 22);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(84, 13);
-            this.label11.TabIndex = 2;
-            this.label11.Text = "Именительный";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(11, 48);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(75, 13);
-            this.label12.TabIndex = 2;
-            this.label12.Text = "Родительный";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(11, 74);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(65, 13);
-            this.label13.TabIndex = 2;
-            this.label13.Text = "Дательный";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(11, 100);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(75, 13);
-            this.label14.TabIndex = 2;
-            this.label14.Text = "Винительный";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(11, 126);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(81, 13);
-            this.label15.TabIndex = 2;
-            this.label15.Text = "Творительный";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(11, 152);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(73, 13);
-            this.label16.TabIndex = 2;
-            this.label16.Text = "Предложный";
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.textBoxNominative);
-            this.groupBox5.Controls.Add(this.textBoxGenitive);
-            this.groupBox5.Controls.Add(this.label10);
-            this.groupBox5.Controls.Add(this.textBoxDative);
-            this.groupBox5.Controls.Add(this.textBoxAccusative);
-            this.groupBox5.Controls.Add(this.label9);
-            this.groupBox5.Controls.Add(this.textBoxInstrumental);
-            this.groupBox5.Controls.Add(this.textBoxPrepositional);
-            this.groupBox5.Controls.Add(this.label8);
-            this.groupBox5.Controls.Add(this.label5);
-            this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Controls.Add(this.label7);
-            this.groupBox5.Location = new System.Drawing.Point(31, 37);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(218, 182);
-            this.groupBox5.TabIndex = 3;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Единственное число";
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.textBoxNominativeMultiple);
-            this.groupBox6.Controls.Add(this.textBoxGenitiveMultiple);
-            this.groupBox6.Controls.Add(this.label16);
-            this.groupBox6.Controls.Add(this.textBoxDativeMultiple);
-            this.groupBox6.Controls.Add(this.label15);
-            this.groupBox6.Controls.Add(this.textBoxAccusativeMultiple);
-            this.groupBox6.Controls.Add(this.label14);
-            this.groupBox6.Controls.Add(this.textBoxInstrumentalMultiple);
-            this.groupBox6.Controls.Add(this.label13);
-            this.groupBox6.Controls.Add(this.textBoxPrepositionalMultiple);
-            this.groupBox6.Controls.Add(this.label12);
-            this.groupBox6.Controls.Add(this.label11);
-            this.groupBox6.Location = new System.Drawing.Point(303, 37);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(218, 182);
-            this.groupBox6.TabIndex = 4;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Множественное число";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(28, 13);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(45, 13);
-            this.label17.TabIndex = 5;
-            this.label17.Text = "Валюта";
+            this.textBoxCreateCurrency.Location = new System.Drawing.Point(5, 227);
+            this.textBoxCreateCurrency.Name = "textBoxCreateCurrency";
+            this.textBoxCreateCurrency.Size = new System.Drawing.Size(394, 20);
+            this.textBoxCreateCurrency.TabIndex = 7;
             // 
             // buttonCreateCurrency
             // 
-            this.buttonCreateCurrency.Location = new System.Drawing.Point(317, 365);
+            this.buttonCreateCurrency.Location = new System.Drawing.Point(405, 225);
             this.buttonCreateCurrency.Name = "buttonCreateCurrency";
             this.buttonCreateCurrency.Size = new System.Drawing.Size(138, 23);
             this.buttonCreateCurrency.TabIndex = 6;
@@ -990,12 +740,364 @@
             this.buttonCreateCurrency.UseVisualStyleBackColor = true;
             this.buttonCreateCurrency.Click += new System.EventHandler(this.buttonCreateCurrency_Click);
             // 
-            // textBoxCreateCurrency
+            // label17
             // 
-            this.textBoxCreateCurrency.Location = new System.Drawing.Point(79, 368);
-            this.textBoxCreateCurrency.Name = "textBoxCreateCurrency";
-            this.textBoxCreateCurrency.Size = new System.Drawing.Size(228, 20);
-            this.textBoxCreateCurrency.TabIndex = 7;
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(14, 13);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(45, 13);
+            this.label17.TabIndex = 5;
+            this.label17.Text = "Валюта";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.textBoxNominativeMultiple);
+            this.groupBox6.Controls.Add(this.textBoxGenitiveMultiple);
+            this.groupBox6.Controls.Add(this.textBoxDativeMultiple);
+            this.groupBox6.Controls.Add(this.textBoxAccusativeMultiple);
+            this.groupBox6.Controls.Add(this.textBoxInstrumentalMultiple);
+            this.groupBox6.Controls.Add(this.textBoxPrepositionalMultiple);
+            this.groupBox6.Location = new System.Drawing.Point(407, 37);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(136, 182);
+            this.groupBox6.TabIndex = 4;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Множественное число";
+            // 
+            // textBoxNominativeMultiple
+            // 
+            this.textBoxNominativeMultiple.Location = new System.Drawing.Point(6, 19);
+            this.textBoxNominativeMultiple.Name = "textBoxNominativeMultiple";
+            this.textBoxNominativeMultiple.Size = new System.Drawing.Size(124, 20);
+            this.textBoxNominativeMultiple.TabIndex = 1;
+            this.textBoxNominativeMultiple.Text = "название";
+            // 
+            // textBoxGenitiveMultiple
+            // 
+            this.textBoxGenitiveMultiple.Location = new System.Drawing.Point(6, 45);
+            this.textBoxGenitiveMultiple.Name = "textBoxGenitiveMultiple";
+            this.textBoxGenitiveMultiple.Size = new System.Drawing.Size(124, 20);
+            this.textBoxGenitiveMultiple.TabIndex = 1;
+            this.textBoxGenitiveMultiple.Text = "название";
+            // 
+            // textBoxDativeMultiple
+            // 
+            this.textBoxDativeMultiple.Location = new System.Drawing.Point(6, 71);
+            this.textBoxDativeMultiple.Name = "textBoxDativeMultiple";
+            this.textBoxDativeMultiple.Size = new System.Drawing.Size(124, 20);
+            this.textBoxDativeMultiple.TabIndex = 1;
+            this.textBoxDativeMultiple.Text = "название";
+            // 
+            // textBoxAccusativeMultiple
+            // 
+            this.textBoxAccusativeMultiple.Location = new System.Drawing.Point(6, 97);
+            this.textBoxAccusativeMultiple.Name = "textBoxAccusativeMultiple";
+            this.textBoxAccusativeMultiple.Size = new System.Drawing.Size(124, 20);
+            this.textBoxAccusativeMultiple.TabIndex = 1;
+            this.textBoxAccusativeMultiple.Text = "название";
+            // 
+            // textBoxInstrumentalMultiple
+            // 
+            this.textBoxInstrumentalMultiple.Location = new System.Drawing.Point(6, 123);
+            this.textBoxInstrumentalMultiple.Name = "textBoxInstrumentalMultiple";
+            this.textBoxInstrumentalMultiple.Size = new System.Drawing.Size(124, 20);
+            this.textBoxInstrumentalMultiple.TabIndex = 1;
+            this.textBoxInstrumentalMultiple.Text = "название";
+            // 
+            // textBoxPrepositionalMultiple
+            // 
+            this.textBoxPrepositionalMultiple.Location = new System.Drawing.Point(6, 149);
+            this.textBoxPrepositionalMultiple.Name = "textBoxPrepositionalMultiple";
+            this.textBoxPrepositionalMultiple.Size = new System.Drawing.Size(124, 20);
+            this.textBoxPrepositionalMultiple.TabIndex = 1;
+            this.textBoxPrepositionalMultiple.Text = "название";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.textBoxNominative);
+            this.groupBox5.Controls.Add(this.textBoxGenitive);
+            this.groupBox5.Controls.Add(this.textBoxDative);
+            this.groupBox5.Controls.Add(this.textBoxAccusative);
+            this.groupBox5.Controls.Add(this.textBoxInstrumental);
+            this.groupBox5.Controls.Add(this.textBoxPrepositional);
+            this.groupBox5.Location = new System.Drawing.Point(279, 37);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(129, 182);
+            this.groupBox5.TabIndex = 3;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Единственное число";
+            // 
+            // textBoxNominative
+            // 
+            this.textBoxNominative.Location = new System.Drawing.Point(12, 19);
+            this.textBoxNominative.Name = "textBoxNominative";
+            this.textBoxNominative.Size = new System.Drawing.Size(110, 20);
+            this.textBoxNominative.TabIndex = 1;
+            this.textBoxNominative.Text = "название";
+            // 
+            // textBoxGenitive
+            // 
+            this.textBoxGenitive.Location = new System.Drawing.Point(12, 45);
+            this.textBoxGenitive.Name = "textBoxGenitive";
+            this.textBoxGenitive.Size = new System.Drawing.Size(110, 20);
+            this.textBoxGenitive.TabIndex = 1;
+            this.textBoxGenitive.Text = "название";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(9, 152);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(73, 13);
+            this.label10.TabIndex = 2;
+            this.label10.Text = "Предложный";
+            // 
+            // textBoxDative
+            // 
+            this.textBoxDative.Location = new System.Drawing.Point(12, 71);
+            this.textBoxDative.Name = "textBoxDative";
+            this.textBoxDative.Size = new System.Drawing.Size(110, 20);
+            this.textBoxDative.TabIndex = 1;
+            this.textBoxDative.Text = "название";
+            // 
+            // textBoxAccusative
+            // 
+            this.textBoxAccusative.Location = new System.Drawing.Point(12, 97);
+            this.textBoxAccusative.Name = "textBoxAccusative";
+            this.textBoxAccusative.Size = new System.Drawing.Size(110, 20);
+            this.textBoxAccusative.TabIndex = 1;
+            this.textBoxAccusative.Text = "название";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 126);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(81, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Творительный";
+            // 
+            // textBoxInstrumental
+            // 
+            this.textBoxInstrumental.Location = new System.Drawing.Point(12, 123);
+            this.textBoxInstrumental.Name = "textBoxInstrumental";
+            this.textBoxInstrumental.Size = new System.Drawing.Size(110, 20);
+            this.textBoxInstrumental.TabIndex = 1;
+            this.textBoxInstrumental.Text = "название";
+            // 
+            // textBoxPrepositional
+            // 
+            this.textBoxPrepositional.Location = new System.Drawing.Point(12, 149);
+            this.textBoxPrepositional.Name = "textBoxPrepositional";
+            this.textBoxPrepositional.Size = new System.Drawing.Size(110, 20);
+            this.textBoxPrepositional.TabIndex = 1;
+            this.textBoxPrepositional.Text = "название";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(9, 100);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(75, 13);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "Винительный";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 22);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(84, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Именительный";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(9, 48);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(75, 13);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Родительный";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 74);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(65, 13);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "Дательный";
+            // 
+            // comboBoxCurrency
+            // 
+            this.comboBoxCurrency.FormattingEnabled = true;
+            this.comboBoxCurrency.Items.AddRange(new object[] {
+            "название"});
+            this.comboBoxCurrency.Location = new System.Drawing.Point(65, 10);
+            this.comboBoxCurrency.Name = "comboBoxCurrency";
+            this.comboBoxCurrency.Size = new System.Drawing.Size(478, 21);
+            this.comboBoxCurrency.TabIndex = 0;
+            this.comboBoxCurrency.SelectedIndexChanged += new System.EventHandler(this.comboBoxCurrency_SelectedIndexChanged);
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 60000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label5);
+            this.groupBox7.Controls.Add(this.label7);
+            this.groupBox7.Controls.Add(this.label10);
+            this.groupBox7.Controls.Add(this.label6);
+            this.groupBox7.Controls.Add(this.label8);
+            this.groupBox7.Controls.Add(this.label9);
+            this.groupBox7.Location = new System.Drawing.Point(5, 37);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(92, 182);
+            this.groupBox7.TabIndex = 8;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Падежи";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.label11);
+            this.groupBox8.Controls.Add(this.label12);
+            this.groupBox8.Controls.Add(this.label13);
+            this.groupBox8.Controls.Add(this.label14);
+            this.groupBox8.Controls.Add(this.label15);
+            this.groupBox8.Controls.Add(this.label16);
+            this.groupBox8.Location = new System.Drawing.Point(95, 37);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(94, 182);
+            this.groupBox8.TabIndex = 8;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Вопросы";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(9, 22);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(59, 13);
+            this.label11.TabIndex = 2;
+            this.label11.Text = "Кто? Что?";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(9, 74);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(75, 13);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "Кому? Чему?";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(9, 152);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(83, 13);
+            this.label13.TabIndex = 2;
+            this.label13.Text = "О ком? О чем?";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(9, 48);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(71, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Кого? Чего?";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(9, 100);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(65, 13);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "Кого? Что?";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(9, 126);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(65, 13);
+            this.label16.TabIndex = 2;
+            this.label16.Text = "Кем? Чем?";
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.label18);
+            this.groupBox9.Controls.Add(this.label19);
+            this.groupBox9.Controls.Add(this.label20);
+            this.groupBox9.Controls.Add(this.label21);
+            this.groupBox9.Controls.Add(this.label22);
+            this.groupBox9.Controls.Add(this.label23);
+            this.groupBox9.Location = new System.Drawing.Point(185, 37);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(94, 182);
+            this.groupBox9.TabIndex = 8;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Предлоги";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(9, 22);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(79, 13);
+            this.label18.TabIndex = 2;
+            this.label18.Text = "------------------------";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(9, 74);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(32, 13);
+            this.label19.TabIndex = 2;
+            this.label19.Text = "К, по";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(9, 152);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(63, 13);
+            this.label20.TabIndex = 2;
+            this.label20.Text = "О, об, в, во";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(9, 48);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(80, 13);
+            this.label21.TabIndex = 2;
+            this.label21.Text = "От, до, из, без";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(9, 100);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(74, 13);
+            this.label22.TabIndex = 2;
+            this.label22.Text = "В, на, за, про";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(9, 126);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(80, 13);
+            this.label23.TabIndex = 2;
+            this.label23.Text = "С, за, под, над";
             // 
             // Form1
             // 
@@ -1029,10 +1131,16 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1108,12 +1216,6 @@
         private System.Windows.Forms.TextBox textBoxInstrumental;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBoxPrepositional;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textBoxPrepositionalMultiple;
         private System.Windows.Forms.TextBox textBoxInstrumentalMultiple;
         private System.Windows.Forms.TextBox textBoxAccusativeMultiple;
@@ -1125,6 +1227,21 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TextBox textBoxCreateCurrency;
         private System.Windows.Forms.Button buttonCreateCurrency;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
     }
 }
 

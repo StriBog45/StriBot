@@ -15,20 +15,20 @@ namespace StriBot.Language.Extensions
         {
             string result = string.Empty;
 
-            if(number == 1 && !secondDeclension)
+            if (number == 1 && !secondDeclension)
                 result = cases.Nominative;
             else if (number == 1 && secondDeclension)
-                result = cases.Dative;
-            else if(number >= 2 && number <= 4)
-                result = cases.NominativeMultiple;
+                result = cases.Accusative;
+            else if (number >= 2 && number <= 4)
+                result = cases.Genitive;
             else if (number >= 5 && number <= 20)
                 result = cases.GenitiveMultiple;
             else if (number % 10 == 1 && !secondDeclension)
                 result = cases.Nominative;
             else if (number % 10 == 1 && secondDeclension)
-                result = cases.Dative;
+                result = cases.Accusative;
             else if (number % 10 >= 2 && number % 10 <= 4)
-                result = cases.NominativeMultiple;
+                result = cases.Genitive;
             else if (number % 10 >= 5 && number % 10 <= 9 || number % 10 == 0)
                 result = cases.GenitiveMultiple;
 
