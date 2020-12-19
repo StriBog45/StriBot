@@ -37,7 +37,7 @@ namespace StriBot.Commands
                     {
                         if (commandInfo.ArgumentsAsList.Count > 0)
                         {
-                            if (Int32.TryParse(commandInfo.ArgumentsAsString, out int amount) && amount > 0)
+                            if (int.TryParse(commandInfo.ArgumentsAsString, out int amount) && amount > 0)
                             {
                                 if (amount <= DataBase.CheckMoney(commandInfo.DisplayName))
                                 {

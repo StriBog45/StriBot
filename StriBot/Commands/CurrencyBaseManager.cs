@@ -166,8 +166,8 @@ namespace StriBot.Commands
         {
             Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
                 if (commandInfo.ArgumentsAsList.Count == 2
-                    && Int32.TryParse(commandInfo.ArgumentsAsList[0], out int amountForPer)
-                    && Int32.TryParse(commandInfo.ArgumentsAsList[1], out int amountPeople)
+                    && int.TryParse(commandInfo.ArgumentsAsList[0], out int amountForPer)
+                    && int.TryParse(commandInfo.ArgumentsAsList[1], out int amountPeople)
                     && amountForPer > 0
                     && amountPeople > 0)
                 {

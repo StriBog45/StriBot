@@ -45,37 +45,40 @@ namespace StriBot.Commands
 
         public void SetBetsWinner(int winner, Platform[] platforms)
         {
-            foreach (var bet in _usersBetted)
+            if (_betsProcessing)
             {
-                if (bet.Value.Choice == winner)
-                    DataBase.AddMoneyToUser(bet.Key, (int)(bet.Value.BetSize * _betsCoefficient) + (bet.Value.BetSize * (-1)));
+                foreach (var bet in _usersBetted)
+                {
+                    if (bet.Value.Choice == winner)
+                        DataBase.AddMoneyToUser(bet.Key, (int)(bet.Value.BetSize * _betsCoefficient) + (bet.Value.BetSize * (-1)));
+                    else
+                        DataBase.AddMoneyToUser(bet.Key, bet.Value.BetSize * (-1));
+                }
+                GlobalEventContainer.Message($"Победила ставка под номером {winner} - {_bettingOptions[winner]}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
+
+                var winers = _usersBetted.Where(x => x.Value.Choice == winner)
+                    .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
+                var loosers = _usersBetted.Where(x => x.Value.Choice != winner)
+                    .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
+
+                if (!string.IsNullOrEmpty(winers))
+                    GlobalEventContainer.Message("Победили: " + winers, platforms);
                 else
-                    DataBase.AddMoneyToUser(bet.Key, bet.Value.BetSize * (-1));
+                    GlobalEventContainer.Message("Победителей нет", platforms);
+
+                if (!string.IsNullOrEmpty(loosers))
+                    GlobalEventContainer.Message("Проиграли: " + loosers, platforms);
+                else
+                    GlobalEventContainer.Message("Проигравших нет", platforms);
+
+                _usersBetted.Clear();
+                _betsProcessing = false;
             }
-            GlobalEventContainer.Message($"Победила ставка под номером {winner}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
-
-            var winers = _usersBetted.Where(x => x.Value.Choice == winner)
-                .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
-            var loosers = _usersBetted.Where(x => x.Value.Choice != winner)
-                .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
-
-            if (!string.IsNullOrEmpty(winers))
-                GlobalEventContainer.Message("Победили: " + winers, platforms);
-            else
-                GlobalEventContainer.Message("Победителей нет", platforms);
-
-            if (!string.IsNullOrEmpty(loosers))
-                GlobalEventContainer.Message("Проиграли: " +  loosers, platforms);
-            else
-                GlobalEventContainer.Message("Проигравших нет", platforms);
-
-            _usersBetted.Clear();
-            _betsProcessing = false;
         }
 
         public void CreateBets(string[] options, Platform[] platforms)
         {
-            _bettingOptions = new string[options.Length - 1];
+            _bettingOptions = new string[options.Length^1];
             for (int i = 0; i < _bettingOptions.Length; i++)
                 _bettingOptions[i] = options[i + 1];
             _betsProcessing = true;
