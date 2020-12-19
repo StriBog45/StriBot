@@ -90,7 +90,17 @@ namespace StriBot.Bots
         }
 
         public void SendMessage(string message)
-            => _twitchClient.SendMessage(_twitchInfo.Channel, $"/me {message}");
+        {
+            if (_twitchClient.IsConnected)
+                _twitchClient.SendMessage(_twitchInfo.Channel, $"/me {message}");
+            else
+            {
+                Reconnect();
+
+                if (_twitchClient.IsConnected)
+                    _twitchClient.SendMessage(_twitchInfo.Channel, $"/me {message}");
+            }
+        }
 
         public void UserTimeout(string userName, TimeSpan timeSpan, string timeoutText)
             => TimeoutUserExt.TimeoutUser(_twitchClient, _twitchInfo.Channel, userName, timeSpan, timeoutText);
