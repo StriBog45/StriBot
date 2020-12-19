@@ -126,7 +126,7 @@ namespace StriBot.Commands
                 if (commandInfo.ArgumentsAsList.Count > 1)
                 {
                     int temp;
-                    if (Int32.TryParse(commandInfo.ArgumentsAsList[0], out temp))
+                    if (int.TryParse(commandInfo.ArgumentsAsList[0], out temp))
                     {
                         CreateOrderDelegate(temp);
                         if (DataBase.CheckMoney(commandInfo.DisplayName) >= temp)

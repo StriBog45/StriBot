@@ -144,7 +144,7 @@ namespace StriBot.Commands
         public Command CreateTransferCurrency()
         {
             Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
-                if (commandInfo.ArgumentsAsList.Count == 2 && Int32.TryParse(commandInfo.ArgumentsAsList[1], out var amount) && amount > 0)
+                if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[1], out var amount) && amount > 0)
                 {
                     if (DataBase.CheckMoney(commandInfo.DisplayName) >= amount)
                     {

@@ -102,7 +102,7 @@ namespace StriBot.Commands
                 {
                     int numberOfBets = 0;
                     int betSize = 0;
-                    if (e.ArgumentsAsList.Count == 2 && Int32.TryParse(e.ArgumentsAsList[0], out numberOfBets) && Int32.TryParse(e.ArgumentsAsList[1], out betSize)
+                    if (e.ArgumentsAsList.Count == 2 && int.TryParse(e.ArgumentsAsList[0], out numberOfBets) && int.TryParse(e.ArgumentsAsList[1], out betSize)
                     && numberOfBets < _bettingOptions.Length && betSize > 0)
                     {
                         if (DataBase.CheckMoney(e.DisplayName) < betSize)
