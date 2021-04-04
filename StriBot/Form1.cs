@@ -27,6 +27,7 @@ namespace StriBot
         private readonly RememberManager _rememberManager;
         private readonly Currency _currency;
         private readonly SettingsFileManager _settingsFileManager;
+        private readonly RaffleManager _raffleManager;
 
         public Form1()
         {
@@ -44,6 +45,7 @@ namespace StriBot
             _currencyBaseManager = GlobalContainer.Default.Resolve<CurrencyBaseManager>();
             _betsManager = GlobalContainer.Default.Resolve<BetsManager>();
             _rememberManager = GlobalContainer.Default.Resolve<RememberManager>();
+            _raffleManager = GlobalContainer.Default.Resolve<RaffleManager>();
             _orderManager.SafeCallConnector(UpdateOrderList);
         }
 
@@ -287,5 +289,33 @@ namespace StriBot
 
         private void comboBoxCurrency_SelectedIndexChanged(object sender, EventArgs e)
             => LoadCurrency();
+
+        private void textBoxRaffle_TextChanged(object sender, EventArgs e)
+        {
+            var commandName = textBoxRaffle.Text;
+            var currentCommandName = _raffleManager.GetCurrentCommandName();
+
+            if (!string.IsNullOrEmpty(currentCommandName))
+                _chatBot.Commands.Remove(currentCommandName);
+
+            _raffleManager.ChangeCommandName(commandName);
+
+            if (!string.IsNullOrEmpty(textBoxRaffle.Text))
+                _chatBot.Commands.Add(commandName, _raffleManager.Participate());
+        }
+
+        private void buttonGiveaway_Click(object sender, EventArgs e)
+        {
+            var result = _raffleManager.Giveaway();
+            labelRaffleWinner.Text = result.Nickname;
+            labelRaffleLink.Text = result.Link;
+            textBoxRaffle.Text = string.Empty;
+        }
+
+        private void labelRaffleLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (labelRaffleLink.Text.Contains("http"))
+                System.Diagnostics.Process.Start(labelRaffleLink.Text);
+        }
     }
 }

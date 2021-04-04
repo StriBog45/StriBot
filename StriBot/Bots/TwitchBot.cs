@@ -12,6 +12,9 @@ using StriBot.Bots.Enums;
 using System.Linq;
 using StriBot.EventConainers.Models;
 using StriBot.EventConainers.Enums;
+using System.Net;
+using System.IO;
+using System.Text;
 
 namespace StriBot.Bots
 {
@@ -45,20 +48,80 @@ namespace StriBot.Bots
             _api.Settings.ClientId = _twitchInfo.ClientId;
             _api.Settings.AccessToken = _twitchInfo.AccessToken;
 
-            //twitchPub = new TwitchPubSub();
-            //twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected; ;
-            //twitchPub.OnRewardRedeemed += OnRewardRedeemed;
-            //twitchPub.OnChannelCommerceReceived += TwitchPub_OnChannelCommerceReceived;
-            //twitchPub.ListenToRewards(twitchInfo.Channel);
-            //twitchPub.ListenToCommerce(twitchInfo.Channel);
-            //twitchPub.Connect();
+            _twitchPub = new TwitchPubSub();
+            _twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected;
+            _twitchPub.OnListenResponse += _twitchPub_OnListenResponse;
+            _twitchPub.OnRewardRedeemed += OnRewardRedeemed;
+            _twitchPub.OnChannelCommerceReceived += TwitchPub_OnChannelCommerceReceived;
+            _twitchPub.ListenToRewards(_twitchInfo.ChannelId);
+            _twitchPub.ListenToCommerce(_twitchInfo.ChannelId);
+
+            _twitchPub.ListenToVideoPlayback($"{{{_twitchInfo.Channel}}}");
+            //_twitchPub.Connect();
 
             //ExampleCallsAsync();
             GlobalEventContainer.SendMessage += SendMessage;
+
+            //GetTwitchTokens();
+        }
+
+        private void GetTwitchTokens()
+        {
+            // Create a request using a URL that can receive a post.
+            var linkParameters = $"?client_id={_twitchInfo.ClientId}&redirect_uri=http://localhost&response_type=code&scope=viewing_activity_read";
+            WebRequest request = WebRequest.Create("https://id.twitch.tv/oauth2/authorize" + linkParameters);
+            // Set the Method property of the request to POST.
+            request.Method = "GET";
+
+            // Create POST data and convert it to a byte array.
+            string postData = "This is a test that posts this string to a Web server.";
+            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+            //// Set the ContentType property of the WebRequest.
+            //request.ContentType = "application/x-www-form-urlencoded";
+            //// Set the ContentLength property of the WebRequest.
+            //request.ContentLength = byteArray.Length;
+
+            //// Get the request stream.
+            //Stream dataStream = request.GetRequestStream();
+            //// Write the data to the request stream.
+            //dataStream.Write(byteArray, 0, byteArray.Length);
+            //// Close the Stream object.
+            //dataStream.Close();
+
+            // Get the response.
+            WebResponse response = request.GetResponse();
+
+            // Get the stream containing content returned by the server.
+            // The using block ensures the stream is automatically closed.
+            //using (dataStream = response.GetResponseStream())
+            //{
+            //    // Open the stream using a StreamReader for easy access.
+            //    StreamReader reader = new StreamReader(dataStream);
+            //    // Read the content.
+            //    string responseFromServer = reader.ReadToEnd();
+            //    // Display the content.
+            //    Console.WriteLine(responseFromServer);
+            //}
+
+            var request2 = WebRequest.Create("https://id.twitch.tv/oauth2/token" + $"?client_id={_twitchInfo.ClientId}&client_secret={"8bmk14cxel7fd39412va5wtdky2b6p"}&code={"3Dknbxrofioasvmo625pfga4ccbs3nee"}&grant_type=authorization_code&redirect_uri=http://localhost");
+            request.Method = "POST";
+            var response2 = request2.GetResponse();
+
+            // Close the response.
+            response.Close();
+        }
+
+        private void _twitchPub_OnListenResponse(object sender, TwitchLib.PubSub.Events.OnListenResponseArgs e)
+        {
+            //SendMessage($"Topic: {e.Topic} Success: {e.Successful} SuccessByResponse: {e.Response.Successful}  Error: {e.Response.Error} Nonce {e.Response.Nonce}");
         }
 
         public void Connect()
-            => _twitchClient.Connect();
+        { 
+            _twitchClient.Connect();
+            _twitchPub.Connect();
+        }
 
         public bool IsConnected()
             => _twitchClient.IsConnected;
@@ -77,11 +140,14 @@ namespace StriBot.Bots
 
         private void TwitchPub_OnPubSubServiceConnected(object sender, EventArgs e)
         {
-            ;
+            SendMessage("PubSub Connected");
+            // SendTopics accepts an oauth optionally, which is necessary for some topics
+            _twitchPub.SendTopics(_twitchInfo.AccessToken);
         }
 
         private void OnRewardRedeemed(object sender, TwitchLib.PubSub.Events.OnRewardRedeemedArgs e)
-            => SendMessage($"Тест: произошла награда {e.DisplayName} {e.RewardTitle} {e.RewardCost} {e.RewardPrompt} {e.RewardId}");
+        {// SendMessage($"Тест: произошла награда {e.DisplayName} {e.RewardTitle} {e.RewardCost} {e.RewardPrompt} {e.RewardId}");
+        }
 
         private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {

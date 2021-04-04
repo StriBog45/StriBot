@@ -26,8 +26,9 @@ namespace StriBot.Bots
         private readonly TwitchBot _twitchBot;
         private readonly RememberManager _rememberManager;
         private readonly Currency _currency;
+        private readonly RaffleManager _raffleManager;
 
-        public ChatBot(Speaker speaker, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, BetsManager betsManager, RememberManager rememberManager, Currency currency)
+        public ChatBot(Speaker speaker, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, BetsManager betsManager, RememberManager rememberManager, Currency currency, RaffleManager raffleManager)
         {
             _speaker = speaker;
             _twitchBot = twitchBot;
@@ -37,6 +38,7 @@ namespace StriBot.Bots
             _betsManager = betsManager;
             _rememberManager = rememberManager;
             _currency = currency;
+            _raffleManager = raffleManager;
 
             GlobalEventContainer.CommandReceived += OnChatCommandReceived;
             GlobalEventContainer.PlatformEventReceived += OnPlatformEventReceived;
@@ -167,7 +169,8 @@ namespace StriBot.Bots
                 _currencyBaseManager.CreateCommands(),
                 _duelManager.CreateCommands(),
                 _halberdManager.CreateCommands(),
-                _betsManager.CreateCommands()
+                _betsManager.CreateCommands(),
+                _raffleManager.CreateCommands()
             };
         }
 
