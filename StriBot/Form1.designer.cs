@@ -124,13 +124,14 @@
             this.textBoxInstrumental = new System.Windows.Forms.TextBox();
             this.textBoxPrepositional = new System.Windows.Forms.TextBox();
             this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.textBoxRaffle = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.buttonGiveaway = new System.Windows.Forms.Button();
-            this.labelRaffleLink = new System.Windows.Forms.LinkLabel();
             this.labelRaffleWinner = new System.Windows.Forms.Label();
+            this.labelRaffleLink = new System.Windows.Forms.LinkLabel();
+            this.buttonGiveaway = new System.Windows.Forms.Button();
+            this.label24 = new System.Windows.Forms.Label();
+            this.textBoxRaffle = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.buttonRaffleStart = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -1101,16 +1102,11 @@
             this.comboBoxCurrency.TabIndex = 0;
             this.comboBoxCurrency.SelectedIndexChanged += new System.EventHandler(this.comboBoxCurrency_SelectedIndexChanged);
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 60000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.labelRaffleWinner);
             this.tabPage4.Controls.Add(this.labelRaffleLink);
+            this.tabPage4.Controls.Add(this.buttonRaffleStart);
             this.tabPage4.Controls.Add(this.buttonGiveaway);
             this.tabPage4.Controls.Add(this.label24);
             this.tabPage4.Controls.Add(this.textBoxRaffle);
@@ -1122,13 +1118,37 @@
             this.tabPage4.Text = "Розыгрыш";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // textBoxRaffle
+            // labelRaffleWinner
             // 
-            this.textBoxRaffle.Location = new System.Drawing.Point(64, 16);
-            this.textBoxRaffle.Name = "textBoxRaffle";
-            this.textBoxRaffle.Size = new System.Drawing.Size(479, 20);
-            this.textBoxRaffle.TabIndex = 0;
-            this.textBoxRaffle.TextChanged += new System.EventHandler(this.textBoxRaffle_TextChanged);
+            this.labelRaffleWinner.AutoSize = true;
+            this.labelRaffleWinner.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelRaffleWinner.Location = new System.Drawing.Point(216, 39);
+            this.labelRaffleWinner.Name = "labelRaffleWinner";
+            this.labelRaffleWinner.Size = new System.Drawing.Size(208, 24);
+            this.labelRaffleWinner.TabIndex = 3;
+            this.labelRaffleWinner.Text = "Nickname победителя";
+            // 
+            // labelRaffleLink
+            // 
+            this.labelRaffleLink.AutoSize = true;
+            this.labelRaffleLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelRaffleLink.Location = new System.Drawing.Point(8, 65);
+            this.labelRaffleLink.Name = "labelRaffleLink";
+            this.labelRaffleLink.Size = new System.Drawing.Size(75, 24);
+            this.labelRaffleLink.TabIndex = 1;
+            this.labelRaffleLink.TabStop = true;
+            this.labelRaffleLink.Text = "Ссылка";
+            this.labelRaffleLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.labelRaffleLink_LinkClicked);
+            // 
+            // buttonGiveaway
+            // 
+            this.buttonGiveaway.Location = new System.Drawing.Point(135, 39);
+            this.buttonGiveaway.Name = "buttonGiveaway";
+            this.buttonGiveaway.Size = new System.Drawing.Size(75, 23);
+            this.buttonGiveaway.TabIndex = 2;
+            this.buttonGiveaway.Text = "Разыграть";
+            this.buttonGiveaway.UseVisualStyleBackColor = true;
+            this.buttonGiveaway.Click += new System.EventHandler(this.buttonGiveaway_Click);
             // 
             // label24
             // 
@@ -1139,37 +1159,28 @@
             this.label24.TabIndex = 1;
             this.label24.Text = "Команда:";
             // 
-            // buttonGiveaway
+            // textBoxRaffle
             // 
-            this.buttonGiveaway.Location = new System.Drawing.Point(9, 56);
-            this.buttonGiveaway.Name = "buttonGiveaway";
-            this.buttonGiveaway.Size = new System.Drawing.Size(75, 23);
-            this.buttonGiveaway.TabIndex = 2;
-            this.buttonGiveaway.Text = "Разыграть";
-            this.buttonGiveaway.UseVisualStyleBackColor = true;
-            this.buttonGiveaway.Click += new System.EventHandler(this.buttonGiveaway_Click);
+            this.textBoxRaffle.Location = new System.Drawing.Point(64, 16);
+            this.textBoxRaffle.Name = "textBoxRaffle";
+            this.textBoxRaffle.Size = new System.Drawing.Size(479, 20);
+            this.textBoxRaffle.TabIndex = 0;
             // 
-            // labelRaffleLink
+            // timer1
             // 
-            this.labelRaffleLink.AutoSize = true;
-            this.labelRaffleLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelRaffleLink.Location = new System.Drawing.Point(9, 82);
-            this.labelRaffleLink.Name = "labelRaffleLink";
-            this.labelRaffleLink.Size = new System.Drawing.Size(75, 24);
-            this.labelRaffleLink.TabIndex = 1;
-            this.labelRaffleLink.TabStop = true;
-            this.labelRaffleLink.Text = "Ссылка";
-            this.labelRaffleLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.labelRaffleLink_LinkClicked);
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 60000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // labelRaffleWinner
+            // buttonRaffleStart
             // 
-            this.labelRaffleWinner.AutoSize = true;
-            this.labelRaffleWinner.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelRaffleWinner.Location = new System.Drawing.Point(90, 56);
-            this.labelRaffleWinner.Name = "labelRaffleWinner";
-            this.labelRaffleWinner.Size = new System.Drawing.Size(208, 24);
-            this.labelRaffleWinner.TabIndex = 3;
-            this.labelRaffleWinner.Text = "Nickname победителя";
+            this.buttonRaffleStart.Location = new System.Drawing.Point(8, 39);
+            this.buttonRaffleStart.Name = "buttonRaffleStart";
+            this.buttonRaffleStart.Size = new System.Drawing.Size(121, 23);
+            this.buttonRaffleStart.TabIndex = 2;
+            this.buttonRaffleStart.Text = "Начать розыгрыш";
+            this.buttonRaffleStart.UseVisualStyleBackColor = true;
+            this.buttonRaffleStart.Click += new System.EventHandler(this.buttonRaffleStart_Click);
             // 
             // Form1
             // 
@@ -1322,6 +1333,7 @@
         private System.Windows.Forms.Button buttonGiveaway;
         private System.Windows.Forms.LinkLabel labelRaffleLink;
         private System.Windows.Forms.Label labelRaffleWinner;
+        private System.Windows.Forms.Button buttonRaffleStart;
     }
 }
 

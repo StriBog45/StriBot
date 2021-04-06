@@ -2,6 +2,7 @@
 using StriBot.Bots.Enums;
 using StriBot.Commands;
 using StriBot.Commands.Extensions;
+using StriBot.Commands.Raffle;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Enums;

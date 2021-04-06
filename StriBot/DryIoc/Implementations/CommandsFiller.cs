@@ -1,5 +1,6 @@
 ﻿using DryIoc;
 using StriBot.Commands;
+using StriBot.Commands.Raffle;
 using StriBot.CustomData;
 using StriBot.DryIoc.Interfaces;
 

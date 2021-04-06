@@ -1,5 +1,7 @@
 ﻿using StriBot.Bots.Enums;
 using StriBot.EventConainers.Models;
+using System;
+using System.Windows.Forms;
 
 namespace StriBot.EventConainers
 {
@@ -16,7 +18,16 @@ namespace StriBot.EventConainers
             => CommandReceived?.Invoke(commandInfo);
 
         public static void Message(string message, Platform[] platforms)
-            => SendMessage?.Invoke(platforms, message);
+        {
+            try
+            {
+                SendMessage?.Invoke(platforms, message);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"{exception.StackTrace}{Environment.NewLine}{exception.Message}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         public static void Message(string message, Platform platform)
             => Message(message, new Platform[] { platform });

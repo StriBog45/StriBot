@@ -3,6 +3,7 @@ using StriBot.ApplicationSettings;
 using StriBot.Bots;
 using StriBot.Bots.Enums;
 using StriBot.Commands;
+using StriBot.Commands.Raffle;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
 using StriBot.Language.Implementations;
@@ -253,7 +254,6 @@ namespace StriBot
             {
                 currencyName = textBoxCreateCurrency.Text;
             }
-            
 
             var cases = new Cases
             {
@@ -290,24 +290,10 @@ namespace StriBot
         private void comboBoxCurrency_SelectedIndexChanged(object sender, EventArgs e)
             => LoadCurrency();
 
-        private void textBoxRaffle_TextChanged(object sender, EventArgs e)
-        {
-            var commandName = textBoxRaffle.Text;
-            var currentCommandName = _raffleManager.GetCurrentCommandName();
-
-            if (!string.IsNullOrEmpty(currentCommandName))
-                _chatBot.Commands.Remove(currentCommandName);
-
-            _raffleManager.ChangeCommandName(commandName);
-
-            if (!string.IsNullOrEmpty(textBoxRaffle.Text))
-                _chatBot.Commands.Add(commandName, _raffleManager.Participate());
-        }
-
         private void buttonGiveaway_Click(object sender, EventArgs e)
         {
             var result = _raffleManager.Giveaway();
-            labelRaffleWinner.Text = result.Nickname;
+            labelRaffleWinner.Text = result.Nick;
             labelRaffleLink.Text = result.Link;
             textBoxRaffle.Text = string.Empty;
         }
@@ -316,6 +302,20 @@ namespace StriBot
         {
             if (labelRaffleLink.Text.Contains("http"))
                 System.Diagnostics.Process.Start(labelRaffleLink.Text);
+        }
+
+        private void buttonRaffleStart_Click(object sender, EventArgs e)
+        {
+            var commandName = textBoxRaffle.Text;
+            var currentCommandName = _raffleManager.GetCurrentCommandName();
+
+            if (!string.IsNullOrEmpty(currentCommandName))
+                _chatBot.Commands.Remove(currentCommandName);
+
+            _raffleManager.RaffleStart(commandName);
+
+            if (!string.IsNullOrEmpty(textBoxRaffle.Text) && !_chatBot.Commands.ContainsKey(textBoxRaffle.Text))
+                _chatBot.Commands.Add(commandName, _raffleManager.Participate());
         }
     }
 }

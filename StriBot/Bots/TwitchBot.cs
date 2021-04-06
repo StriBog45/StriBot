@@ -140,7 +140,7 @@ namespace StriBot.Bots
 
         private void TwitchPub_OnPubSubServiceConnected(object sender, EventArgs e)
         {
-            SendMessage("PubSub Connected");
+            //SendMessage("PubSub Connected");
             // SendTopics accepts an oauth optionally, which is necessary for some topics
             _twitchPub.SendTopics(_twitchInfo.AccessToken);
         }

@@ -238,7 +238,8 @@
     <Compile Include="Commands\MMRManager.cs" />
     <Compile Include="Commands\OrderManager.cs" />
     <Compile Include="Commands\ProgressManager.cs" />
-    <Compile Include="Commands\RaffleManager.cs" />
+    <Compile Include="Commands\Raffle\Models\RaffleParticipant.cs" />
+    <Compile Include="Commands\Raffle\RaffleManager.cs" />
     <Compile Include="Commands\RandomAnswerManager.cs" />
     <Compile Include="Commands\RememberManager.cs" />
     <Compile Include="CommandType.cs" />
