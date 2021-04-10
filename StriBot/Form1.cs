@@ -296,6 +296,10 @@ namespace StriBot
             labelRaffleWinner.Text = result.Nick;
             labelRaffleLink.Text = result.Link;
             textBoxRaffle.Text = string.Empty;
+
+            var currentCommandName = _raffleManager.GetCurrentCommandName();
+            if (!string.IsNullOrEmpty(currentCommandName))
+                _chatBot.Commands.Remove(currentCommandName);
         }
 
         private void labelRaffleLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -307,15 +311,22 @@ namespace StriBot
         private void buttonRaffleStart_Click(object sender, EventArgs e)
         {
             var commandName = textBoxRaffle.Text;
-            var currentCommandName = _raffleManager.GetCurrentCommandName();
 
-            if (!string.IsNullOrEmpty(currentCommandName))
-                _chatBot.Commands.Remove(currentCommandName);
+            if (!string.IsNullOrEmpty(commandName) && commandName != "!")
+            {
+                if (commandName[0] == '!')
+                    commandName = commandName.Replace("!", string.Empty);
 
-            _raffleManager.RaffleStart(commandName);
+                var currentCommandName = _raffleManager.GetCurrentCommandName();
 
-            if (!string.IsNullOrEmpty(textBoxRaffle.Text) && !_chatBot.Commands.ContainsKey(textBoxRaffle.Text))
-                _chatBot.Commands.Add(commandName, _raffleManager.Participate());
+                if (!string.IsNullOrEmpty(currentCommandName))
+                    _chatBot.Commands.Remove(currentCommandName);
+
+                _raffleManager.RaffleStart(commandName);
+
+                if (!string.IsNullOrEmpty(commandName) && !_chatBot.Commands.ContainsKey(commandName))
+                    _chatBot.Commands.Add(commandName, _raffleManager.Participate());
+            }
         }
     }
 }

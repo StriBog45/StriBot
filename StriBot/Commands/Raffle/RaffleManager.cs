@@ -13,6 +13,7 @@ namespace StriBot.Commands.Raffle
         private string _commandName;
         
         private const int _subscriberBonus = 3;
+        private int _participantsCount;
 
         public bool IsProgress { get; private set; }
 
@@ -27,14 +28,10 @@ namespace StriBot.Commands.Raffle
         public void RaffleStart(string name)
         {
             _participantsList.Clear();
-            if (!string.IsNullOrEmpty(name) && name != "!")
-            {
-                if (name[0] == '!')
-                    name = name.Replace("!", string.Empty);
-                IsProgress = true;
-                _commandName = name;
-                GlobalEventContainer.Message($"Розыгрыш начался! Пиши команду !{_commandName}", Platform.Twitch);
-            }
+            IsProgress = true;
+            _commandName = name;
+            _participantsCount = 0;
+            GlobalEventContainer.Message($"Розыгрыш начался! Пиши команду !{_commandName}", Platform.Twitch);
         }
 
         public Dictionary<string, Command> CreateCommands()
@@ -48,10 +45,10 @@ namespace StriBot.Commands.Raffle
             var result = new Command("розыгрыш", "информация по розыгрышу", Role.Any,
                 delegate (CommandInfo commandInfo)
                 {
-                    var commandText = IsProgress
-                    ? "которую укажет стример"
-                    : $"!{_commandName}";
-                    GlobalEventContainer.Message($"Мы проводим розыгрыши на каждой трансляции, в случайное время трансляции. Для участия в розыгрыше нужно написать команду {commandText}", commandInfo.Platform);
+                    var commandText = !IsProgress
+                        ? ", которую укажет стример"
+                        : $" !{_commandName}";
+                    GlobalEventContainer.Message($"Мы проводим розыгрыши на каждой трансляции, в случайное время трансляции. Для участия в розыгрыше нужно написать команду{commandText}", commandInfo.Platform);
                 }, CommandType.Info);
 
             return result;
@@ -73,6 +70,7 @@ namespace StriBot.Commands.Raffle
                             }
                             else
                                 _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, commandInfo.ArgumentsAsString));
+                            _participantsCount++;
                             GlobalEventContainer.Message($"{commandInfo.DisplayName} участвует в розыгрыше!", commandInfo.Platform);
                         }
                         else
@@ -92,6 +90,7 @@ namespace StriBot.Commands.Raffle
             {
                 var winnerIndex = RandomHelper.random.Next(0, _participantsList.Count);
                 result = _participantsList[winnerIndex];
+                GlobalEventContainer.Message($"Количество участников: {_participantsCount}!", Platform.Twitch);
                 _participantsList.Remove(result);
                 IsProgress = false;
                 GlobalEventContainer.Message($"Победитель розыгрыша: {result.Nick}!", Platform.Twitch);
