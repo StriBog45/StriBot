@@ -1,5 +1,5 @@
 Channel: StriBog45	//twitch Channel
-AccessToken: pk1hm2muh0jaba6kxe4gvxcz39klx3 // https://twitchtokengenerator.com/
-BotName: StriBog45
-ClientId: knbxrofioasvmo625pfga4ccbs4nee // Идентификатор клиента https://dev.twitch.tv/console
+BotAccessToken: f38p93x8tqmtxjixjlhrpsy4owrxm0 // https://twitchtokengenerator.com/
+BotName: StriBot45
+BotClientId: gp762nuuoqcoxypju8c569th9wz7q5 //
 ChannelId: 75071269 // GET запрос https://api.twitch.tv/helix/users?login=stribog45 , сделать можно например из Postman

@@ -32,11 +32,12 @@ namespace StriBot.Bots
         {
             _twitchInfo = new TwitchInfo();
 
-            _connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, _twitchInfo.AccessToken);
+            _connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, _twitchInfo.BotAcessToken);
 
             _twitchClient = new TwitchClient();
             _twitchClient.Initialize(_connectionCredentials, _twitchInfo.Channel);
             _twitchClient.OnChatCommandReceived += OnChatCommandReceived;
+            _twitchClient.OnWhisperCommandReceived += OnWhisperCommandReceived;
             _twitchClient.OnJoinedChannel += OnJoinedChannel;
             _twitchClient.OnNewSubscriber += OnNewSubscriber;
             _twitchClient.OnReSubscriber += OnReSubscriber;
@@ -45,8 +46,8 @@ namespace StriBot.Bots
             _twitchClient.OnMessageReceived += OnMessageReceived;
 
             _api = new TwitchAPI();
-            _api.Settings.ClientId = _twitchInfo.ClientId;
-            _api.Settings.AccessToken = _twitchInfo.AccessToken;
+            _api.Settings.ClientId = _twitchInfo.BotClientId;
+            _api.Settings.AccessToken = _twitchInfo.BotAcessToken;
 
             _twitchPub = new TwitchPubSub();
             _twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected;
@@ -68,7 +69,7 @@ namespace StriBot.Bots
         private void GetTwitchTokens()
         {
             // Create a request using a URL that can receive a post.
-            var linkParameters = $"?client_id={_twitchInfo.ClientId}&redirect_uri=http://localhost&response_type=code&scope=viewing_activity_read";
+            var linkParameters = $"?client_id={_twitchInfo.BotClientId}&redirect_uri=http://localhost&response_type=code&scope=viewing_activity_read";
             WebRequest request = WebRequest.Create("https://id.twitch.tv/oauth2/authorize" + linkParameters);
             // Set the Method property of the request to POST.
             request.Method = "GET";
@@ -104,7 +105,7 @@ namespace StriBot.Bots
             //    Console.WriteLine(responseFromServer);
             //}
 
-            var request2 = WebRequest.Create("https://id.twitch.tv/oauth2/token" + $"?client_id={_twitchInfo.ClientId}&client_secret={"8bmk14cxel7fd39412va5wtdky2b6p"}&code={"3Dknbxrofioasvmo625pfga4ccbs3nee"}&grant_type=authorization_code&redirect_uri=http://localhost");
+            var request2 = WebRequest.Create("https://id.twitch.tv/oauth2/token" + $"?client_id={_twitchInfo.BotClientId}&client_secret={"8bmk14cxel7fd39412va5wtdky2b6p"}&code={"3Dknbxrofioasvmo625pfga4ccbs3nee"}&grant_type=authorization_code&redirect_uri=http://localhost");
             request.Method = "POST";
             var response2 = request2.GetResponse();
 
@@ -142,7 +143,7 @@ namespace StriBot.Bots
         {
             //SendMessage("PubSub Connected");
             // SendTopics accepts an oauth optionally, which is necessary for some topics
-            _twitchPub.SendTopics(_twitchInfo.AccessToken);
+            _twitchPub.SendTopics(_twitchInfo.BotAcessToken);
         }
 
         private void OnRewardRedeemed(object sender, TwitchLib.PubSub.Events.OnRewardRedeemedArgs e)
@@ -237,6 +238,20 @@ namespace StriBot.Bots
                 e.Command.ChatMessage.IsModerator, 
                 e.Command.ChatMessage.IsMe, 
                 e.Command.ChatMessage.IsBroadcaster));
+        }
+
+        private void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
+        {
+            //TODO Определение роли пользователя для канала
+            GlobalEventContainer.CreateEventCommandCall(new CommandInfo(
+                Platform.Twitch,
+                e.Command.ArgumentsAsList,
+                e.Command.ArgumentsAsString,
+                e.Command.CommandText,
+                e.Command.WhisperMessage.Message,
+                e.Command.WhisperMessage.DisplayName,
+                e.Command.WhisperMessage.Username,
+                isTurbo: e.Command.WhisperMessage.IsTurbo));
         }
 
         public void SmileMode()
