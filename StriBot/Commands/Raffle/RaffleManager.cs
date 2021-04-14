@@ -56,31 +56,39 @@ namespace StriBot.Commands.Raffle
 
         public Command Participate()
         {
-            var result = new Command(_commandName, "Добавляет участника в розыгрыш", Role.Any,
+            var command = new Command(_commandName, "Добавляет участника в розыгрыш", Role.Any,
                 delegate (CommandInfo commandInfo)
                 {
-                    if (!string.IsNullOrEmpty(commandInfo.ArgumentsAsString) && commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer"))
+                    var result = string.Empty;
+                    var canParticipate = true;
+
+                    if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString) || !commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer"))
                     {
-                        if (!_participantsList.Exists(item => item.Nick == commandInfo.DisplayName))
-                        {
-                            if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
-                            {
-                                for (var index = 0; index < _subscriberBonus; index++)
-                                    _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, commandInfo.ArgumentsAsString));
-                            }
-                            else
-                                _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, commandInfo.ArgumentsAsString));
-                            _participantsCount++;
-                            GlobalEventContainer.Message($"{commandInfo.DisplayName} участвует в розыгрыше!", commandInfo.Platform);
-                        }
-                        else
-                            GlobalEventContainer.Message($"{commandInfo.DisplayName} уже участвует в розыгрыше!", commandInfo.Platform);
+                        result = $"{commandInfo.DisplayName} добавь steam-ссылку на торговлю";
+                        canParticipate = false;
                     }
-                    else
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} добавь steam-ссылку на торговлю", commandInfo.Platform);
+
+                    if (canParticipate && _participantsList.Exists(item => item.Nick == commandInfo.DisplayName))
+                    {
+                        result = $"{commandInfo.DisplayName} уже участвует в розыгрыше!";
+                        canParticipate = false;
+                    }
+
+                    if (canParticipate)
+                    {
+                        if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
+                            for (var index = 0; index < _subscriberBonus; index++)
+                                _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, commandInfo.ArgumentsAsString));
+                        else
+                            _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, commandInfo.ArgumentsAsString));
+                        _participantsCount++;
+
+                        result = $"{commandInfo.DisplayName} участвует в розыгрыше!";
+                    }
+                    GlobalEventContainer.Message(result, commandInfo.Platform);
                 }, CommandType.Hidden);
 
-            return result;
+            return command;
         }
 
         public RaffleParticipant Giveaway()
