@@ -4,6 +4,7 @@ using StriBot.EventConainers.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace StriBot.Commands
 {
@@ -42,7 +43,7 @@ namespace StriBot.Commands
             }
             catch (Exception exception)
             {
-
+                MessageBox.Show($"{exception.StackTrace}{Environment.NewLine}{exception.Message}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
