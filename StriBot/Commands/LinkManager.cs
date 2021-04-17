@@ -1,4 +1,6 @@
-﻿using StriBot.Commands.Extensions;
+﻿using StriBot.Commands.Enums;
+using StriBot.Commands.Extensions;
+using StriBot.Commands.Models;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using System.Collections.Generic;

@@ -4,6 +4,7 @@ using StriBot.Bots;
 using StriBot.Bots.Enums;
 using StriBot.Commands;
 using StriBot.Commands.Raffle;
+using StriBot.DateBase;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
 using StriBot.Language.Implementations;

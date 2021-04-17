@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Data.Common;
 
-namespace StriBot
+namespace StriBot.DateBase
 {
     static public class DataBase
     {
@@ -29,14 +29,14 @@ namespace StriBot
                     throw new ArgumentException("Connection closed");
                 try // чтение
                 {
-                    var sqlQuery = string.Format("SELECT * FROM Money WHERE nick = '{0}'", clearName);
+                    var sqlQuery = string.Format("SELECT nick, money FROM Money WHERE nick = '{0}'", clearName);
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
                     adapter.Fill(dTable);
 
                     if (dTable.Rows.Count > 0)
                         amountBefore = Convert.ToInt32(dTable.Rows[0].ItemArray[1]);
 
-                    sqlCmd.CommandText = string.Format("INSERT INTO Money ('nick', 'money') VALUES('{0}', '{1}') ON CONFLICT(nick) DO UPDATE SET money = {2};", clearName, amount, amountBefore+amount);
+                    sqlCmd.CommandText = string.Format("INSERT INTO Money ('nick', 'money') VALUES('{0}', '{1}') ON CONFLICT(nick) DO UPDATE SET money = {2};", clearName, amount, amountBefore + amount);
                     sqlCmd.ExecuteNonQuery();
                 }
                 catch (SQLiteException ex)
@@ -61,8 +61,8 @@ namespace StriBot
                     throw new ArgumentException("Connection closed");
                 try // чтение
                 {
-                    var sqlQuery = string.Format("SELECT * FROM Money WHERE nick = '{0}'", clearName);
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);         
+                    var sqlQuery = string.Format("SELECT nick, money FROM Money WHERE nick = '{0}'", clearName);
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
                     adapter.Fill(dTable);
                 }
                 catch (SQLiteException ex)

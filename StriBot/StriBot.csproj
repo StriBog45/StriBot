@@ -324,7 +324,7 @@
     <Compile Include="Bots\ChatBot.cs" />
     <Compile Include="Bots\Enums\Platform.cs" />
     <Compile Include="CollectionHelper.cs" />
-    <Compile Include="Command.cs" />
+    <Compile Include="Commands\Models\Command.cs" />
     <Compile Include="Commands\BetsManager.cs" />
     <Compile Include="Commands\CommonFunctions\ReadyMadePhrases.cs" />
     <Compile Include="Commands\CurrencyBaseManager.cs" />
@@ -339,11 +339,11 @@
     <Compile Include="Commands\Raffle\RaffleManager.cs" />
     <Compile Include="Commands\RandomAnswerManager.cs" />
     <Compile Include="Commands\RememberManager.cs" />
-    <Compile Include="CommandType.cs" />
     <Compile Include="Commands\BurgerManager.cs" />
+    <Compile Include="Commands\Enums\CommandType.cs" />
     <Compile Include="CustomData\AnswerOptions.cs" />
     <Compile Include="CustomData\Heroes.cs" />
-    <Compile Include="DataBase.cs" />
+    <Compile Include="DateBase\DataBase.cs" />
     <Compile Include="DryIoc\GlobalContainer.cs" />
     <Compile Include="DryIoc\Implementations\CommandCommonFunctionsFiller.cs" />
     <Compile Include="DryIoc\Implementations\CommandsFiller.cs" />

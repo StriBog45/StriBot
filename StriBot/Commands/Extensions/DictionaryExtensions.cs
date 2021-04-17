@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using StriBot.Commands.Models;
+using System.Collections.Generic;
 
 namespace StriBot.Commands.Extensions
 {

@@ -2,7 +2,6 @@
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
-using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.V5.Models.Subscriptions;
 using TwitchLib.Api;
 using TwitchLib.PubSub;
@@ -13,7 +12,6 @@ using System.Linq;
 using StriBot.EventConainers.Models;
 using StriBot.EventConainers.Enums;
 using System.Net;
-using System.IO;
 using System.Text;
 
 namespace StriBot.Bots

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StriBot.Commands.Enums;
+using StriBot.Commands.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -73,7 +75,7 @@ namespace StriBot
             {
                 if (command.Requires == role)
                 {
-                    StringBuilder result = new StringBuilder('!' + command.Name);
+                    var result = new StringBuilder('!' + command.Name);
                     if (command.Args != null)
                         foreach (var arg in command.Args)
                             result.Append(String.Format(" [{0}]", arg));

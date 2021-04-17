@@ -1,4 +1,6 @@
-﻿using StriBot.Commands.Extensions;
+﻿using StriBot.Commands.Enums;
+using StriBot.Commands.Extensions;
+using StriBot.Commands.Models;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using System;
@@ -39,7 +41,6 @@ namespace StriBot.Commands
                         _bosses.Add(line);
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -80,7 +81,7 @@ namespace StriBot.Commands
 
         private void RecordBoss(string name)
         {
-            string path = GetPath(_bossesFileName);
+            var path = GetPath(_bossesFileName);
             using (var file = File.AppendText(path))
             {
                 file.WriteLine(name);
@@ -96,12 +97,12 @@ namespace StriBot.Commands
 
         public Command CreateDeathCommand()
             => new Command("Смерть", "Добавляет смерть", Role.Moderator,
-                delegate (CommandInfo e)
+                delegate (CommandInfo commandInfo)
                 {
                     Deaths++;
                     _deathUpdate();
-                    GlobalEventContainer.Message(string.Format("Смертей: {0}", Deaths), e.Platform);
-                    GlobalEventContainer.Message("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ ……………..............……...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ…….……….........…..… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬", e.Platform);
+                    GlobalEventContainer.Message(string.Format("Смертей: {0}", Deaths), commandInfo.Platform);
+                    GlobalEventContainer.Message("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ ……………..............……...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ…….……….........…..… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬", commandInfo.Platform);
                 }, CommandType.Interactive);
 
         public Dictionary<string, Command> CreateCommands()

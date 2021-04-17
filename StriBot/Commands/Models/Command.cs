@@ -1,7 +1,8 @@
-﻿using StriBot.EventConainers.Models;
+﻿using StriBot.Commands.Enums;
+using StriBot.EventConainers.Models;
 using System;
 
-namespace StriBot
+namespace StriBot.Commands.Models
 {
     public class Command
     {
@@ -24,7 +25,7 @@ namespace StriBot
             Type = type;
         }
 
-        public Command(string name, string info, Action<CommandInfo> action, string[] args, CommandType type) : this (name, info, Role.Any, action, args, type ) { }
+        public Command(string name, string info, Action<CommandInfo> action, string[] args, CommandType type) : this(name, info, Role.Any, action, args, type) { }
 
         public Command(string name, string info, Action<CommandInfo> action, CommandType type) : this(name, info, Role.Any, action, null, type) { }
     }
