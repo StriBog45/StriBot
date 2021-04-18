@@ -15,7 +15,16 @@ namespace StriBot.EventConainers
         public static event PlatformEventHandler PlatformEventReceived;
 
         public static void CreateEventCommandCall(CommandInfo commandInfo)
-            => CommandReceived?.Invoke(commandInfo);
+        {
+            try
+            {
+                CommandReceived?.Invoke(commandInfo);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"{exception.StackTrace}{Environment.NewLine}{exception.Message}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         public static void Message(string message, Platform[] platforms)
         {

@@ -42,7 +42,7 @@ namespace StriBot.Commands
                         {
                             if (int.TryParse(commandInfo.ArgumentsAsString, out int amount) && amount > 0)
                             {
-                                if (amount <= DataBase.CheckMoney(commandInfo.DisplayName))
+                                if (amount <= DataBase.GetMoney(commandInfo.DisplayName))
                                 {
                                     GlobalEventContainer.Message($"Кто осмелится принять вызов {commandInfo.DisplayName} в смертельной дуэли со ставкой в {_currency.Incline(amount, true)}?", 
                                         commandInfo.Platform);
@@ -64,7 +64,7 @@ namespace StriBot.Commands
                     {
                         if (_duelMember.DisplayName == commandInfo.DisplayName)
                             GlobalEventContainer.Message($"@{_duelMember.DisplayName} не торопись! Твоё время ещё не пришло", commandInfo.Platform);
-                        else if (DataBase.CheckMoney(commandInfo.DisplayName) < _duelBet)
+                        else if (DataBase.GetMoney(commandInfo.DisplayName) < _duelBet)
                             _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                         else
                         {
@@ -75,8 +75,8 @@ namespace StriBot.Commands
                                 winner = commandInfo;
                             else
                                 looser = commandInfo;
-                            DataBase.AddMoneyToUser(winner.DisplayName, _duelBet);
-                            DataBase.AddMoneyToUser(looser.DisplayName, -_duelBet);
+                            DataBase.AddMoney(winner.DisplayName, _duelBet);
+                            DataBase.AddMoney(looser.DisplayName, -_duelBet);
 
                             if (_duelBet > 0)
                                 GlobalEventContainer.Message($"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. {winner.DisplayName} получил за победу {_duelBet} {_currency.GenitiveMultiple}! Kappa )/",

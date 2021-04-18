@@ -3,6 +3,7 @@ using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
 using StriBot.Commands.Raffle.Models;
+using StriBot.DateBase;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using System.Collections.Generic;
@@ -63,12 +64,7 @@ namespace StriBot.Commands.Raffle
                 {
                     var result = string.Empty;
                     var canParticipate = true;
-
-                    if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString) || !commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer"))
-                    {
-                        result = $"{commandInfo.DisplayName} добавь steam-ссылку на торговлю";
-                        canParticipate = false;
-                    }
+                    var steamTradeLink = DataBase.GetSteamTradeLink(commandInfo.DisplayName);
 
                     if (canParticipate && _participantsList.Exists(item => item.Nick == commandInfo.DisplayName))
                     {
@@ -76,13 +72,24 @@ namespace StriBot.Commands.Raffle
                         canParticipate = false;
                     }
 
+                    if (!commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer") && string.IsNullOrEmpty(steamTradeLink))
+                    {
+                            result = $"{commandInfo.DisplayName} добавь steam-ссылку на торговлю";
+                            canParticipate = false;
+                    }
+                    else if (commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer"))
+                    {
+                        steamTradeLink = commandInfo.ArgumentsAsString;
+                        DataBase.AddSteamTradeLink(commandInfo.DisplayName, steamTradeLink);
+                    }
+
                     if (canParticipate)
                     {
                         if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
                             for (var index = 0; index < _subscriberBonus; index++)
-                                _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, commandInfo.ArgumentsAsString));
+                                _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, steamTradeLink));
                         else
-                            _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, commandInfo.ArgumentsAsString));
+                            _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, steamTradeLink));
                         _participantsCount++;
 
                         result = $"{commandInfo.DisplayName} участвует в розыгрыше!";

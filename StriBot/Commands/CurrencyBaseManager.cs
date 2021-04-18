@@ -43,9 +43,9 @@ namespace StriBot.Commands
                     if (_receivedUsers.Where(x => x.CompareTo(commandInfo.DisplayName) == 0).ToArray().Count() == 0)
                     {
                         if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
-                            DataBase.AddMoneyToUser(commandInfo.DisplayName, _distributionAmountPerUsers * SubCoefficient);
+                            DataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers * SubCoefficient);
                         else
-                            DataBase.AddMoneyToUser(commandInfo.DisplayName, _distributionAmountPerUsers);
+                            DataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers);
 
                         GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно стащил {_currency.Accusative}!", commandInfo.Platform);
                         _distributionAmountUsers--;
@@ -74,15 +74,15 @@ namespace StriBot.Commands
         {
             Action<CommandInfo> action = delegate (CommandInfo commandInfo)
             {
-                if (DataBase.CheckMoney(commandInfo.DisplayName) > 0)
+                if (DataBase.GetMoney(commandInfo.DisplayName) > 0)
                 {
                     if (_distributionAmountPerUsers == 0)
                         _distributionAmountPerUsers = 1;
 
                     if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.HasValue)
-                        DataBase.AddMoneyToUser(commandInfo.DisplayName, -_distributionAmountPerUsers * SubCoefficient);
+                        DataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers * SubCoefficient);
                     else
-                        DataBase.AddMoneyToUser(commandInfo.DisplayName, -_distributionAmountPerUsers);
+                        DataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers);
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} незаметно вернул {_currency.Accusative}!", commandInfo.Platform);
                     _distributionAmountUsers++;
                     _receivedUsers.Remove(commandInfo.DisplayName);
@@ -100,7 +100,7 @@ namespace StriBot.Commands
             {
                 if (commandInfo.ArgumentsAsList.Count == 2)
                 {
-                    DataBase.AddMoneyToUser(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]));
+                    DataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]));
                     GlobalEventContainer.Message($"Вы успешно добавили {_currency.NominativeMultiple}! striboF", commandInfo.Platform);
                 }
                 else
@@ -116,7 +116,7 @@ namespace StriBot.Commands
             Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
                 if (commandInfo.ArgumentsAsList.Count == 2 && Convert.ToInt32(commandInfo.ArgumentsAsList[1]) > 0)
                 {
-                    DataBase.AddMoneyToUser(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]) * (-1));
+                    DataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]) * (-1));
                     GlobalEventContainer.Message($"Вы успешно изъяли {_currency.NominativeMultiple}! striboPeka ", commandInfo.Platform);
                 }
                 else
@@ -131,12 +131,12 @@ namespace StriBot.Commands
             Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
                 if (commandInfo.ArgumentsAsList.Count == 0)
                 {
-                    var amount = DataBase.CheckMoney(commandInfo.DisplayName);
+                    var amount = DataBase.GetMoney(commandInfo.DisplayName);
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} имеет {_currency.Incline(amount, true)}! ", commandInfo.Platform);
                 }
                 else
                 {
-                    var amount = DataBase.CheckMoney(commandInfo.ArgumentsAsString);
+                    var amount = DataBase.GetMoney(commandInfo.ArgumentsAsString);
                     GlobalEventContainer.Message($"{commandInfo.ArgumentsAsString} имеет {_currency.Incline(amount, true)}!", commandInfo.Platform);
                 }
             };
@@ -149,10 +149,10 @@ namespace StriBot.Commands
             Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
                 if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[1], out var amount) && amount > 0)
                 {
-                    if (DataBase.CheckMoney(commandInfo.DisplayName) >= amount)
+                    if (DataBase.GetMoney(commandInfo.DisplayName) >= amount)
                     {
-                        DataBase.AddMoneyToUser(commandInfo.DisplayName, -amount);
-                        DataBase.AddMoneyToUser(commandInfo.ArgumentsAsList[0], amount);
+                        DataBase.AddMoney(commandInfo.DisplayName, -amount);
+                        DataBase.AddMoney(commandInfo.ArgumentsAsList[0], amount);
                         GlobalEventContainer.Message($"{commandInfo.DisplayName} подарил {_currency.Incline(amount, true)} {commandInfo.ArgumentsAsList[0]}! ", commandInfo.Platform);
                     }
                     else
@@ -174,9 +174,9 @@ namespace StriBot.Commands
                     && amountForPer > 0
                     && amountPeople > 0)
                 {
-                    if (DataBase.CheckMoney(commandInfo.DisplayName) >= amountForPer * amountPeople)
+                    if (DataBase.GetMoney(commandInfo.DisplayName) >= amountForPer * amountPeople)
                     {
-                        DataBase.AddMoneyToUser(commandInfo.DisplayName, amountForPer * amountPeople * (-1));
+                        DataBase.AddMoney(commandInfo.DisplayName, amountForPer * amountPeople * (-1));
                         DistributionMoney(amountForPer, amountPeople, commandInfo.Platform, false);
                     }
                     else

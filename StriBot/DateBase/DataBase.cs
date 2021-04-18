@@ -14,19 +14,21 @@ namespace StriBot.DateBase
 
         static SQLiteFactory factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
 
-        public static void AddMoneyToUser(string nickname, int amount)
+        public static void AddMoney(string nickname, int amount)
         {
             var clearName = CleanNickname(nickname);
 
-            DataTable dTable = new DataTable();
+            var dTable = new DataTable();
             using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
             {
                 connection.ConnectionString = basePath;
                 connection.Open();
                 sqlCmd.Connection = connection;
                 int amountBefore = 0;
+
                 if (connection.State != ConnectionState.Open)
                     throw new ArgumentException("Connection closed");
+
                 try // чтение
                 {
                     var sqlQuery = string.Format("SELECT nick, money FROM Money WHERE nick = '{0}'", clearName);
@@ -39,18 +41,18 @@ namespace StriBot.DateBase
                     sqlCmd.CommandText = string.Format("INSERT INTO Money ('nick', 'money') VALUES('{0}', '{1}') ON CONFLICT(nick) DO UPDATE SET money = {2};", clearName, amount, amountBefore + amount);
                     sqlCmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (SQLiteException exception)
                 {
-                    throw ex;
+                    throw exception;
                 }
             }
         }
 
-        public static int CheckMoney(string nickname)
+        public static int GetMoney(string nickname)
         {
             var clearName = CleanNickname(nickname);
 
-            DataTable dTable = new DataTable();
+            var dTable = new DataTable();
             using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
             {
                 connection.ConnectionString = basePath;
@@ -65,18 +67,84 @@ namespace StriBot.DateBase
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
                     adapter.Fill(dTable);
                 }
-                catch (SQLiteException ex)
+                catch (SQLiteException exception)
                 {
-                    throw ex;
+                    throw exception;
                 }
             }
-            if (dTable.Rows.Count > 0)
-                return Convert.ToInt32(dTable.Rows[0].ItemArray[1]);
-            else
-                return 0;
+
+            return dTable.Rows.Count > 0
+                ? Convert.ToInt32(dTable.Rows[0].ItemArray[1])
+                : 0;
         }
 
         public static string CleanNickname(string nick)
-            => nick[0] != '@' ? nick : nick.Remove(0, 1);
+            => nick[0] != '@' 
+                ? nick 
+                : nick.Remove(0, 1);
+
+        public static string GetSteamTradeLink(string nickname)
+        {
+            var clearName = CleanNickname(nickname);
+
+            var dTable = new DataTable();
+            using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
+            {
+                connection.ConnectionString = basePath;
+                connection.Open();
+                sqlCmd.Connection = connection;
+
+                if (connection.State != ConnectionState.Open)
+                    throw new ArgumentException("Connection closed");
+                try // чтение
+                {
+                    var sqlQuery = string.Format("SELECT nick, steam_trade_link FROM Money WHERE nick = '{0}'", clearName);
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
+                    adapter.Fill(dTable);
+                }
+                catch (SQLiteException exception)
+                {
+                    throw exception;
+                }
+            }
+
+            return dTable.Rows.Count > 0 
+                ? Convert.ToString(dTable.Rows[0].ItemArray[1]) 
+                : null;
+        }
+
+        public static void AddSteamTradeLink(string nickname, string steamTradeLink)
+        {
+            var clearName = CleanNickname(nickname);
+
+            var dTable = new DataTable();
+            using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
+            {
+                connection.ConnectionString = basePath;
+                connection.Open();
+                sqlCmd.Connection = connection;
+                int amountBefore = 0;
+
+                if (connection.State != ConnectionState.Open)
+                    throw new ArgumentException("Connection closed");
+
+                try // чтение
+                {
+                    var sqlQuery = string.Format("SELECT nick, money, steam_trade_link FROM Money WHERE nick = '{0}'", clearName);
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
+                    adapter.Fill(dTable);
+
+                    if (dTable.Rows.Count > 0)
+                        amountBefore = Convert.ToInt32(dTable.Rows[0].ItemArray[1]);
+
+                    sqlCmd.CommandText = string.Format("INSERT INTO Money ('nick', 'money', 'steam_trade_link') VALUES('{0}', '{1}', '{2}') ON CONFLICT(nick) DO UPDATE SET steam_trade_link = '{2}';", clearName, amountBefore, steamTradeLink);
+                    sqlCmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException exception)
+                {
+                    throw exception;
+                }
+            }
+        }
     }
 }

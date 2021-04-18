@@ -53,9 +53,9 @@ namespace StriBot.Commands
                 foreach (var bet in _usersBetted)
                 {
                     if (bet.Value.Choice == winner)
-                        DataBase.AddMoneyToUser(bet.Key, (int)(bet.Value.BetSize * _betsCoefficient) + (bet.Value.BetSize * (-1)));
+                        DataBase.AddMoney(bet.Key, (int)(bet.Value.BetSize * _betsCoefficient) + (bet.Value.BetSize * (-1)));
                     else
-                        DataBase.AddMoneyToUser(bet.Key, bet.Value.BetSize * (-1));
+                        DataBase.AddMoney(bet.Key, bet.Value.BetSize * (-1));
                 }
                 GlobalEventContainer.Message($"Победила ставка под номером {winner} - {_bettingOptions[winner]}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
 
@@ -111,7 +111,7 @@ namespace StriBot.Commands
                     if (e.ArgumentsAsList.Count == 2 && int.TryParse(e.ArgumentsAsList[0], out numberOfBets) && int.TryParse(e.ArgumentsAsList[1], out betSize)
                     && numberOfBets < _bettingOptions.Length && betSize > 0)
                     {
-                        if (DataBase.CheckMoney(e.DisplayName) < betSize)
+                        if (DataBase.GetMoney(e.DisplayName) < betSize)
                             GlobalEventContainer.Message($"{e.DisplayName} у тебя недостаточно {_currency.GenitiveMultiple} для такой ставки!", platforms);
                         else
                         {

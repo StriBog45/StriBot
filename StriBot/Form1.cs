@@ -146,7 +146,7 @@ namespace StriBot
                 if (selected.SubItems[0].Text.Contains("youtube"))
                     webBrowser.Navigate(selected.SubItems[0].Text);
                 _orderManager.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, int.Parse(selected.SubItems[2].Text));
-                DataBase.AddMoneyToUser(selected.SubItems[1].Text, -int.Parse(selected.SubItems[2].Text));
+                DataBase.AddMoney(selected.SubItems[1].Text, -int.Parse(selected.SubItems[2].Text));
                 GlobalEventContainer.Message(string.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text), Platform.Twitch);
                 listViewOrder.Items.Remove(selected);
             }

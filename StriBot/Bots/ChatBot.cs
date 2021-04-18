@@ -70,14 +70,14 @@ namespace StriBot.Bots
         private void Subsctiption(PlatformEventInfo platformEventInfo)
         {
             GlobalEventContainer.Message($"{platformEventInfo.UserName} подписался! PogChamp Срочно плед этому господину! А пока возьми {PriceList.ToysForSub} {_currency.Incline(PriceList.ToysForSub, true)} :)", platformEventInfo.Platform);
-            DataBase.AddMoneyToUser(platformEventInfo.UserName, PriceList.ToysForSub);
+            DataBase.AddMoney(platformEventInfo.UserName, PriceList.ToysForSub);
             _speaker.Say("Спасибо за подписку!");
         }
 
         private void GiftSubscription(PlatformEventInfo platformEventInfo)
         {
             GlobalEventContainer.Message($"{platformEventInfo.UserName} подарил подписку для {platformEventInfo.SecondName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {PriceList.ToysForSub} {_currency.Incline(PriceList.ToysForSub)}", platformEventInfo.Platform);
-            DataBase.AddMoneyToUser(platformEventInfo.UserName, PriceList.ToysForSub);
+            DataBase.AddMoney(platformEventInfo.UserName, PriceList.ToysForSub);
             _speaker.Say("Спасибо за подарочную подписку!");
         }
 

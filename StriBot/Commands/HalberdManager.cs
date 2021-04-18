@@ -53,9 +53,9 @@ namespace StriBot.Commands
                 {
                     if (commandInfo.ArgumentsAsList.Count == 1)
                     {
-                        if (DataBase.CheckMoney(commandInfo.DisplayName) >= PriceList.Halberd)
+                        if (DataBase.GetMoney(commandInfo.DisplayName) >= PriceList.Halberd)
                         {
-                            DataBase.AddMoneyToUser(commandInfo.DisplayName, -PriceList.Halberd);
+                            DataBase.AddMoney(commandInfo.DisplayName, -PriceList.Halberd);
 
                             if (_halberdDictionary.ContainsKey(commandInfo.ArgumentsAsList[0]))
                             {

@@ -92,7 +92,7 @@ namespace StriBot.Commands
         {
             return delegate (CommandInfo commandInfo)
             {
-                if (DataBase.CheckMoney(commandInfo.DisplayName) >= price)
+                if (DataBase.GetMoney(commandInfo.DisplayName) >= price)
                 {
                     _listOrders.Add((product, commandInfo.DisplayName, price));
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ! {_currency.NominativeMultiple.Title()} будут сняты после принятия заказа", commandInfo.Platform);
@@ -107,7 +107,7 @@ namespace StriBot.Commands
         {
             return delegate (CommandInfo commandInfo)
             {
-                if (DataBase.CheckMoney(commandInfo.DisplayName) >= price)
+                if (DataBase.GetMoney(commandInfo.DisplayName) >= price)
                 {
                     if (commandInfo.ArgumentsAsList.Count != 0)
                     {
@@ -132,7 +132,7 @@ namespace StriBot.Commands
                     if (int.TryParse(commandInfo.ArgumentsAsList[0], out temp))
                     {
                         CreateOrderDelegate(temp);
-                        if (DataBase.CheckMoney(commandInfo.DisplayName) >= temp)
+                        if (DataBase.GetMoney(commandInfo.DisplayName) >= temp)
                         {
                             _listOrders.Add((commandInfo.ArgumentsAsString.Substring(commandInfo.ArgumentsAsList[0].Length + 1), commandInfo.DisplayName, temp));
                             GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ!", commandInfo.Platform);
