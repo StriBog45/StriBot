@@ -37,7 +37,7 @@ namespace StriBot
 
             _chatBot = GlobalContainer.Default.Resolve<ChatBot>();
             _chatBot.CreateCommands();
-            _chatBot.Connect(new Platform[] { Platform.Twitch });
+            _chatBot.Connect(new[] {Platform.Twitch});
             _settingsFileManager = GlobalContainer.Default.Resolve<SettingsFileManager>();
             _currency = GlobalContainer.Default.Resolve<Currency>();
             _progressManager = GlobalContainer.Default.Resolve<ProgressManager>();
@@ -102,28 +102,28 @@ namespace StriBot
             => _currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text), Bots.Enums.Platform.Twitch);
         private void buttonCreateOptions_Click(object sender, EventArgs e)
         {
-            var options = TextBoxOptions.Text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-            _betsManager.CreateBets(options, new Platform[] { Platform.Twitch });
+            var options = TextBoxOptions.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+            _betsManager.CreateBets(options, new[] { Platform.Twitch });
         }
         private void buttonBetsOfManiac_Click(object sender, EventArgs e)
-            => _betsManager.CreateBets(new string[] { "Количество повешанных", "0", "1", "2", "3", "4" }, new Platform[] { Platform.Twitch });
+            => _betsManager.CreateBets(new[] { "Количество повешанных", "0", "1", "2", "3", "4" }, new[] { Platform.Twitch });
 
         private void buttonBetsOfSurvivors_Click(object sender, EventArgs e)
-            => _betsManager.CreateBets(new string[] { "Количество сбежавших", "0", "1", "2", "3", "4" }, new Platform[] { Platform.Twitch });
+            => _betsManager.CreateBets(new[] { "Количество сбежавших", "0", "1", "2", "3", "4" }, new[] { Platform.Twitch });
 
         private void buttonBetsOfSurvivor_Click(object sender, EventArgs e)
-            => _betsManager.CreateBets(new string[] { "Выживание стримера", "выжил", "погиб" }, new Platform[] { Platform.Twitch });
+            => _betsManager.CreateBets(new[] { "Выживание стримера", "выжил", "погиб" }, new[] { Platform.Twitch });
 
         private void buttonBetsDota2_Click(object sender, EventArgs e)
-            => _betsManager.CreateBets(new string[] { "Победа команды", "radiant", "dire" }, new Platform[] { Platform.Twitch });
+            => _betsManager.CreateBets(new[] { "Победа команды", "radiant", "dire" }, new[] { Platform.Twitch });
 
         private void buttonStopBets_Click(object sender, EventArgs e)
-            => _betsManager.StopBetsProcess(new Platform[] { Platform.Twitch });
+            => _betsManager.StopBetsProcess(new[] { Platform.Twitch });
 
         private void buttonSelectWinner_Click(object sender, EventArgs e)
-            => _betsManager.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value), new Platform[] { Platform.Twitch });
+            => _betsManager.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value), new[] { Platform.Twitch });
 
-        void UpdateOrderList(List<(string, string, int)> orders)
+        private void UpdateOrderList(List<(string, string, int)> orders)
         {
 
             if (listViewOrder.InvokeRequired)
@@ -135,7 +135,7 @@ namespace StriBot
             {
                 listViewOrder.Items.Clear();
                 foreach (var order in orders)
-                    listViewOrder.Items.Add(new ListViewItem(new string[] { order.Item1, order.Item2.ToString(), order.Item3.ToString() }));
+                    listViewOrder.Items.Add(new ListViewItem(new[] { order.Item1, order.Item2.ToString(), order.Item3.ToString() }));
             }
         }
 
@@ -175,7 +175,7 @@ namespace StriBot
             _managerMMR.Losses = Convert.ToInt32(textBox2.Text);
         }
 
-        void BossUpdate()
+        private void BossUpdate()
         {
             var d = new SafeCallDelegate(BossUpdate);
 
@@ -201,7 +201,7 @@ namespace StriBot
         private void buttonDeathReduce_Click(object sender, EventArgs e)
             => _progressManager.Deaths--;
 
-        void DeathUpdate()
+        private void DeathUpdate()
         {
             var d = new SafeCallDelegate(DeathUpdate);
 
@@ -209,7 +209,7 @@ namespace StriBot
                 listView1.Invoke(d);
             else
             {
-                label1.Text = string.Format("Смертей: {0}", _progressManager.Deaths);
+                label1.Text = $"Смертей: {_progressManager.Deaths}";
             }
         }
 
@@ -222,11 +222,11 @@ namespace StriBot
         private void buttonReminderClear_Click(object sender, EventArgs e)
         {
             _rememberManager.TextReminder = string.Empty;
-            GlobalEventContainer.Message("Напоминание удалено", Bots.Enums.Platform.Twitch);
+            GlobalEventContainer.Message("Напоминание удалено", Platform.Twitch);
         }
 
         private void buttonReconnect_Click(object sender, EventArgs e)
-            => _chatBot.Reconnect(new Platform[] { Platform.Twitch });
+            => _chatBot.Reconnect(new[] { Platform.Twitch });
 
         private void buttonSmileMode_Click(object sender, EventArgs e)
         {
