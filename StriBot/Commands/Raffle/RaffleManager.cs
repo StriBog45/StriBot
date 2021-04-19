@@ -12,7 +12,7 @@ namespace StriBot.Commands.Raffle
 {
     public class RaffleManager
     {
-        private List<RaffleParticipant> _participantsList;
+        private readonly List<RaffleParticipant> _participantsList;
         private string _commandName;
         
         private const int _subscriberBonus = 3;
@@ -43,7 +43,7 @@ namespace StriBot.Commands.Raffle
                 RaffleInfo()
             };
 
-        public Command RaffleInfo()
+        private Command RaffleInfo()
         {
             var result = new Command("розыгрыш", "информация по розыгрышу", Role.Any,
                 delegate (CommandInfo commandInfo)

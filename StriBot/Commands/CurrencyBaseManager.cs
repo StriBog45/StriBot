@@ -24,7 +24,6 @@ namespace StriBot.Commands
         private int SubCoefficient { get => _subBonus ? subCoefficient : 1; }
         private int subCoefficient = 2;
         private bool _subBonus;
-        public Dictionary<string, (int, int)> UsersBetted { get; set; }
 
         public CurrencyBaseManager(Currency currency, ReadyMadePhrases readyMadePhrases)
         {
@@ -34,9 +33,9 @@ namespace StriBot.Commands
             _receivedUsers = new List<string>();
         }
 
-        public Command CreateStealCurrency()
+        private Command CreateStealCurrency()
         {
-            Action<CommandInfo> action = delegate (CommandInfo commandInfo)
+            void Action(CommandInfo commandInfo)
             {
                 if (_distributionAmountUsers > 0)
                 {
@@ -56,9 +55,9 @@ namespace StriBot.Commands
                 }
                 else
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} {_currency.GenitiveMultiple} не осталось!", commandInfo.Platform);
-            };
+            }
 
-            return new Command("Стащить", $"Крадет {_currency.Accusative} без присмотра", action, CommandType.Interactive);
+            return new Command("Стащить", $"Крадет {_currency.Accusative} без присмотра", Action, CommandType.Interactive);
         }
 
         public void DistributionMoney(int perUser, int maxUsers, Platform platform, bool bonus = true)
@@ -70,14 +69,13 @@ namespace StriBot.Commands
             _receivedUsers.Clear();
         }
 
-        public Command CreateReturnCurrency()
+        private Command CreateReturnCurrency()
         {
-            Action<CommandInfo> action = delegate (CommandInfo commandInfo)
+            void Action(CommandInfo commandInfo)
             {
                 if (DataBase.GetMoney(commandInfo.DisplayName) > 0)
                 {
-                    if (_distributionAmountPerUsers == 0)
-                        _distributionAmountPerUsers = 1;
+                    if (_distributionAmountPerUsers == 0) _distributionAmountPerUsers = 1;
 
                     if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.HasValue)
                         DataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers * SubCoefficient);
@@ -89,14 +87,14 @@ namespace StriBot.Commands
                 }
                 else
                     _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
-            };
+            }
 
-            return new Command("Вернуть", $"Возвращает {_currency.Accusative} боту", action, CommandType.Interactive);
+            return new Command("Вернуть", $"Возвращает {_currency.Accusative} боту", Action, CommandType.Interactive);
         }
 
-        public Command CreateAddCurrency()
+        private Command CreateAddCurrency()
         {
-            Action<CommandInfo> action = delegate (CommandInfo commandInfo)
+            void Action(CommandInfo commandInfo)
             {
                 if (commandInfo.ArgumentsAsList.Count == 2)
                 {
@@ -105,15 +103,16 @@ namespace StriBot.Commands
                 }
                 else
                     _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
-            };
+            }
 
-            return new Command("Добавить", $"Добавить объекту Х {_currency.GenitiveMultiple}. Только для владельца канала", Role.Broadcaster, action, new string[] { "объект", "количество" },
+            return new Command("Добавить", $"Добавить объекту Х {_currency.GenitiveMultiple}. Только для владельца канала", Role.Broadcaster, Action, new[] { "объект", "количество" },
                 CommandType.Interactive);
         }
 
-        public Command CreateRemoveCurrency()
+        private Command CreateRemoveCurrency()
         {
-            Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
+            void Action(CommandInfo commandInfo)
+            {
                 if (commandInfo.ArgumentsAsList.Count == 2 && Convert.ToInt32(commandInfo.ArgumentsAsList[1]) > 0)
                 {
                     DataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]) * (-1));
@@ -121,14 +120,15 @@ namespace StriBot.Commands
                 }
                 else
                     _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
-            };
+            }
 
-            return new Command("Изъять", $"Изымает объект Х {_currency.GenitiveMultiple}", Role.Moderator, action, new string[] { "объект", "количество" }, CommandType.Interactive);
+            return new Command("Изъять", $"Изымает объект Х {_currency.GenitiveMultiple}", Role.Moderator, Action, new[] { "объект", "количество" }, CommandType.Interactive);
         }
 
-        public Command CreateCheckBalance()
+        private Command CreateCheckBalance()
         {
-            Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
+            void Action(CommandInfo commandInfo)
+            {
                 if (commandInfo.ArgumentsAsList.Count == 0)
                 {
                     var amount = DataBase.GetMoney(commandInfo.DisplayName);
@@ -139,14 +139,15 @@ namespace StriBot.Commands
                     var amount = DataBase.GetMoney(commandInfo.ArgumentsAsString);
                     GlobalEventContainer.Message($"{commandInfo.ArgumentsAsString} имеет {_currency.Incline(amount, true)}!", commandInfo.Platform);
                 }
-            };
+            }
 
-            return new Command("Заначка", $"Текущие количество {_currency.GenitiveMultiple}", action, CommandType.Interactive);
+            return new Command("Заначка", $"Текущие количество {_currency.GenitiveMultiple}", Action, CommandType.Interactive);
         }
 
-        public Command CreateTransferCurrency()
+        private Command CreateTransferCurrency()
         {
-            Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
+            void Action(CommandInfo commandInfo)
+            {
                 if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[1], out var amount) && amount > 0)
                 {
                     if (DataBase.GetMoney(commandInfo.DisplayName) >= amount)
@@ -160,19 +161,16 @@ namespace StriBot.Commands
                 }
                 else
                     _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
-            };
+            }
 
-            return new Command("Подарить", $"Подарить {_currency.NominativeMultiple} [человек] [{_currency.GenitiveMultiple}] ", action, new string[] { "кому", "сколько" }, CommandType.Interactive);
+            return new Command("Подарить", $"Подарить {_currency.NominativeMultiple} [человек] [{_currency.GenitiveMultiple}] ", Action, new[] { "кому", "сколько" }, CommandType.Interactive);
         }
 
-        public Command CreateDistributeCurrency()
+        private Command CreateDistributeCurrency()
         {
-            Action<CommandInfo> action = delegate (CommandInfo commandInfo) {
-                if (commandInfo.ArgumentsAsList.Count == 2
-                    && int.TryParse(commandInfo.ArgumentsAsList[0], out int amountForPer)
-                    && int.TryParse(commandInfo.ArgumentsAsList[1], out int amountPeople)
-                    && amountForPer > 0
-                    && amountPeople > 0)
+            void Action(CommandInfo commandInfo)
+            {
+                if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[0], out var amountForPer) && int.TryParse(commandInfo.ArgumentsAsList[1], out int amountPeople) && amountForPer > 0 && amountPeople > 0)
                 {
                     if (DataBase.GetMoney(commandInfo.DisplayName) >= amountForPer * amountPeople)
                     {
@@ -184,11 +182,10 @@ namespace StriBot.Commands
                 }
                 else
                     _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
+            }
 
-            };
-
-            return new Command("Разбросать", $"Разбрасывает {_currency.NominativeMultiple} в чате, любой желающий может стащить", action,
-                new string[] { "Сколько стащит за раз", "Сколько человек сможет стащить" }, CommandType.Interactive);
+            return new Command("Разбросать", $"Разбрасывает {_currency.NominativeMultiple} в чате, любой желающий может стащить", Action,
+                new[] { "Сколько стащит за раз", "Сколько человек сможет стащить" }, CommandType.Interactive);
         }
 
         public Dictionary<string, Command> CreateCommands()

@@ -17,7 +17,7 @@ namespace StriBot.Commands
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
 
-        private List<(string, string, int)> _listOrders;
+        private readonly List<(string, string, int)> _listOrders;
         private Action<List<(string, string, int)>> _updateOrders;
 
         public OrderManager(Currency currency, ReadyMadePhrases readyMadePhrases)
@@ -31,47 +31,47 @@ namespace StriBot.Commands
         public void SafeCallConnector(Action<List<(string, string, int)>> updateOrders)
             => _updateOrders = updateOrders;
 
-        public Command CreateOrder()
-            => new Command("Заказ", String.Format("Предложить свой заказ", PriceList.Hero), CreateCustomOrderDelegate(), new string[] { _currency.NominativeMultiple.Title(), "Заказ" }, 
+        private Command CreateOrder()
+            => new Command("Заказ", String.Format("Предложить свой заказ", PriceList.Hero), CreateCustomOrderDelegate(), new[] { _currency.NominativeMultiple.Title(), "Заказ" }, 
                 CommandType.Order);
 
-        public Command CreateOrderHero()
-            => new Command("ЗаказГерой", $"Заказать героя на игру, цена: {_currency.Incline(PriceList.Hero)}", CreateOrderDelegate(PriceList.Hero), new string[] { "Имя героя" }, 
+        private Command CreateOrderHero()
+            => new Command("ЗаказГерой", $"Заказать героя на игру, цена: {_currency.Incline(PriceList.Hero)}", CreateOrderDelegate(PriceList.Hero), new[] { "Имя героя" }, 
                 CommandType.Order);
 
-        public Command CreateOrderCosplay()
+        private Command CreateOrderCosplay()
             => new Command("ЗаказКосплей", $"Заказать косплей на трансляцию, цена: {_currency.Incline(PriceList.Cosplay)}", CreateOrderDelegate(PriceList.Cosplay), 
-                new string[] { "Имя героя" }, CommandType.Hidden);
+                new[] { "Имя героя" }, CommandType.Hidden);
 
-        public Command CreateOrderGame()
+        private Command CreateOrderGame()
             => new Command("ЗаказИгра", $"Заказать игру на трансляцию, цена: {_currency.Incline(PriceList.Game)}", CreateOrderDelegate(PriceList.Game), 
-                new string[] { "Название игры" }, CommandType.Order);
+                new[] { "Название игры" }, CommandType.Order);
 
-        public Command CreateOrderMovie()
+        private Command CreateOrderMovie()
             => new Command("ЗаказФильм", $"Заказать фильм на трансляцию, цена: {_currency.Incline(PriceList.Movie)}", CreateOrderDelegate(PriceList.Movie),
-                new string[] { "Название фильма" }, CommandType.Order);
+                new[] { "Название фильма" }, CommandType.Order);
 
-        public Command CreateOrderAnime()
+        private Command CreateOrderAnime()
             => new Command("ЗаказАниме", $"Заказать серию аниме на трансляцию, цена: {_currency.Incline(PriceList.Anime)}", CreateOrderDelegate(PriceList.Anime), 
-                new string[] { "Название аниме" }, CommandType.Order);
+                new[] { "Название аниме" }, CommandType.Order);
 
-        public Command CreateOrderVip()
+        private Command CreateOrderVip()
             => new Command("ЗаказVIP", $"Купить VIP, цена: {_currency.Incline(PriceList.VIP)}", CreateOrderDelegate(PriceList.VIP, "VIP"), CommandType.Order);
 
-        public Command CreateOrderParty()
+        private Command CreateOrderParty()
             => new Command("ЗаказГруппы", $"Заказать совместную игру со стримером в Dota 2, цена: {_currency.Incline(PriceList.Group)}", CreateOrderDelegate(PriceList.Group, "группу"), 
                 CommandType.Order);
 
-        public Command CreateOrderBoost()
+        private Command CreateOrderBoost()
             => new Command("ЗаказБуст", $"Заказать стримера для подъема вашего рейтинга в Dota 2 на 1 трансляцию (5-6 часов), цена: {_currency.Incline(PriceList.Boost)}", 
                 CreateOrderDelegate(PriceList.Boost, "Буст"), CommandType.Order);
 
-        public Command CreateOrderSong()
+        private Command CreateOrderSong()
             => new Command("ЗаказПесня", $"Заказать воспроизведение песни, цена: {_currency.Incline(PriceList.Song)}", CreateOrderDelegate(PriceList.Song),
-                new string[] { "Ссылка на песню" }, CommandType.Order);
+                new[] { "Ссылка на песню" }, CommandType.Order);
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>()
+            => new Dictionary<string, Command>
             {
                 CreateOrder(),
                 CreateOrderHero(),
@@ -128,13 +128,12 @@ namespace StriBot.Commands
             {
                 if (commandInfo.ArgumentsAsList.Count > 1)
                 {
-                    int temp;
-                    if (int.TryParse(commandInfo.ArgumentsAsList[0], out temp))
+                    if (int.TryParse(commandInfo.ArgumentsAsList[0], out var customPrice))
                     {
-                        CreateOrderDelegate(temp);
-                        if (DataBase.GetMoney(commandInfo.DisplayName) >= temp)
+                        CreateOrderDelegate(customPrice);
+                        if (DataBase.GetMoney(commandInfo.DisplayName) >= customPrice)
                         {
-                            _listOrders.Add((commandInfo.ArgumentsAsString.Substring(commandInfo.ArgumentsAsList[0].Length + 1), commandInfo.DisplayName, temp));
+                            _listOrders.Add((commandInfo.ArgumentsAsString.Substring(commandInfo.ArgumentsAsList[0].Length + 1), commandInfo.DisplayName, customPrice));
                             GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ!", commandInfo.Platform);
                             _updateOrders(_listOrders);
                         }

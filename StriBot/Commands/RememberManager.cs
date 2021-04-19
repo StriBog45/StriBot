@@ -19,7 +19,7 @@ namespace StriBot.Commands
                 CreateRemindCommand()
             };
 
-        public Command CreateRemindCommand()
+        private Command CreateRemindCommand()
         {
             var result = new Command("Напомнить", "Создает напоминалку. При использовании без указания текста, напоминание будет удалено", Role.Moderator,
                 delegate (CommandInfo commandInfo)
