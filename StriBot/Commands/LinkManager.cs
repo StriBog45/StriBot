@@ -14,30 +14,41 @@ namespace StriBot.Commands
         }
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>()
+            => new Dictionary<string, Command>
             {
                 #region Информационные
-                { new Command("Команды","Ссылка на список команд",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("https://vk.cc/a6Giqf", e.Platform);}, CommandType.Info)},
-                { new Command("Dotabuff","Ссылка на dotabuff",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("https://ru.dotabuff.com/players/113554714", e.Platform); }, CommandType.Info)},
-                { new Command("Vk","Наша группа в ВКонтакте",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("https://vk.com/stribog45", e.Platform); }, CommandType.Info)},
-                { new Command("Youtube","Архив некоторых записей",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("https://www.youtube.com/channel/UCrp75ozt9Spv5k7oVaRd5MQ", e.Platform); }, CommandType.Info)},
-                { new Command("GoodGame","Ссылка на дополнительный канал на GoodGame",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("https://goodgame.ru/channel/StriBog45/", e.Platform); }, CommandType.Info)},
-                { new Command("Discord","Наш discord для связи!",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("https://discord.gg/7Z6HGYZ", e.Platform); }, CommandType.Info)},
-                { new Command("Steam","Ссылка на мой steam",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("https://steamcommunity.com/id/StriBog45", e.Platform); }, CommandType.Info)},
+
+                new Command("Команды", "Ссылка на список команд",
+                    delegate(CommandInfo e) { GlobalEventContainer.Message("https://vk.cc/a6Giqf", e.Platform); },
+                    CommandType.Info),
+                new Command("Dotabuff", "Ссылка на dotabuff",
+                    delegate(CommandInfo e)
+                    {
+                        GlobalEventContainer.Message("https://ru.dotabuff.com/players/113554714", e.Platform);
+                    }, CommandType.Info),
+                new Command("Vk", "Наша группа в ВКонтакте",
+                    delegate(CommandInfo e) { GlobalEventContainer.Message("https://vk.com/stribog45", e.Platform); },
+                    CommandType.Info),
+                new Command("Youtube", "Архив некоторых записей",
+                    delegate(CommandInfo e)
+                    {
+                        GlobalEventContainer.Message("https://www.youtube.com/channel/UCrp75ozt9Spv5k7oVaRd5MQ",
+                            e.Platform);
+                    }, CommandType.Info),
+                new Command("GoodGame", "Ссылка на дополнительный канал на GoodGame",
+                    delegate(CommandInfo e)
+                    {
+                        GlobalEventContainer.Message("https://goodgame.ru/channel/StriBog45/", e.Platform);
+                    }, CommandType.Info),
+                new Command("Discord", "Наш discord для связи!",
+                    delegate(CommandInfo e) { GlobalEventContainer.Message("https://discord.gg/7Z6HGYZ", e.Platform); },
+                    CommandType.Info),
+                new Command("Steam", "Ссылка на мой steam",
+                    delegate(CommandInfo e)
+                    {
+                        GlobalEventContainer.Message("https://steamcommunity.com/id/StriBog45", e.Platform);
+                    }, CommandType.Info),
+
                 #endregion
 
                 #region Стримеры
@@ -71,7 +82,7 @@ namespace StriBot.Commands
                     GlobalEventContainer.Message("Киберспортивный комментатор Dota 2! twitch.tv/cyberstepan", e.Platform); }, CommandType.Streamers)},
                 { new Command("Лина","Показывает ссылку на twitch Anginka",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Милашка Ангинка :) twitch.tv/anginka", e.Platform); }, CommandType.Streamers)},
+                    GlobalEventContainer.Message("Милашка Ангинка :) twitch.tv/anginka", e.Platform); }, CommandType.Streamers)}
                 #endregion
             };
     }
