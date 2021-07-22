@@ -55,7 +55,7 @@ namespace StriBot.Commands
             _bossUpdate();
         }
 
-        public Command CreateBossesCommand()
+        private Command CreateBossesCommand()
             => new Command("Боссы", "Список убитых боссов!",
                 delegate (CommandInfo e)
                 {
@@ -65,7 +65,7 @@ namespace StriBot.Commands
                         GlobalEventContainer.Message("Боссов нет", e.Platform);
                 }, CommandType.Interactive);
 
-        public Command CreateBossCommand()
+        private Command CreateBossCommand()
             => new Command("Босс", "Добавляет босса", Role.Moderator,
                 delegate (CommandInfo commandInfo)
                 {
@@ -88,14 +88,14 @@ namespace StriBot.Commands
             }
         }
 
-        public Command CreateDeathsCommand()
+        private Command CreateDeathsCommand()
             => new Command("Смертей", "Показывает количество смертей",
                 delegate (CommandInfo commandInfo)
                 {
                     GlobalEventContainer.Message(string.Format("Смертей: {0}", Deaths), commandInfo.Platform);
                 }, CommandType.Interactive);
 
-        public Command CreateDeathCommand()
+        private Command CreateDeathCommand()
             => new Command("Смерть", "Добавляет смерть", Role.Moderator,
                 delegate (CommandInfo commandInfo)
                 {
@@ -115,7 +115,7 @@ namespace StriBot.Commands
             };
 
         private static string GetPath(string name)
-            => string.Format("{0}\\{1}.txt", _catalog, name);
+            => $"{_catalog}\\{name}.txt";
 
         public List<string> GetBosses()
             => _bosses;

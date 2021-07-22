@@ -10,8 +10,8 @@ namespace StriBot.Commands
 {
     public class BurgerManager
     {
-        static int MAX_BURGER_SIZE = 3;
-        static string[] ListStuffing =  {
+        private static readonly int _maxBurgerSize = 3;
+        private static readonly string[] ListStuffing =  {
             "сосисками",
             "бабушкиной аджикой, едренной такой",
             "ломтиком сыра",
@@ -50,8 +50,7 @@ namespace StriBot.Commands
             "грибами",
             "хлебом"
         };
-
-        static string[] ListFoundation = {
+        private static readonly string[] ListFoundation = {
             "горячем хлебушке",
             "горячей булочке",
             "горячем ломтике хлеба",
@@ -61,23 +60,23 @@ namespace StriBot.Commands
             "лаваше"
         };
         
-        public static string BurgerCombiner()
+        private static string BurgerCombiner()
         {
-            var burgerSize = RandomHelper.random.Next(1, MAX_BURGER_SIZE);
+            var burgerSize = RandomHelper.random.Next(1, _maxBurgerSize);
             var burgerBuilder = new StringBuilder("бутерброд с ");
-            for(int i=0; i<burgerSize; i++)
+            for(var i=0; i<burgerSize; i++)
             {
                 if (i == 0)
                     burgerBuilder.Append(RandomHelper.GetRandomOfArray(ListStuffing));
                 else
                     burgerBuilder.Append(" и " + RandomHelper.GetRandomOfArray(ListStuffing));
             }
-            burgerBuilder.Append(string.Format(" на {0}", RandomHelper.GetRandomOfArray(ListFoundation)));
+            burgerBuilder.Append($" на {RandomHelper.GetRandomOfArray(ListFoundation)}");
             return burgerBuilder.ToString();
         }
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>()
+            => new Dictionary<string, Command>
             {
                 new Command("Бутерброд","Выдает бутерброд тебе или объекту",
                 delegate (CommandInfo commandInfo)
@@ -86,7 +85,7 @@ namespace StriBot.Commands
                             GlobalEventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.DisplayName), commandInfo.Platform);
                         else
                             GlobalEventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.ArgumentsAsString), commandInfo.Platform);
-                }, new string[] {"Объект"}, CommandType.Interactive)
+                }, new[] {"Объект"}, CommandType.Interactive)
             };
     }
 }

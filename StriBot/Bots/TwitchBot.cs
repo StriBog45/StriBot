@@ -18,7 +18,6 @@ namespace StriBot.Bots
 {
     public class TwitchBot
     {
-        private ConnectionCredentials _connectionCredentials;
         private TwitchClient _twitchClient;
         private TwitchAPI _api;
         private TwitchInfo _twitchInfo;
@@ -30,10 +29,10 @@ namespace StriBot.Bots
         {
             _twitchInfo = new TwitchInfo();
 
-            _connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, _twitchInfo.BotAcessToken);
+            var connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, _twitchInfo.BotAcessToken);
 
             _twitchClient = new TwitchClient();
-            _twitchClient.Initialize(_connectionCredentials, _twitchInfo.Channel);
+            _twitchClient.Initialize(connectionCredentials, _twitchInfo.Channel);
             _twitchClient.OnChatCommandReceived += OnChatCommandReceived;
             _twitchClient.OnWhisperCommandReceived += OnWhisperCommandReceived;
             _twitchClient.OnJoinedChannel += OnJoinedChannel;
@@ -49,7 +48,7 @@ namespace StriBot.Bots
 
             _twitchPub = new TwitchPubSub();
             _twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected;
-            _twitchPub.OnListenResponse += _twitchPub_OnListenResponse;
+            _twitchPub.OnListenResponse += OnListenResponse;
             _twitchPub.OnRewardRedeemed += OnRewardRedeemed;
             _twitchPub.OnChannelCommerceReceived += TwitchPub_OnChannelCommerceReceived;
             _twitchPub.ListenToRewards(_twitchInfo.ChannelId);
@@ -73,8 +72,8 @@ namespace StriBot.Bots
             request.Method = "GET";
 
             // Create POST data and convert it to a byte array.
-            string postData = "This is a test that posts this string to a Web server.";
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+            var postData = "This is a test that posts this string to a Web server.";
+            var byteArray = Encoding.UTF8.GetBytes(postData);
 
             //// Set the ContentType property of the WebRequest.
             //request.ContentType = "application/x-www-form-urlencoded";
@@ -89,7 +88,7 @@ namespace StriBot.Bots
             //dataStream.Close();
 
             // Get the response.
-            WebResponse response = request.GetResponse();
+            var response = request.GetResponse();
 
             // Get the stream containing content returned by the server.
             // The using block ensures the stream is automatically closed.
@@ -111,7 +110,7 @@ namespace StriBot.Bots
             response.Close();
         }
 
-        private void _twitchPub_OnListenResponse(object sender, TwitchLib.PubSub.Events.OnListenResponseArgs e)
+        private void OnListenResponse(object sender, TwitchLib.PubSub.Events.OnListenResponseArgs e)
         {
             //SendMessage($"Topic: {e.Topic} Success: {e.Successful} SuccessByResponse: {e.Response.Successful}  Error: {e.Response.Error} Nonce {e.Response.Nonce}");
         }
@@ -154,7 +153,7 @@ namespace StriBot.Bots
                 GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.HighlightedMessage, Platform.Twitch, displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
         }
 
-        public void SendMessage(string message)
+        private void SendMessage(string message)
         {
             if (_twitchClient.IsConnected)
                 _twitchClient.SendMessage(_twitchInfo.Channel, $"/me {message}");

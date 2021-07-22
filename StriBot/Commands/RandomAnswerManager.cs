@@ -44,7 +44,7 @@ namespace StriBot.Commands
                     else
                     {
                         var accuracy = RandomHelper.random.Next(0, 100);
-                        string snowResult = string.Empty;
+                        var snowResult = string.Empty;
                         if (accuracy < 10)
                             snowResult = "и... промазал";
                         if (accuracy >= 10 && accuracy <= 20)
@@ -53,13 +53,13 @@ namespace StriBot.Commands
                             snowResult = $"и попал {_customArray.GetHited()}";
                         SendMessage($"{commandInfo.DisplayName} бросил снежок в {commandInfo.ArgumentsAsString} {snowResult}", commandInfo.Platform);
                     }
-                }, new string[] { "Объект" }, CommandType.Interactive);
+                }, new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateRollCommand()
             => new Command("Roll", "Бросить Roll", 
                 delegate (CommandInfo commandInfo) 
                 { SendMessage($"{commandInfo.DisplayName} получает число: {RandomHelper.random.Next(0, 100)}", commandInfo.Platform); }, 
-                new string[] { "Объект" }, CommandType.Interactive);
+                new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateLiftedCommand()
             => new Command("Подуть", "Дует на цель",
@@ -72,27 +72,29 @@ namespace StriBot.Commands
                         SendMessage(string.Format("{0} подул на {1}, поднимается юбка и мы обнаруживаем {2} {3}! PogChamp ",
                             commandInfo.DisplayName, commandInfo.ArgumentsAsString, _customArray.GetUnderpantsType(), _customArray.GetUnderpantsColor()), commandInfo.Platform);
                     }
-                }, new string[] { "Цель" }, CommandType.Interactive);
+                }, new[] { "Цель" }, CommandType.Interactive);
 
         private Command CreateCompatibilityCommand()
             => new Command("Совместимость", "Проверяет вашу совместимость с объектом",
                 delegate (CommandInfo commandInfo)
                 {
-                    if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
-                        SendMessage($"Совместимость {commandInfo.DisplayName} с собой составляет {RandomHelper.random.Next(0, 101)}%", commandInfo.Platform);
-                    else
-                        SendMessage($"{commandInfo.DisplayName} совместим с {commandInfo.ArgumentsAsString} на {RandomHelper.random.Next(0, 101)}%", commandInfo.Platform);
-                }, new string[] { "Объект" }, CommandType.Interactive);
+                    SendMessage(
+                        string.IsNullOrEmpty(commandInfo.ArgumentsAsString)
+                            ? $"Совместимость {commandInfo.DisplayName} с собой составляет {RandomHelper.random.Next(0, 101)}%"
+                            : $"{commandInfo.DisplayName} совместим с {commandInfo.ArgumentsAsString} на {RandomHelper.random.Next(0, 101)}%",
+                        commandInfo.Platform);
+                }, new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateBucketCommand()
             => new Command("Цветы", "Дарит букет цветов объекту",
                 delegate (CommandInfo commandInfo)
                 {
-                    if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
-                        SendMessage($"{commandInfo.DisplayName} приобрел букет {_customArray.GetBucket()} PepoFlower ", commandInfo.Platform);
-                    else
-                        SendMessage($"{commandInfo.DisplayName} дарит {commandInfo.ArgumentsAsString} букет {_customArray.GetBucket()} PepoFlower ", commandInfo.Platform);
-                }, new string[] { "Объект" }, CommandType.Interactive);
+                    SendMessage(
+                        string.IsNullOrEmpty(commandInfo.ArgumentsAsString)
+                            ? $"{commandInfo.DisplayName} приобрел букет {_customArray.GetBucket()} PepoFlower "
+                            : $"{commandInfo.DisplayName} дарит {commandInfo.ArgumentsAsString} букет {_customArray.GetBucket()} PepoFlower ",
+                        commandInfo.Platform);
+                }, new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateLoveCommand()
             => new Command("Люблю", "Показывает насколько вы любите объект",
@@ -102,7 +104,7 @@ namespace StriBot.Commands
                         SendMessage(string.Format("{0} любит себя на {1}% <3 ", commandInfo.DisplayName, RandomHelper.random.Next(0, 101)), commandInfo.Platform);
                     else
                         SendMessage(string.Format("{0} любит {1} на {2}% <3 ", commandInfo.DisplayName, commandInfo.ArgumentsAsString, RandomHelper.random.Next(0, 101)), commandInfo.Platform);
-                }, new string[] { "Объект" }, CommandType.Interactive);
+                }, new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateDuelCommand()
             => new Command("Duel", "Вызывает объект на дуэль в доте 1х1",
@@ -110,47 +112,47 @@ namespace StriBot.Commands
                 {
                     if (!string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
                     {
-                        var duelAccuraccy = RandomHelper.random.Next(0, 100);
-                        string duelResult = _customArray.GetDota2DuelResult();
+                        var duelResult = _customArray.GetDota2DuelResult();
                         SendMessage(string.Format("{0} вызывает {1} на битву 1х1 на {2}! Итог: {3}",
                             commandInfo.DisplayName, commandInfo.ArgumentsAsString, Heroes.GetRandomHero(), duelResult), commandInfo.Platform);
                     }
                     else
                         SendMessage(string.Format("В дуэли между {0} и {0} победил {0}!", commandInfo.DisplayName), commandInfo.Platform);
-                }, new string[] { "Объект" }, CommandType.Interactive);
+                }, new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateIqCommand()
             => new Command("IQ", "Узнать IQ объекта или свой",
                 delegate (CommandInfo commandInfo)
                 {
-                    if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
-                        SendMessage($"Ваш IQ: {RandomHelper.random.Next(1, 200)} SeemsGood ", commandInfo.Platform);
-                    else
-                        SendMessage($"IQ {commandInfo.ArgumentsAsString} составляет: {RandomHelper.random.Next(1, 200)}! SeemsGood ", commandInfo.Platform);
-                }, new string[] { "Объект" }, CommandType.Interactive);
+                    SendMessage(
+                        string.IsNullOrEmpty(commandInfo.ArgumentsAsString)
+                            ? $"Ваш IQ: {RandomHelper.random.Next(1, 200)} SeemsGood "
+                            : $"IQ {commandInfo.ArgumentsAsString} составляет: {RandomHelper.random.Next(1, 200)}! SeemsGood ",
+                        commandInfo.Platform);
+                }, new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateMagic8Ball()
             => new Command("Шар", "Шар предсказаний, формулируйте вопрос для ответа \"да\" или \"нет\" ",
                 delegate (CommandInfo commandInfo)
                 {
                     SendMessage($"Шар говорит... {_customArray.GetBallAnswer()}", commandInfo.Platform);
-                }, new string[] { "Вопрос" }, CommandType.Interactive);
+                }, new[] { "Вопрос" }, CommandType.Interactive);
 
         private Command CommandCoin()
             => new Command("Монетка", "Орел или решка?",
                 delegate (CommandInfo commandInfo)
                 {
-                    int coin = RandomHelper.random.Next(0, 101);
-                    if (coin == 100)
-                        SendMessage("Бросаю монетку... Ребро POGGERS ", commandInfo.Platform);
-                    else
-                        SendMessage($"Бросаю монетку... {(coin < 50 ? "Орел" : "Решка")}", commandInfo.Platform);
+                    var coin = RandomHelper.random.Next(0, 101);
+                    SendMessage(
+                        coin == 100
+                            ? "Бросаю монетку... Ребро POGGERS "
+                            : $"Бросаю монетку... {(coin < 50 ? "Орел" : "Решка")}", commandInfo.Platform);
                 }, CommandType.Interactive);
 
         private Command CreateCommandBreastSize()
             => new Command("РазмерГ", "Узнать размер вашей груди",
                 delegate (CommandInfo commandInfo) {
-                    int breastSize = RandomHelper.random.Next(0, 7);
+                    var breastSize = RandomHelper.random.Next(0, 7);
                     var result = string.Empty;
 
                     switch (breastSize)
@@ -185,17 +187,23 @@ namespace StriBot.Commands
             => new Command("РазмерП", "Узнать размер вашего писюна",
                 delegate (CommandInfo commandInfo)
                 {
-                    int penisSize = RandomHelper.random.Next(10, 21);
+                    var penisSize = RandomHelper.random.Next(10, 21);
                     var result = string.Empty;
 
                     if (penisSize < 13)
                         result = string.Format("{0} сантиметров... {1}, не переживай, размер не главное! ", commandInfo.DisplayName, penisSize);
-                    else if (penisSize == 13)
-                        result = string.Format("13 сантиметров... {0}, поздравляю, у вас стандарт!  striboF ", commandInfo.DisplayName);
-                    else if (penisSize == 20)
-                        result = string.Format("20 сантиметров... {0}, вы можете завернуть свой шланг обратно monkaS ", commandInfo.DisplayName);
-                    else
-                        result = string.Format("{0} сантиметров... {1}, ваша девушка... или мужчина, будет в восторге! striboTea ", commandInfo.DisplayName, penisSize);
+                    else switch (penisSize)
+                    {
+                        case 13:
+                            result = string.Format("13 сантиметров... {0}, поздравляю, у вас стандарт!  striboF ", commandInfo.DisplayName);
+                            break;
+                        case 20:
+                            result = string.Format("20 сантиметров... {0}, вы можете завернуть свой шланг обратно monkaS ", commandInfo.DisplayName);
+                            break;
+                        default:
+                            result = string.Format("{0} сантиметров... {1}, ваша девушка... или мужчина, будет в восторге! striboTea ", commandInfo.DisplayName, penisSize);
+                            break;
+                    }
 
                     SendMessage(result, commandInfo.Platform);
                 }, CommandType.Interactive);

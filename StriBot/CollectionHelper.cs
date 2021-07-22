@@ -7,7 +7,7 @@ namespace StriBot
         public override string ToString()
             => string.Join(", ", this);
 
-        public string ToString(string Separator)
-            => string.Join(Separator, this);
+        public string ToString(string separator)
+            => string.Join(separator, this);
     }
 }

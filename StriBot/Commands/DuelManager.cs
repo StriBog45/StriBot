@@ -21,7 +21,7 @@ namespace StriBot.Commands
         private int _duelTimer;
         private int _duelBet;
         private CommandInfo _duelMember;
-        private int _timeoutTime = 120;
+        private readonly int _timeoutTime = 120;
 
         public DuelManager(Currency currency, ReadyMadePhrases readyMadePhrases)
         {
@@ -31,7 +31,7 @@ namespace StriBot.Commands
             CleanDuelMember();
         }
 
-        public Command CreateDuelCommand()
+        private Command CreateDuelCommand()
         {
             var result = new Command("Дуэль", $"Дуэль с {_currency.InstrumentalMultiple} или без, с timeout, проигравший в дуэли отправляется на {_timeoutTime} секунд в timeout",
                 delegate (CommandInfo commandInfo)
@@ -89,7 +89,7 @@ namespace StriBot.Commands
                             CleanDuelMember();
                         }
                     }
-                }, new string[] { "размер ставки" }, CommandType.Interactive);
+                }, new[] { "размер ставки" }, CommandType.Interactive);
 
             return result;
         }
