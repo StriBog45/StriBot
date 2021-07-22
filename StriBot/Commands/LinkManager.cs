@@ -43,43 +43,35 @@ namespace StriBot.Commands
                 #region Стримеры
                 { new Command("Daisy","Показывает ссылку на twitch Daisy(roliepolietrolie)",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Любимая австралийка, обладает хорошим чувством юмора. Не понимает русский, но старается его переводить. А также обожает Dota 2 <3 , twitch.tv/squintee", 
+                    GlobalEventContainer.Message("Любимая австралийка, с хорошим чувством юмора! Обожает Dota 2 twitch.tv/squintee", 
                         e.Platform); },CommandType.Streamers)},
-                { new Command("Katenok","Показывает ссылку на twitch Katenok",
+                { new Command("Катя","Показывает ссылку на twitch Katenok",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Очаровашка Катенок(Ffunnya), улыбчивая и светлая персона! Любит DBD и Dota 2 <3 , twitch.tv/squintee", e.Platform); }, CommandType.Streamers)},
-                { new Command("Gohapsp","Показывает ссылку на twitch Gohapsp",
+                    GlobalEventContainer.Message("Очаровашка Катенок(Ffunnya), улыбчивая и светлая персона! Любит Dota 2, CS:GO, DBD <3 twitch.tv/katenok", e.Platform); }, CommandType.Streamers)},
+                { new Command("Гоха","Показывает ссылку на twitch Gohapsp",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Специалист по хоррорам, twitch.tv/gohapsp", e.Platform); }, CommandType.Streamers)},
-                { new Command("Stone","Показывает ссылку на twitch Камушка",
+                    GlobalEventContainer.Message("Специалист по хоррорам :D twitch.tv/gohapsp", e.Platform); }, CommandType.Streamers)},
+                { new Command("Stone","Показывает ссылку на twitch SayYees",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Самый очаровательный камушек! <3 , twitch.tv/sayyees", e.Platform); }, CommandType.Streamers)},
-                { new Command("Бескрыл","Показывает ссылку на twitch Бескрыл-а",
+                    GlobalEventContainer.Message("Самый очаровательный камушек! Лера! <3 twitch.tv/sayyees", e.Platform); }, CommandType.Streamers)},
+                { new Command("Лера","Показывает ссылку на twitch Starval",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Свежие одиночные игры на прохождение :) Добрый, отзывчивый, не оставит без внимания никого! К слову, он разработчик и у него уже есть своя игра! :) twitch.tv/beskr1l_",
-                        e.Platform); }, CommandType.Streamers)},
-                { new Command("Welovegames","Показывает ссылку на twitch Welovegames",
+                    GlobalEventContainer.Message("Лера. Киев. Dota Underlords. :) twitch.tv/cyberval", e.Platform); }, CommandType.Streamers)},
+                { new Command("Аяна","Показывает ссылку на twitch AianaKim",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Хранитель убежища, харизматичный Денис! Если вы о нём ещё не знаете, крайне рекомендую посмотреть на его деятельность. p.s. обожаю его смайлы. twitch.tv/welovegames",
-                        e.Platform); }, CommandType.Streamers)},
-                { new Command("StrykOFF","Показывает ссылку на twitch StrykOFF",
+                    GlobalEventContainer.Message("Наша улыбашка-очаровашка Аяна twitch.tv/aianakim", e.Platform); }, CommandType.Streamers)},
+                { new Command("Вика","Показывает ссылку на twitch SyndicateReara",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Владелец таверны, создатель лучших шаверм! Для ламповых посиделок :) twitch.tv/strykoff", e.Platform); }, CommandType.Streamers)},
-                { new Command("Tilttena","Показывает ссылку на twitch Tilttena",
+                    GlobalEventContainer.Message("Наш любимый модератор <3 twitch.tv/syndicatereara", e.Platform); }, CommandType.Streamers)},
+                { new Command("Денис","Показывает ссылку на twitch Monstro_boy",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Горящая Алёна!, twitch.tv/tilttena", e.Platform); }, CommandType.Streamers)},
-                { new Command("Bezumnaya","Показывает ссылку на twitch Bezumnaya",
+                    GlobalEventContainer.Message("Молот и наковальня! twitch.tv/monstro_boy", e.Platform); }, CommandType.Streamers)},
+                { new Command("Степа","Показывает ссылку на twitch CyberStepan",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Безумно любит своих зрителей, twitch.tv/bezumnaya", e.Platform); }, CommandType.Streamers)},
-                { new Command("Starval","Показывает ссылку на twitch Starval",
+                    GlobalEventContainer.Message("Киберспортивный комментатор Dota 2! twitch.tv/cyberstepan", e.Platform); }, CommandType.Streamers)},
+                { new Command("Лина","Показывает ссылку на twitch Anginka",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Лера. Киев. Стример. :), twitch.tv/starval", e.Platform); }, CommandType.Streamers)},
-                { new Command("Aiana","Показывает ссылку на twitch AianaKim",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Наша улыбашка-очаровашка Аяна BLELELE  twitch.tv/aianakim", e.Platform); }, CommandType.Streamers)},
-                { new Command("Reara","Показывает ссылку на twitch SyndicateReara",
-                delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Незабудь выполнить воинское приветствие striboF twitch.tv/syndicatereara", e.Platform); }, CommandType.Streamers)}
+                    GlobalEventContainer.Message("Милашка Ангинка :) twitch.tv/anginka", e.Platform); }, CommandType.Streamers)},
                 #endregion
             };
     }
