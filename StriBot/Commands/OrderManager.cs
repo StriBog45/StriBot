@@ -32,7 +32,7 @@ namespace StriBot.Commands
             => _updateOrders = updateOrders;
 
         private Command CreateOrder()
-            => new Command("Заказ", String.Format("Предложить свой заказ", PriceList.Hero), CreateCustomOrderDelegate(), new[] { _currency.NominativeMultiple.Title(), "Заказ" }, 
+            => new Command("Заказ", "Предложить свой заказ", CreateCustomOrderDelegate(), new[] { "Цена", "Описание" }, 
                 CommandType.Order);
 
         private Command CreateOrderHero()
@@ -63,7 +63,7 @@ namespace StriBot.Commands
                 CommandType.Order);
 
         private Command CreateOrderBoost()
-            => new Command("ЗаказБуст", $"Заказать стримера для подъема вашего рейтинга в Dota 2 на 1 трансляцию (5-6 часов), цена: {_currency.Incline(PriceList.Boost)}", 
+            => new Command("ЗаказБуст", $"Заказать стримера для подъема вашего рейтинга в Dota 2 на 1 трансляцию (4 игры), цена: {_currency.Incline(PriceList.Boost)}", 
                 CreateOrderDelegate(PriceList.Boost, "Буст"), CommandType.Order);
 
         private Command CreateOrderSong()
