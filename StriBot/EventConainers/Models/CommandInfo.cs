@@ -24,7 +24,7 @@ namespace StriBot.EventConainers.Models
         {
             ArgumentsAsList = argumentsAsList;
             ArgumentsAsString = argumentsAsString;
-            CommandText = commandText.ToLower();
+            CommandText = commandText;
             Message = message;
             DisplayName = displayName;
             UserName = userName;

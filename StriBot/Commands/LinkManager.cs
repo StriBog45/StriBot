@@ -48,6 +48,11 @@ namespace StriBot.Commands
                     {
                         GlobalEventContainer.Message("https://steamcommunity.com/id/StriBog45", e.Platform);
                     }, CommandType.Info),
+                new Command("Raiders", "Ссылка для участия в битве StreamRaiders!",
+                    delegate(CommandInfo e)
+                    {
+                        GlobalEventContainer.Message("https://www.streamraiders.com/t/stribog45/", e.Platform);
+                    }, CommandType.Info),
 
                 #endregion
 

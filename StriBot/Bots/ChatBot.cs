@@ -76,7 +76,7 @@ namespace StriBot.Bots
 
         private void GiftSubscription(PlatformEventInfo platformEventInfo)
         {
-            GlobalEventContainer.Message($"{platformEventInfo.UserName} подарил подписку для {platformEventInfo.SecondName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {PriceList.ToysForSub} {_currency.Incline(PriceList.ToysForSub)}", platformEventInfo.Platform);
+            GlobalEventContainer.Message($"{platformEventInfo.UserName} подарил подписку для {platformEventInfo.SecondName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {_currency.Incline(PriceList.ToysForSub)}", platformEventInfo.Platform);
             DataBase.AddMoney(platformEventInfo.UserName, PriceList.ToysForSub);
             _speaker.Say("Спасибо за подарочную подписку!");
         }
@@ -184,6 +184,12 @@ namespace StriBot.Bots
                 if (IsAccessAllowed(Commands[commandInfo.CommandText].Requires, commandInfo)
                     && _halberdManager.CanSendMessage(commandInfo))
                     Commands[commandInfo.CommandText].Action(commandInfo);
+            }
+            else if (Commands.ContainsKey(commandInfo.CommandText.ToLower()))
+            {
+                if (IsAccessAllowed(Commands[commandInfo.CommandText.ToLower()].Requires, commandInfo)
+                    && _halberdManager.CanSendMessage(commandInfo))
+                    Commands[commandInfo.CommandText.ToLower()].Action(commandInfo);
             }
         }
 
