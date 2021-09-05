@@ -39,7 +39,7 @@ namespace StriBot.EventConainers
         }
 
         public static void Message(string message, Platform platform)
-            => Message(message, new Platform[] { platform });
+            => Message(message, new[] { platform });
 
         public static void Event(PlatformEventInfo platformEventInfo)
             => PlatformEventReceived?.Invoke(platformEventInfo);

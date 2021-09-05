@@ -2,7 +2,7 @@
 {
     public static class Heroes
     {
-        static string[] ListHeroes =  {
+        private static readonly string[] ListHeroes =  {
         "Abaddon",
         "Axe",
         "Beastmaster",
@@ -12,6 +12,7 @@
         "Chaos Knight",
         "Clockwerk",
         "Doom",
+        "Downbreaker",
         "Dragon Knight",
         "Earth Spirit",
         "Earthshaker",
@@ -118,6 +119,7 @@
         "Winter Wyvern",
         "Witch Doctor",
         "Zeus",
+        "Hoodwink"
         };
         public static string GetRandomHero()
             => RandomHelper.GetRandomOfArray(ListHeroes);

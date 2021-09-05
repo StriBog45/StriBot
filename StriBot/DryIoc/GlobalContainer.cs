@@ -7,11 +7,9 @@ namespace StriBot.DryIoc
     {
         public static IContainer Default { get; private set; }
 
-        public static IContainer Initialize()
+        public static void Initialize()
         {
             Default = InitializeContainer();
-
-            return Default;
         }
 
         private static IContainer InitializeContainer()

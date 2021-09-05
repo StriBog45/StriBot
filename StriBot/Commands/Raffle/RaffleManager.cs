@@ -15,10 +15,10 @@ namespace StriBot.Commands.Raffle
         private readonly List<RaffleParticipant> _participantsList;
         private string _commandName;
         
-        private const int _subscriberBonus = 3;
+        private const int SubscriberBonus = 3;
         private int _participantsCount;
 
-        public bool IsProgress { get; private set; }
+        private bool IsProgress { get; set; }
 
         public RaffleManager()
         {
@@ -86,7 +86,7 @@ namespace StriBot.Commands.Raffle
                     if (canParticipate)
                     {
                         if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
-                            for (var index = 0; index < _subscriberBonus; index++)
+                            for (var index = 0; index < SubscriberBonus; index++)
                                 _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, steamTradeLink));
                         else
                             _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, steamTradeLink));
@@ -105,7 +105,7 @@ namespace StriBot.Commands.Raffle
             var result = new RaffleParticipant(string.Empty, "Нет участников");
             if (_participantsList.Count > 0)
             {
-                var winnerIndex = RandomHelper.random.Next(0, _participantsList.Count);
+                var winnerIndex = RandomHelper.Random.Next(0, _participantsList.Count);
                 result = _participantsList[winnerIndex];
                 GlobalEventContainer.Message($"Количество участников: {_participantsCount}!", Platform.Twitch);
                 _participantsList.Remove(result);

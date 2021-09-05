@@ -1,12 +1,13 @@
 ﻿using ProtoBuf;
 using System.IO;
+using StriBot.ApplicationSettings.Models;
 
 namespace StriBot.ApplicationSettings
 {
     public class SettingsFileManager
     {
-        private const string _fileName = "UserSettings";
-        private string _fileNameWithExtension = $"{_fileName}.bin";
+        private const string FileName = "UserSettings";
+        private readonly string _fileNameWithExtension = $"{FileName}.bin";
         private StoredSettings _storedSettings;
 
         public SettingsFileManager()

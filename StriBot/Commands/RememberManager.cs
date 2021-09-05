@@ -14,7 +14,7 @@ namespace StriBot.Commands
         private Platform _platform;
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>()
+            => new Dictionary<string, Command>
             {
                 CreateRemindCommand()
             };
@@ -32,7 +32,7 @@ namespace StriBot.Commands
                     }
                     else
                         GlobalEventContainer.Message("Напоминание удалено", commandInfo.Platform);
-                }, new string[] { "текст" }, CommandType.Interactive);
+                }, new [] { "текст" }, CommandType.Interactive);
 
             return result;
         }

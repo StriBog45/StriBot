@@ -20,7 +20,7 @@ namespace StriBot.Commands
         private readonly Currency _currency;
         private readonly Minute _minute;
 
-        private readonly int halberdTimeoutTime = 5;
+        private const int HalberdTimeoutTime = 5;
 
         public HalberdManager(ReadyMadePhrases readyMadePhrases, Currency currency, Minute minute)
         {
@@ -48,7 +48,7 @@ namespace StriBot.Commands
 
         private Command CreateHalberdCommand()
         {
-            var result = new Command("Алебарда", $"Запретить указанному пользователю использовать команды на {_minute.Incline(halberdTimeoutTime)}. Цена: {PriceList.Halberd} {_currency.GenitiveMultiple}",
+            var result = new Command("Алебарда", $"Запретить указанному пользователю использовать команды на {_minute.Incline(HalberdTimeoutTime)}. Цена: {PriceList.Halberd} {_currency.GenitiveMultiple}",
                 delegate (CommandInfo commandInfo)
                 {
                     if (commandInfo.ArgumentsAsList.Count == 1)
@@ -61,14 +61,14 @@ namespace StriBot.Commands
                             {
                                 var clearName = DataBase.CleanNickname(commandInfo.ArgumentsAsList[0]);
                                 var halberdValue = _halberdDictionary[clearName];
-                                halberdValue.Time += halberdTimeoutTime;
+                                halberdValue.Time += HalberdTimeoutTime;
                                 _halberdDictionary[clearName] = halberdValue;
 
                             }
                             else
-                                _halberdDictionary.TryAdd(DataBase.CleanNickname(commandInfo.ArgumentsAsList[0]), (commandInfo.Platform, halberdTimeoutTime));
+                                _halberdDictionary.TryAdd(DataBase.CleanNickname(commandInfo.ArgumentsAsList[0]), (commandInfo.Platform, HalberdTimeoutTime));
 
-                            GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на {commandInfo.ArgumentsAsList[0]}! Цель обезаружена на {_minute.Incline(halberdTimeoutTime)}!",
+                            GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на {commandInfo.ArgumentsAsList[0]}! Цель обезаружена на {_minute.Incline(HalberdTimeoutTime)}!",
                                 commandInfo.Platform);
                         }
                         else
@@ -76,8 +76,8 @@ namespace StriBot.Commands
                     }
                     else
                     {
-                        _halberdDictionary.TryAdd(DataBase.CleanNickname(commandInfo.DisplayName), (commandInfo.Platform, halberdTimeoutTime));
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на себя и не может использовать команды в течении {_minute.Incline(halberdTimeoutTime)}!", 
+                        _halberdDictionary.TryAdd(DataBase.CleanNickname(commandInfo.DisplayName), (commandInfo.Platform, HalberdTimeoutTime));
+                        GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на себя и не может использовать команды в течении {_minute.Incline(HalberdTimeoutTime)}!", 
                             commandInfo.Platform);
                     }
                 }, new[] { "цель" }, CommandType.Interactive);

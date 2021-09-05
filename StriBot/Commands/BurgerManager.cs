@@ -62,7 +62,7 @@ namespace StriBot.Commands
         
         private static string BurgerCombiner()
         {
-            var burgerSize = RandomHelper.random.Next(1, _maxBurgerSize);
+            var burgerSize = RandomHelper.Random.Next(1, _maxBurgerSize);
             var burgerBuilder = new StringBuilder("бутерброд с ");
             for(var i=0; i<burgerSize; i++)
             {

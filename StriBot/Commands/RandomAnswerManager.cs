@@ -43,7 +43,7 @@ namespace StriBot.Commands
                         SendMessage($"{commandInfo.DisplayName} бросил снежок и попал в себя!", commandInfo.Platform);
                     else
                     {
-                        var accuracy = RandomHelper.random.Next(0, 100);
+                        var accuracy = RandomHelper.Random.Next(0, 100);
                         var snowResult = string.Empty;
                         if (accuracy < 10)
                             snowResult = "и... промазал";
@@ -55,10 +55,10 @@ namespace StriBot.Commands
                     }
                 }, new[] { "Объект" }, CommandType.Interactive);
 
-        private Command CreateRollCommand()
+        private static Command CreateRollCommand()
             => new Command("Roll", "Бросить Roll", 
                 delegate (CommandInfo commandInfo) 
-                { SendMessage($"{commandInfo.DisplayName} получает число: {RandomHelper.random.Next(0, 100)}", commandInfo.Platform); }, 
+                { SendMessage($"{commandInfo.DisplayName} получает число: {RandomHelper.Random.Next(0, 100)}", commandInfo.Platform); }, 
                 new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateLiftedCommand()
@@ -80,8 +80,8 @@ namespace StriBot.Commands
                 {
                     SendMessage(
                         string.IsNullOrEmpty(commandInfo.ArgumentsAsString)
-                            ? $"Совместимость {commandInfo.DisplayName} с собой составляет {RandomHelper.random.Next(0, 101)}%"
-                            : $"{commandInfo.DisplayName} совместим с {commandInfo.ArgumentsAsString} на {RandomHelper.random.Next(0, 101)}%",
+                            ? $"Совместимость {commandInfo.DisplayName} с собой составляет {RandomHelper.Random.Next(0, 101)}%"
+                            : $"{commandInfo.DisplayName} совместим с {commandInfo.ArgumentsAsString} на {RandomHelper.Random.Next(0, 101)}%",
                         commandInfo.Platform);
                 }, new[] { "Объект" }, CommandType.Interactive);
 
@@ -96,14 +96,14 @@ namespace StriBot.Commands
                         commandInfo.Platform);
                 }, new[] { "Объект" }, CommandType.Interactive);
 
-        private Command CreateLoveCommand()
+        private static Command CreateLoveCommand()
             => new Command("Люблю", "Показывает насколько вы любите объект",
                 delegate (CommandInfo commandInfo)
                 {
                     if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
-                        SendMessage(string.Format("{0} любит себя на {1}% <3 ", commandInfo.DisplayName, RandomHelper.random.Next(0, 101)), commandInfo.Platform);
+                        SendMessage(string.Format("{0} любит себя на {1}% <3 ", commandInfo.DisplayName, RandomHelper.Random.Next(0, 101)), commandInfo.Platform);
                     else
-                        SendMessage(string.Format("{0} любит {1} на {2}% <3 ", commandInfo.DisplayName, commandInfo.ArgumentsAsString, RandomHelper.random.Next(0, 101)), commandInfo.Platform);
+                        SendMessage(string.Format("{0} любит {1} на {2}% <3 ", commandInfo.DisplayName, commandInfo.ArgumentsAsString, RandomHelper.Random.Next(0, 101)), commandInfo.Platform);
                 }, new[] { "Объект" }, CommandType.Interactive);
 
         private Command CreateDuelCommand()
@@ -120,14 +120,14 @@ namespace StriBot.Commands
                         SendMessage(string.Format("В дуэли между {0} и {0} победил {0}!", commandInfo.DisplayName), commandInfo.Platform);
                 }, new[] { "Объект" }, CommandType.Interactive);
 
-        private Command CreateIqCommand()
+        private static Command CreateIqCommand()
             => new Command("IQ", "Узнать IQ объекта или свой",
                 delegate (CommandInfo commandInfo)
                 {
                     SendMessage(
                         string.IsNullOrEmpty(commandInfo.ArgumentsAsString)
-                            ? $"Ваш IQ: {RandomHelper.random.Next(1, 200)} SeemsGood "
-                            : $"IQ {commandInfo.ArgumentsAsString} составляет: {RandomHelper.random.Next(1, 200)}! SeemsGood ",
+                            ? $"Ваш IQ: {RandomHelper.Random.Next(1, 200)} SeemsGood "
+                            : $"IQ {commandInfo.ArgumentsAsString} составляет: {RandomHelper.Random.Next(1, 200)}! SeemsGood ",
                         commandInfo.Platform);
                 }, new[] { "Объект" }, CommandType.Interactive);
 
@@ -138,21 +138,21 @@ namespace StriBot.Commands
                     SendMessage($"Шар говорит... {_customArray.GetBallAnswer()}", commandInfo.Platform);
                 }, new[] { "Вопрос" }, CommandType.Interactive);
 
-        private Command CommandCoin()
+        private static Command CommandCoin()
             => new Command("Монетка", "Орел или решка?",
                 delegate (CommandInfo commandInfo)
                 {
-                    var coin = RandomHelper.random.Next(0, 101);
+                    var coin = RandomHelper.Random.Next(0, 101);
                     SendMessage(
                         coin == 100
                             ? "Бросаю монетку... Ребро POGGERS "
                             : $"Бросаю монетку... {(coin < 50 ? "Орел" : "Решка")}", commandInfo.Platform);
                 }, CommandType.Interactive);
 
-        private Command CreateCommandBreastSize()
+        private static Command CreateCommandBreastSize()
             => new Command("РазмерГ", "Узнать размер вашей груди",
                 delegate (CommandInfo commandInfo) {
-                    var breastSize = RandomHelper.random.Next(0, 7);
+                    var breastSize = RandomHelper.Random.Next(0, 7);
                     var result = string.Empty;
 
                     switch (breastSize)
@@ -183,11 +183,11 @@ namespace StriBot.Commands
                     SendMessage(result, commandInfo.Platform);
                 }, CommandType.Interactive);
 
-        private Command CreateCommandPenisSize()
+        private static Command CreateCommandPenisSize()
             => new Command("РазмерП", "Узнать размер вашего писюна",
                 delegate (CommandInfo commandInfo)
                 {
-                    var penisSize = RandomHelper.random.Next(10, 21);
+                    var penisSize = RandomHelper.Random.Next(10, 21);
                     var result = string.Empty;
 
                     if (penisSize < 13)
@@ -208,7 +208,7 @@ namespace StriBot.Commands
                     SendMessage(result, commandInfo.Platform);
                 }, CommandType.Interactive);
 
-        private void SendMessage(string message, Platform platform)
+        private static void SendMessage(string message, Platform platform)
             => GlobalEventContainer.Message(message, platform);
     }
 }

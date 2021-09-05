@@ -4,19 +4,19 @@ namespace StriBot.Speakers
 {
     public class Speaker
     {
-        SpeechSynthesizer speechSynthesizer;
+        private readonly SpeechSynthesizer _speechSynthesizer;
 
         public Speaker()
         {
-            speechSynthesizer = new SpeechSynthesizer();
+            _speechSynthesizer = new SpeechSynthesizer();
 
             // Configure the audio output.   
-            speechSynthesizer.SetOutputToDefaultAudioDevice();
+            _speechSynthesizer.SetOutputToDefaultAudioDevice();
         }
 
         public void Say(string text)
         {
-            speechSynthesizer.Speak(text);
+            _speechSynthesizer.Speak(text);
         }
     }
 }

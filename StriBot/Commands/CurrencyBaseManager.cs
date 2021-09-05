@@ -18,10 +18,10 @@ namespace StriBot.Commands
     {
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
-        private List<string> _receivedUsers;
+        private readonly List<string> _receivedUsers;
         private int _distributionAmountUsers;
         private int _distributionAmountPerUsers;
-        private int SubCoefficient { get => _subBonus ? subCoefficient : 1; }
+        private int SubCoefficient => _subBonus ? subCoefficient : 1;
         private int subCoefficient = 2;
         private bool _subBonus;
 
@@ -39,7 +39,7 @@ namespace StriBot.Commands
             {
                 if (_distributionAmountUsers > 0)
                 {
-                    if (_receivedUsers.Where(x => x.CompareTo(commandInfo.DisplayName) == 0).ToArray().Count() == 0)
+                    if (!_receivedUsers.Where(x => x.CompareTo(commandInfo.DisplayName) == 0).ToArray().Any())
                     {
                         if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
                             DataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers * SubCoefficient);
@@ -102,7 +102,7 @@ namespace StriBot.Commands
                     GlobalEventContainer.Message($"Вы успешно добавили {_currency.NominativeMultiple}! striboF", commandInfo.Platform);
                 }
                 else
-                    _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
+                    ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
             }
 
             return new Command("Добавить", $"Добавить объекту Х {_currency.GenitiveMultiple}. Только для владельца канала", Role.Broadcaster, Action, new[] { "объект", "количество" },
@@ -119,7 +119,7 @@ namespace StriBot.Commands
                     GlobalEventContainer.Message($"Вы успешно изъяли {_currency.NominativeMultiple}! striboPeka ", commandInfo.Platform);
                 }
                 else
-                    _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
+                    ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
             }
 
             return new Command("Изъять", $"Изымает объект Х {_currency.GenitiveMultiple}", Role.Moderator, Action, new[] { "объект", "количество" }, CommandType.Interactive);
@@ -160,7 +160,7 @@ namespace StriBot.Commands
                         _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                 }
                 else
-                    _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
+                    ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
             }
 
             return new Command("Подарить", $"Подарить {_currency.NominativeMultiple} [человек] [{_currency.GenitiveMultiple}] ", Action, new[] { "кому", "сколько" }, CommandType.Interactive);
@@ -181,7 +181,7 @@ namespace StriBot.Commands
                         _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                 }
                 else
-                    _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
+                    ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
             }
 
             return new Command("Разбросать", $"Разбрасывает {_currency.NominativeMultiple} в чате, любой желающий может стащить", Action,

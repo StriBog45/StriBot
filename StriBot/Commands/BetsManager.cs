@@ -21,7 +21,7 @@ namespace StriBot.Commands
         private string[] _bettingOptions;
         private int _betsTimer;
         private double _betsCoefficient;
-        private Dictionary<string, (int Choice, int BetSize)> _usersBetted;
+        private readonly Dictionary<string, (int Choice, int BetSize)> _usersBetted;
 
         public BetsManager(Currency currency)
         {
@@ -133,7 +133,7 @@ namespace StriBot.Commands
         }
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>()
+            => new Dictionary<string, Command>
             {
                 CreateBetCommand(new[] {Platform.Twitch})
             };

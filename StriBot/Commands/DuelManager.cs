@@ -1,4 +1,5 @@
-﻿using StriBot.Commands.CommonFunctions;
+﻿using System.Collections.Generic;
+using StriBot.Commands.CommonFunctions;
 using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
@@ -7,21 +8,19 @@ using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using StriBot.Language.Extensions;
 using StriBot.Language.Implementations;
-using System;
-using System.Collections.Generic;
 
 namespace StriBot.Commands
 {
     public class DuelManager
     {
-        private Currency _currency;
-        private ReadyMadePhrases _readyMadePhrases;
+        private readonly Currency _currency;
+        private readonly ReadyMadePhrases _readyMadePhrases;
 
         private bool _isDuelActive;
         private int _duelTimer;
         private int _duelBet;
         private CommandInfo _duelMember;
-        private readonly int _timeoutTime = 120;
+        private const int TimeoutTime = 120;
 
         public DuelManager(Currency currency, ReadyMadePhrases readyMadePhrases)
         {
@@ -33,7 +32,7 @@ namespace StriBot.Commands
 
         private Command CreateDuelCommand()
         {
-            var result = new Command("Дуэль", $"Дуэль с {_currency.InstrumentalMultiple} или без, с timeout, проигравший в дуэли отправляется на {_timeoutTime} секунд в timeout",
+            var result = new Command("Дуэль", $"Дуэль с {_currency.InstrumentalMultiple} или без, с timeout, проигравший в дуэли отправляется на {TimeoutTime} секунд в timeout",
                 delegate (CommandInfo commandInfo)
                 {
                     if (!_isDuelActive)
@@ -52,7 +51,7 @@ namespace StriBot.Commands
                                     _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                             }
                             else
-                                _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
+                                ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
                         }
                         else
                         {
@@ -71,7 +70,7 @@ namespace StriBot.Commands
                             GlobalEventContainer.Message($"Смертельная дуэль между {_duelMember.DisplayName} и {commandInfo.DisplayName}!", commandInfo.Platform);
                             var winner = _duelMember;
                             var looser = _duelMember;
-                            if (RandomHelper.random.Next(2) == 0)
+                            if (RandomHelper.Random.Next(2) == 0)
                                 winner = commandInfo;
                             else
                                 looser = commandInfo;

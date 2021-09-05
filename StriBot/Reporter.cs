@@ -10,18 +10,17 @@ namespace StriBot
 {
     public static class Reporter
     {
-        private static string _catalog = "Отчеты";
-        private static string _infoName = "Информационные";
-        private static string _interactiveName = "Интерактив";
-        private static string _ordersName = "Заказы";
-        private static string _moderatorsName = "Модераторам";
-        private static string _streamersName = "Стримеры";
+        private static readonly string _catalog = "Отчеты";
+        private static readonly string _infoName = "Информационные";
+        private static readonly string _interactiveName = "Интерактив";
+        private static readonly string _ordersName = "Заказы";
+        private static readonly string _moderatorsName = "Модераторам";
+        private static readonly string _streamersName = "Стримеры";
 
         public static void CreateReport()
         {
-            string name = DateTime.Now.ToString(new CultureInfo("ru-RU")).Split(' ')[0];
-
-            string path = GetPath(name);
+            var name = DateTime.Now.ToString(new CultureInfo("ru-RU")).Split(' ')[0];
+            var path = GetPath(name);
 
             while (File.Exists(path))
             {
@@ -43,19 +42,18 @@ namespace StriBot
 
         private static void CommandReport(string fileName, Dictionary<string, Command> commands, CommandType commandType)
         {
-            string path = GetPath(fileName);
-
-            List<string> report = new List<string>();
+            var path = GetPath(fileName);
+            var report = new List<string>();
 
             foreach (var command in commands.Values)
             {
                 if (command.Type == commandType)
                 {
-                    StringBuilder result = new StringBuilder('!' + command.Name);
+                    var result = new StringBuilder('!' + command.Name);
                     if (command.Args != null)
                         foreach (var arg in command.Args)
-                            result.Append(String.Format(" [{0}]", arg));
-                    result.Append(String.Format(" - {0}", command.Info));
+                            result.Append($" [{arg}]");
+                    result.Append($" - {command.Info}");
                     if (command.Requires == Role.Moderator)
                         result.Append(". Только для модератора");
                     report.Add(result.ToString());
@@ -67,9 +65,8 @@ namespace StriBot
 
         private static void CommandReport(string fileName, Dictionary<string, Command> commands, Role role)
         {
-            string path = GetPath(fileName);
-
-            List<string> report = new List<string>();
+            var path = GetPath(fileName);
+            var report = new List<string>();
 
             foreach (var command in commands.Values)
             {
@@ -78,8 +75,8 @@ namespace StriBot
                     var result = new StringBuilder('!' + command.Name);
                     if (command.Args != null)
                         foreach (var arg in command.Args)
-                            result.Append(String.Format(" [{0}]", arg));
-                    result.Append(String.Format(" - {0}", command.Info));
+                            result.Append($" [{arg}]");
+                    result.Append($" - {command.Info}");
                     report.Add(result.ToString());
                 }
             }
@@ -88,7 +85,7 @@ namespace StriBot
         }
 
         private static string GetPath(string name)
-            => string.Format("{0}\\{1}.txt", _catalog, name);
+            => $"{_catalog}\\{name}.txt";
 
         private static void CreateCatalogIfNeed()
         {

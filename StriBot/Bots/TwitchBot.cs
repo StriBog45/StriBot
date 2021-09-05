@@ -18,10 +18,10 @@ namespace StriBot.Bots
 {
     public class TwitchBot
     {
-        private TwitchClient _twitchClient;
-        private TwitchAPI _api;
-        private TwitchInfo _twitchInfo;
-        private TwitchPubSub _twitchPub;
+        private readonly TwitchClient _twitchClient;
+        private readonly TwitchAPI _api;
+        private readonly TwitchInfo _twitchInfo;
+        private readonly TwitchPubSub _twitchPub;
 
         private bool _chatModeEnabled = false;
 
@@ -147,7 +147,7 @@ namespace StriBot.Bots
         {// SendMessage($"Тест: произошла награда {e.DisplayName} {e.RewardTitle} {e.RewardCost} {e.RewardPrompt} {e.RewardId}");
         }
 
-        private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             if (e.ChatMessage.IsHighlighted)
                 GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.HighlightedMessage, Platform.Twitch, displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
@@ -210,16 +210,16 @@ namespace StriBot.Bots
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
             => SendMessage("Бот успешно подключился!");
 
-        private void OnRaidNotification(object sender, OnRaidNotificationArgs e)
-            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.Raid, Platform.Twitch, displayName: e.RaidNotification.DisplayName));
+        private static void OnRaidNotification(object sender, OnRaidNotificationArgs e)
+            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.Raid, Platform.Twitch, e.RaidNotification.DisplayName));
 
-        private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
-            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, displayName: e.Subscriber.DisplayName));
+        private static void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
+            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, e.Subscriber.DisplayName));
 
-        private void OnReSubscriber(object sender, OnReSubscriberArgs e)
-            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, displayName: e.ReSubscriber.DisplayName));
+        private static void OnReSubscriber(object sender, OnReSubscriberArgs e)
+            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, e.ReSubscriber.DisplayName));
 
-        private void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
+        private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
             GlobalEventContainer.CreateEventCommandCall(new CommandInfo(
                 Platform.Twitch,
@@ -237,7 +237,7 @@ namespace StriBot.Bots
                 e.Command.ChatMessage.IsBroadcaster));
         }
 
-        private void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
+        private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
         {
             //TODO Определение роли пользователя для канала
             GlobalEventContainer.CreateEventCommandCall(new CommandInfo(

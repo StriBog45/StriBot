@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace StriBot
+namespace StriBot.ApplicationSettings.Models
 {
     [ProtoContract]
     public class StoredSettings

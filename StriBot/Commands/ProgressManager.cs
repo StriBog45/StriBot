@@ -16,10 +16,10 @@ namespace StriBot.Commands
 
         private Action _bossUpdate;
         private Action _deathUpdate;
-        private const string _catalog = "Отчеты";
-        private const string _bossesFileName = "Боссы";
+        private const string Catalog = "Отчеты";
+        private const string BossesFileName = "Боссы";
 
-        private CollectionHelper _bosses;
+        private readonly CollectionHelper _bosses;
 
         public ProgressManager()
         {
@@ -29,7 +29,7 @@ namespace StriBot.Commands
 
         private void LoadBosses()
         {
-            var path = GetPath(_bossesFileName);
+            var path = GetPath(BossesFileName);
             try
             {
                 using (var streamReader = new StreamReader(path))
@@ -77,11 +77,11 @@ namespace StriBot.Commands
 
                         GlobalEventContainer.Message($"Босс {commandInfo.ArgumentsAsString} успешно добавлен!", commandInfo.Platform);
                     }
-                }, new string[] { "Имя босса" }, CommandType.Interactive);
+                }, new [] { "Имя босса" }, CommandType.Interactive);
 
-        private void RecordBoss(string name)
+        private static void RecordBoss(string name)
         {
-            var path = GetPath(_bossesFileName);
+            var path = GetPath(BossesFileName);
             using (var file = File.AppendText(path))
             {
                 file.WriteLine(name);
@@ -115,7 +115,7 @@ namespace StriBot.Commands
             };
 
         private static string GetPath(string name)
-            => $"{_catalog}\\{name}.txt";
+            => $"{Catalog}\\{name}.txt";
 
         public List<string> GetBosses()
             => _bosses;
@@ -124,7 +124,7 @@ namespace StriBot.Commands
         {
             _bosses.RemoveAt(index);
 
-            var path = GetPath(_bossesFileName);
+            var path = GetPath(BossesFileName);
 
             File.WriteAllLines(path, _bosses);
 

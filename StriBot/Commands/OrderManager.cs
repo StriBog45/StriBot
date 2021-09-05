@@ -56,7 +56,7 @@ namespace StriBot.Commands
                 new[] { "Название аниме" }, CommandType.Order);
 
         private Command CreateOrderVip()
-            => new Command("ЗаказVIP", $"Купить VIP, цена: {_currency.Incline(PriceList.VIP)}", CreateOrderDelegate(PriceList.VIP, "VIP"), CommandType.Order);
+            => new Command("ЗаказVIP", $"Купить VIP, цена: {_currency.Incline(PriceList.Vip)}", CreateOrderDelegate(PriceList.Vip, "VIP"), CommandType.Order);
 
         private Command CreateOrderParty()
             => new Command("ЗаказГруппы", $"Заказать совместную игру со стримером в Dota 2, цена: {_currency.Incline(PriceList.Group)}", CreateOrderDelegate(PriceList.Group, "группу"), 
@@ -116,7 +116,7 @@ namespace StriBot.Commands
                         _updateOrders(_listOrders);
                     }
                     else
-                        _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
+                        ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
                 }
                 else
                     _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
@@ -141,7 +141,7 @@ namespace StriBot.Commands
                             _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                     }
                     else
-                        _readyMadePhrases.IncorrectCommand(commandInfo.Platform);
+                        ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
                 }
             };
     }

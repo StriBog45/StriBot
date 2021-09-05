@@ -13,7 +13,7 @@ namespace StriBot.Language.Extensions
         /// <returns></returns>
         public static string Incline(this ICases cases, int number, bool secondDeclension = false)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             if (number == 1 && !secondDeclension)
                 result = cases.Nominative;

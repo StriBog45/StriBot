@@ -16,7 +16,7 @@ namespace StriBot.Commands.CommonFunctions
         public void NoMoney(string displayName, Platform platform)
             => GlobalEventContainer.Message($"{displayName} у вас недостаточно {_currency.GenitiveMultiple}! striboCry ", platform);
 
-        public void IncorrectCommand(Platform platform)
+        public static void IncorrectCommand(Platform platform)
             => GlobalEventContainer.Message("Некорректное использование команды!", platform);
     }
 }

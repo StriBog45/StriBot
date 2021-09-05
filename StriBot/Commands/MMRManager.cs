@@ -64,9 +64,9 @@ namespace StriBot.Commands
                 delegate (CommandInfo commandInfo)
                 {
                     if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
-                        GlobalEventContainer.Message($"Ваш рейтинг: {RandomHelper.random.Next(1, 7000)}", commandInfo.Platform);
+                        GlobalEventContainer.Message($"Ваш рейтинг: {RandomHelper.Random.Next(1, 7000)}", commandInfo.Platform);
                     else
-                        GlobalEventContainer.Message($"Рейтинг {commandInfo.ArgumentsAsString}: {RandomHelper.random.Next(1, 10000)}", commandInfo.Platform);
+                        GlobalEventContainer.Message($"Рейтинг {commandInfo.ArgumentsAsString}: {RandomHelper.Random.Next(1, 10000)}", commandInfo.Platform);
                 }, new[] { "Объект" }, CommandType.Interactive);
 
         public Dictionary<string, Command> CreateCommands()

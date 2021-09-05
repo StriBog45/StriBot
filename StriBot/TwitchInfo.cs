@@ -12,8 +12,8 @@ namespace StriBot
         internal readonly string BotClientId;
         internal readonly string ChannelId;
 
-        private string fileName = "TwitchInfo.txt";
-        private string error = "Error";
+        private readonly string fileName = "TwitchInfo.txt";
+        private readonly string error = "Error";
 
         internal TwitchInfo()
         {
@@ -21,13 +21,13 @@ namespace StriBot
             {
                 using (StreamReader sr = new StreamReader(fileName))
                 {
-                    var line = sr.ReadToEnd().Split(new char[] { '\r','\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    var line = sr.ReadToEnd().Split(new []{ '\r','\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    Channel = line[0].Split(new char[] { ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                    BotAcessToken = line[1].Split(new char[] { ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                    BotName = line[2].Split(new char[] { ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                    BotClientId = line[3].Split(new char[] { ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                    ChannelId = line[4].Split(new char[] { ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    Channel = line[0].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    BotAcessToken = line[1].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    BotName = line[2].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    BotClientId = line[3].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    ChannelId = line[4].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
                 }
 
             }

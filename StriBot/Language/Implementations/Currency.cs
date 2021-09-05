@@ -1,16 +1,15 @@
-﻿using ProtoBuf;
-using StriBot.Language.Interfaces;
-using StriBot.Language.Models;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using TwitchLib.Api.Core.Models.Undocumented.ChatUser;
+using ProtoBuf;
+using StriBot.Language.Interfaces;
+using StriBot.Language.Models;
 
 namespace StriBot.Language.Implementations
 {
     public class Currency : ICases
     {
-        private const string _catalog = "Currencies";
+        private const string Catalog = "Currencies";
         private string _currencyName;
         private Cases _cases;
 
@@ -21,55 +20,43 @@ namespace StriBot.Language.Implementations
             GetCurrencies();
         }
 
-        ///<inheritdoc>
         public string Nominative => _cases.Nominative;
 
-        ///<inheritdoc>
         public string Genitive => _cases.Genitive;
 
-        ///<inheritdoc>
         public string Dative => _cases.Dative;
 
-        ///<inheritdoc>
         public string Accusative => _cases.Accusative;
 
-        ///<inheritdoc>
         public string Instrumental => _cases.Instrumental;
 
-        ///<inheritdoc>
         public string Prepositional => _cases.Prepositional;
 
-        ///<inheritdoc>
         public string NominativeMultiple => _cases.NominativeMultiple;
 
-        ///<inheritdoc>
         public string GenitiveMultiple => _cases.GenitiveMultiple;
 
-        ///<inheritdoc>
         public string DativeMultiple => _cases.DativeMultiple;
 
-        ///<inheritdoc>
         public string AccusativeMultiple => _cases.AccusativeMultiple;
 
-        ///<inheritdoc>
         public string InstrumentalMultiple => _cases.InstrumentalMultiple;
 
-        ///<inheritdoc>
         public string PrepositionalMultiple => _cases.PrepositionalMultiple;
 
         public string[] GetCurrencies()
         {
-            var result = new string[0];
+            var result = Array.Empty<string>();
 
-            if (Directory.Exists(_catalog))
+            if (Directory.Exists(Catalog))
             {
-                result = Directory.GetFiles(_catalog)
-                    .Select(path => Path.GetFileNameWithoutExtension(path))
+                result = Directory.GetFiles(Catalog)
+                    .Select(Path.GetFileNameWithoutExtension)
                     .ToArray();
             }
             else
             {
-                Directory.CreateDirectory(_catalog);
+                Directory.CreateDirectory(Catalog);
             }
 
             return result;
@@ -77,7 +64,7 @@ namespace StriBot.Language.Implementations
 
         public void LoadCurrency(string currencyName)
         {
-            using (var file = File.OpenRead($"{_catalog}//{currencyName}.bin"))
+            using (var file = File.OpenRead($"{Catalog}//{currencyName}.bin"))
             {
                 _cases = Serializer.Deserialize<Cases>(file);
             }
@@ -90,7 +77,7 @@ namespace StriBot.Language.Implementations
 
             if (IsValidFileName(currencyName))
             {
-                using (var file = File.Create($"{_catalog}//{currencyName}.bin"))
+                using (var file = File.Create($"{Catalog}//{currencyName}.bin"))
                 {
                     Serializer.Serialize(file, cases);
                 }
@@ -104,7 +91,7 @@ namespace StriBot.Language.Implementations
             return result;
         }
 
-        private bool IsValidFileName(string fileName)
+        private static bool IsValidFileName(string fileName)
         {
             var invalidFileNameChars = Path.GetInvalidFileNameChars();
 

@@ -1,4 +1,5 @@
-﻿using DryIoc;
+﻿using System.Collections.Generic;
+using DryIoc;
 using StriBot.Bots.Enums;
 using StriBot.Commands;
 using StriBot.Commands.Extensions;
@@ -12,8 +13,6 @@ using StriBot.EventConainers.Models;
 using StriBot.Language.Extensions;
 using StriBot.Language.Implementations;
 using StriBot.Speakers;
-using System;
-using System.Collections.Generic;
 
 namespace StriBot.Bots
 {
@@ -148,7 +147,7 @@ namespace StriBot.Bots
         public void CreateCommands()
         {
             var container = GlobalContainer.Default;
-            var managerMMR = container.Resolve<MMRManager>();
+            var managerMmr = container.Resolve<MMRManager>();
             var orderManager = container.Resolve<OrderManager>();
             var linkManager = container.Resolve<LinkManager>();
             var randomAnswerManager = container.Resolve<RandomAnswerManager>();
@@ -158,7 +157,7 @@ namespace StriBot.Bots
             Commands = new Dictionary<string, Command>()
             {
                 linkManager.CreateCommands(),
-                managerMMR.CreateCommands(),
+                managerMmr.CreateCommands(),
                 randomAnswerManager.CreateCommands(),
                 burgerManager.CreateCommands(),
                 progressManager.CreateCommands(),
