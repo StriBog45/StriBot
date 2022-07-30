@@ -65,7 +65,7 @@ namespace StriBot.Commands
             _subBonus = bonus;
             _distributionAmountPerUsers = perUser;
             _distributionAmountUsers = maxUsers;
-            GlobalEventContainer.Message($"Замечены {_currency.NominativeMultiple} без присмотра! Пиши !стащить striboF ", platform);
+            GlobalEventContainer.Message($"Замечены {_currency.NominativeMultiple} без присмотра! PogChamp ", platform);
             _receivedUsers.Clear();
         }
 
@@ -116,7 +116,7 @@ namespace StriBot.Commands
                 if (commandInfo.ArgumentsAsList.Count == 2 && Convert.ToInt32(commandInfo.ArgumentsAsList[1]) > 0)
                 {
                     DataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]) * (-1));
-                    GlobalEventContainer.Message($"Вы успешно изъяли {_currency.NominativeMultiple}! striboPeka ", commandInfo.Platform);
+                    GlobalEventContainer.Message($"Успешно изъяли {_currency.NominativeMultiple}! striboPeka ", commandInfo.Platform);
                 }
                 else
                     ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);

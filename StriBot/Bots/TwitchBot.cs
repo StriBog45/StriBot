@@ -175,28 +175,28 @@ namespace StriBot.Bots
             _twitchClient.Reconnect();
         }
 
-        private void ExampleCallsAsync()
-        {
-            //Checks subscription for a specific user and the channel specified
-            Subscription subscription = _api.V5.Channels.CheckChannelSubscriptionByUserAsync(_twitchInfo.ChannelId, _twitchInfo.ChannelId).Result;
+        //private void ExampleCallsAsync()
+        //{
+        //    //Checks subscription for a specific user and the channel specified
+        //    Subscription subscription = _api.V5.Channels.CheckChannelSubscriptionByUserAsync(_twitchInfo.ChannelId, _twitchInfo.ChannelId).Result;
 
-            //Return bool if channel is online/offline.
-            bool isStreaming = _api.V5.Streams.BroadcasterOnlineAsync(_twitchInfo.ChannelId).Result;
+        //    //Return bool if channel is online/offline.
+        //    bool isStreaming = _api.V5.Streams.BroadcasterOnlineAsync(_twitchInfo.ChannelId).Result;
 
-            ////Gets a list of all the subscritions of the specified channel.
-            var allSubscriptions = _api.V5.Channels.GetAllSubscribersAsync(_twitchInfo.ChannelId).Result;
+        //    ////Gets a list of all the subscritions of the specified channel.
+        //    var allSubscriptions = _api.V5.Channels.GetAllSubscribersAsync(_twitchInfo.ChannelId).Result;
 
-            //Get channels a specified user follows.
-            //GetUsersFollowsResponse userFollows = api.Helix.Users.GetUsersFollowsAsync(twitchInfo.ChannelId).Result;
+        //    //Get channels a specified user follows.
+        //    //GetUsersFollowsResponse userFollows = api.Helix.Users.GetUsersFollowsAsync(twitchInfo.ChannelId).Result;
 
-            //Get Specified Channel Follows
-            //var channelFollowers = api.V5.Channels.GetChannelFollowersAsync(twitchInfo.ChannelId).Result;
+        //    //Get Specified Channel Follows
+        //    //var channelFollowers = api.V5.Channels.GetChannelFollowersAsync(twitchInfo.ChannelId).Result;
 
-            //Update Channel Title/Game
-            //await api.V5.Channels.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
-            if (isStreaming)
-                isStreaming = !isStreaming;
-        }
+        //    //Update Channel Title/Game
+        //    //await api.V5.Channels.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
+        //    if (isStreaming)
+        //        isStreaming = !isStreaming;
+        //}
 
         /// <summary>
         /// e.GiftedSubscription.DisplayName - кто подарил "Добро пожаловать OrloffNY"
@@ -286,18 +286,18 @@ namespace StriBot.Bots
             => _twitchClient.FollowersOnlyOff(_twitchInfo.Channel);
 
 #warning GetUptime создан, но не привязан к команде
-        string GetUptime()
-        {
-            string userId = GetUserId(_twitchInfo.Channel);
+        //string GetUptime()
+        //{
+        //    string userId = GetUserId(_twitchInfo.Channel);
 
-            return string.IsNullOrEmpty(userId) ? "Offline" : _api.V5.Streams.GetUptimeAsync(userId).Result.Value.ToString(@"hh\:mm\:ss");
-        }
+        //    return string.IsNullOrEmpty(userId) ? "Offline" : _api.V5.Streams.GetUptimeAsync(userId).Result.Value.ToString(@"hh\:mm\:ss");
+        //}
 
-        string GetUserId(string username)
-        {
-            var userList = _api.V5.Users.GetUserByNameAsync(username).Result.Matches;
+        //string GetUserId(string username)
+        //{
+        //    var userList = _api.V5.Users.GetUserByNameAsync(username).Result.Matches;
 
-            return userList[0]?.Id;
-        }
+        //    return userList[0]?.Id;
+        //}
     }
 }

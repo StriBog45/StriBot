@@ -86,7 +86,7 @@ namespace StriBot.Bots
         private void Raid(PlatformEventInfo platformEventInfo)
         {
             GlobalEventContainer.Message($"Нас атакует армия {platformEventInfo.UserName}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ", platformEventInfo.Platform);
-            _speaker.Say("Помогите! Нас атакуют! Поднимайте щиты!");
+            _speaker.Say("Нас атакуют! Поднимайте щиты!");
         }
 
         public void TimerTick()
@@ -102,7 +102,9 @@ namespace StriBot.Bots
             if (_timer == 30)
                 SendMessage("У стримера все под контролем! striboPled ");
             if (_timer == 45)
-                SendMessage("Спасибо за вашу поддержку! HolidaySanta ");
+                SendMessage("Спасибо за вашу поддержку! <3 ");
+            if (_timer == 60)
+                SendMessage("Список команд https://vk.cc/a6Giqf");
 
             _rememberManager.Tick(_timer);
             _duelManager.Tick();

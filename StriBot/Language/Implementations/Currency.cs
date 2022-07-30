@@ -20,29 +20,29 @@ namespace StriBot.Language.Implementations
             GetCurrencies();
         }
 
-        public string Nominative => _cases.Nominative;
+        public string Nominative => _cases.Nominative?.ToLower();
 
-        public string Genitive => _cases.Genitive;
+        public string Genitive => _cases.Genitive?.ToLower();
 
-        public string Dative => _cases.Dative;
+        public string Dative => _cases.Dative?.ToLower();
 
-        public string Accusative => _cases.Accusative;
+        public string Accusative => _cases.Accusative?.ToLower();
 
-        public string Instrumental => _cases.Instrumental;
+        public string Instrumental => _cases.Instrumental?.ToLower();
 
-        public string Prepositional => _cases.Prepositional;
+        public string Prepositional => _cases.Prepositional?.ToLower();
 
-        public string NominativeMultiple => _cases.NominativeMultiple;
+        public string NominativeMultiple => _cases.NominativeMultiple?.ToLower();
 
-        public string GenitiveMultiple => _cases.GenitiveMultiple;
+        public string GenitiveMultiple => _cases.GenitiveMultiple?.ToLower();
 
-        public string DativeMultiple => _cases.DativeMultiple;
+        public string DativeMultiple => _cases.DativeMultiple?.ToLower();
 
-        public string AccusativeMultiple => _cases.AccusativeMultiple;
+        public string AccusativeMultiple => _cases.AccusativeMultiple?.ToLower();
 
-        public string InstrumentalMultiple => _cases.InstrumentalMultiple;
+        public string InstrumentalMultiple => _cases.InstrumentalMultiple?.ToLower();
 
-        public string PrepositionalMultiple => _cases.PrepositionalMultiple;
+        public string PrepositionalMultiple => _cases.PrepositionalMultiple?.ToLower();
 
         public string[] GetCurrencies()
         {
