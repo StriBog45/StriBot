@@ -19,6 +19,7 @@ namespace StriBot.Commands
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
         private readonly List<string> _receivedUsers;
+        private readonly Dictionary<string, DateTime> _userLastMessage;
         private int _distributionAmountUsers;
         private int _distributionAmountPerUsers;
         private int SubCoefficient => _subBonus ? subCoefficient : 1;
@@ -31,6 +32,7 @@ namespace StriBot.Commands
             _readyMadePhrases = readyMadePhrases;
 
             _receivedUsers = new List<string>();
+            _userLastMessage = new Dictionary<string, DateTime>();
         }
 
         private Command CreateStealCurrency()
@@ -199,5 +201,21 @@ namespace StriBot.Commands
                 CreateCheckBalance(),
                 CreateDistributeCurrency()
             };
+
+        public void ReceivedMessage(string displayName)
+        {
+            var cleanName = DataBase.CleanNickname(displayName);
+            
+            if (!_userLastMessage.ContainsKey(cleanName))
+            {
+                _userLastMessage.Add(cleanName, DateTime.Now);
+                DataBase.AddMoney(cleanName, 1);
+            }
+            else if (_userLastMessage[cleanName] < DateTime.Now.AddHours(-1))
+            {
+                _userLastMessage[cleanName] = DateTime.Now;
+                DataBase.AddMoney(cleanName, 1);
+            }
+        }
     }
 }

@@ -60,8 +60,11 @@ namespace StriBot.Bots
                     GiftSubscription(platformEventInfo);
                     break;
                 case PlatformEventType.NewSubscription:
-                case PlatformEventType.ReSubsctiption:
+                case PlatformEventType.ReSubscription:
                     Subsctiption(platformEventInfo);
+                    break;
+                case PlatformEventType.Message:
+                    _currencyBaseManager.ReceivedMessage(platformEventInfo.UserName);
                     break;
             }
         }
@@ -95,8 +98,8 @@ namespace StriBot.Bots
 
             _betsManager.Tick(new Platform[] { Platform.Twitch });
 
-            if (_timer == 40)
-                _currencyBaseManager.DistributionMoney(1, 5, Platform.Twitch);
+            // if (_timer == 40)
+            //     _currencyBaseManager.DistributionMoney(1, 5, Platform.Twitch);
             if (_timer == 15)
                 SendMessage("Если увидел крутой момент, запечатли это! Сделай клип! striboF ");
             if (_timer == 30)

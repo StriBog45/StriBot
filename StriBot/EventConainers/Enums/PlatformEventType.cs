@@ -6,6 +6,7 @@
         Raid,
         GiftSubscription,
         NewSubscription,
-        ReSubsctiption
+        ReSubscription,
+        Message
     }
 }

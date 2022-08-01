@@ -151,6 +151,8 @@ namespace StriBot.Bots
         {
             if (e.ChatMessage.IsHighlighted)
                 GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.HighlightedMessage, Platform.Twitch, displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
+            else
+                GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.Message, Platform.Twitch, displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
         }
 
         private void SendMessage(string message)
