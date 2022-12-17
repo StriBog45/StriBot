@@ -83,7 +83,10 @@ namespace StriBot.Commands
                     GlobalEventContainer.Message("Киберспортивный комментатор Dota 2! twitch.tv/cyberstepan", e.Platform); }, CommandType.Streamers),
                 new Command("Лина","Показывает ссылку на twitch Anginka",
                 delegate (CommandInfo e) {
-                    GlobalEventContainer.Message("Милашка Ангинка :) twitch.tv/anginka", e.Platform); }, CommandType.Streamers)
+                    GlobalEventContainer.Message("Милашка Ангинка :) twitch.tv/anginka", e.Platform); }, CommandType.Streamers),
+                new Command("Baibaka","Показывает ссылку на twitch BaibakaPX",
+                delegate (CommandInfo e) {
+                    GlobalEventContainer.Message("Настя и её бананы! :) twitch.tv/BaibakaPX", e.Platform); }, CommandType.Streamers)
                 #endregion
             };
     }

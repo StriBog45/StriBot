@@ -103,7 +103,7 @@ namespace StriBot.Bots
             if (_timer == 15)
                 SendMessage("Если увидел крутой момент, запечатли это! Сделай клип! striboF ");
             if (_timer == 30)
-                SendMessage("У стримера все под контролем! striboPled ");
+                SendMessage("Поддержи нас на второй площадке! <3 https://vkplay.live/stribog45");
             if (_timer == 45)
                 SendMessage("Спасибо за вашу поддержку! <3 ");
             if (_timer == 60)
