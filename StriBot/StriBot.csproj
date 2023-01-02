@@ -336,6 +336,7 @@
     <Compile Include="Bots\ChatBot.cs" />
     <Compile Include="Bots\Enums\Platform.cs" />
     <Compile Include="Bots\Handlers\RewardHandler.cs" />
+    <Compile Include="Bots\TwitchApiClient.cs" />
     <Compile Include="CollectionHelper.cs" />
     <Compile Include="Commands\Models\Command.cs" />
     <Compile Include="Commands\BetsManager.cs" />

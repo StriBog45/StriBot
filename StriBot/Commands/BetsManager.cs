@@ -1,4 +1,7 @@
-﻿using StriBot.Bots.Enums;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using StriBot.Bots.Enums;
 using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
@@ -6,10 +9,6 @@ using StriBot.DateBase;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using StriBot.Language.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace StriBot.Commands
 {
@@ -59,18 +58,18 @@ namespace StriBot.Commands
                 }
                 GlobalEventContainer.Message($"Победила ставка под номером {winner} - {_bettingOptions[winner]}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
 
-                var winers = _usersBetted.Where(x => x.Value.Choice == winner)
+                var winners = _usersBetted.Where(x => x.Value.Choice == winner)
                     .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
-                var loosers = _usersBetted.Where(x => x.Value.Choice != winner)
+                var losers = _usersBetted.Where(x => x.Value.Choice != winner)
                     .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
 
-                if (!string.IsNullOrEmpty(winers))
-                    GlobalEventContainer.Message("Победили: " + winers, platforms);
+                if (!string.IsNullOrEmpty(winners))
+                    GlobalEventContainer.Message("Победили: " + winners, platforms);
                 else
                     GlobalEventContainer.Message("Победителей нет", platforms);
 
-                if (!string.IsNullOrEmpty(loosers))
-                    GlobalEventContainer.Message("Проиграли: " + loosers, platforms);
+                if (!string.IsNullOrEmpty(losers))
+                    GlobalEventContainer.Message("Проиграли: " + losers, platforms);
                 else
                     GlobalEventContainer.Message("Проигравших нет", platforms);
 

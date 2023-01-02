@@ -1,19 +1,14 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Authentication;
+using StriBot.Bots.Enums;
+using StriBot.EventConainers;
+using StriBot.EventConainers.Enums;
+using StriBot.EventConainers.Models;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
-using TwitchLib.Api.V5.Models.Subscriptions;
-using TwitchLib.Api;
 using TwitchLib.PubSub;
-using TwitchLib.Client.Extensions;
-using StriBot.EventConainers;
-using StriBot.Bots.Enums;
-using System.Linq;
-using StriBot.EventConainers.Models;
-using StriBot.EventConainers.Enums;
-using System.Net;
-using System.Security.Authentication;
-using System.Text;
 using TwitchLib.PubSub.Events;
 
 namespace StriBot.Bots
@@ -21,11 +16,8 @@ namespace StriBot.Bots
     public class TwitchBot
     {
         private readonly TwitchClient _twitchClient;
-        private readonly TwitchAPI _api;
         private readonly TwitchInfo _twitchInfo;
         private readonly TwitchPubSub _twitchPub;
-
-        private bool _chatModeEnabled = false;
 
         public TwitchBot()
         {
@@ -43,10 +35,6 @@ namespace StriBot.Bots
             _twitchClient.OnGiftedSubscription += OnGiftedSubscription;
             _twitchClient.OnRaidNotification += OnRaidNotification;
             _twitchClient.OnMessageReceived += OnMessageReceived;
-
-            _api = new TwitchAPI();
-            _api.Settings.ClientId = _twitchInfo.BotClientId;
-            _api.Settings.AccessToken = _twitchInfo.BotAccessToken;
 
             _twitchPub = new TwitchPubSub();
             _twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected;
@@ -66,15 +54,15 @@ namespace StriBot.Bots
         }
 
         private static void TwitchPubOnOnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
-        {
-            GlobalEventContainer.RewardEvent(new RewardInfo
+            => GlobalEventContainer.RewardEvent(new RewardInfo
             {
                 Platform = Platform.Twitch,
                 RewardMessage = e.RewardRedeemed.Redemption.UserInput,
                 RewardName = e.RewardRedeemed.Redemption.Reward.Title,
-                UserName = e.RewardRedeemed.Redemption.User.DisplayName
+                UserName = e.RewardRedeemed.Redemption.User.DisplayName,
+                RewardId = e.RewardRedeemed.Redemption.Reward.Id,
+                RedemptionId = e.RewardRedeemed.Redemption.Id
             });
-        }
 
         public void Connect()
         { 
@@ -96,17 +84,17 @@ namespace StriBot.Bots
 
         private void TwitchPub_OnPubSubServiceConnected(object sender, EventArgs e)
         {
-            //SendMessage("PubSub Connected");
             // SendTopics accepts an oauth optionally, which is necessary for some topics
             _twitchPub.SendTopics(_twitchInfo.ChannelAccessToken);
         }
 
         private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            if (e.ChatMessage.IsHighlighted)
-                GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.HighlightedMessage, Platform.Twitch, displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
-            else
-                GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.Message, Platform.Twitch, displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
+            GlobalEventContainer.Event(e.ChatMessage.IsHighlighted
+                ? new PlatformEventInfo(PlatformEventType.HighlightedMessage, Platform.Twitch,
+                    displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message)
+                : new PlatformEventInfo(PlatformEventType.Message, Platform.Twitch,
+                    displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message));
         }
 
         private void SendMessage(string message)
@@ -132,7 +120,7 @@ namespace StriBot.Bots
         /// e.GiftedSubscription.DisplayName - кто подарил "Добро пожаловать OrloffNY"
         /// e.GiftedSubscription.MsgParamRecipientUserName - кому подарили "Добро пожаловать syndicatereara!"
         /// </summary>
-        private void OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
+        private static void OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
             => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.GiftSubscription, Platform.Twitch,
                 displayName: e.GiftedSubscription.DisplayName,
                 secondName: e.GiftedSubscription.MsgParamRecipientUserName));
@@ -180,20 +168,5 @@ namespace StriBot.Bots
                 e.Command.WhisperMessage.Username,
                 isTurbo: e.Command.WhisperMessage.IsTurbo));
         }
-
-#warning GetUptime создан, но не привязан к команде
-        //string GetUptime()
-        //{
-        //    string userId = GetUserId(_twitchInfo.Channel);
-
-        //    return string.IsNullOrEmpty(userId) ? "Offline" : _api.V5.Streams.GetUptimeAsync(userId).Result.Value.ToString(@"hh\:mm\:ss");
-        //}
-
-        //string GetUserId(string username)
-        //{
-        //    var userList = _api.V5.Users.GetUserByNameAsync(username).Result.Matches;
-
-        //    return userList[0]?.Id;
-        //}
     }
 }

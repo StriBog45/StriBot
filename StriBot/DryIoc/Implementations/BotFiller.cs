@@ -13,6 +13,7 @@ namespace StriBot.DryIoc.Implementations
             container.Register<SettingsFileManager>(Reuse.Singleton);
             container.Register<ChatBot>(Reuse.Singleton);
             container.Register<TwitchBot>(Reuse.Singleton);
+            container.Register<TwitchApiClient>(Reuse.Singleton);
         }
     }
 }

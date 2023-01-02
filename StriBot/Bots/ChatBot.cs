@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DryIoc;
 using StriBot.Bots.Enums;
 using StriBot.Bots.Handlers;
@@ -52,8 +53,8 @@ namespace StriBot.Bots
             GlobalEventContainer.RewardEventReceived += OnRewardEventReceived;
         }
 
-        private void OnRewardEventReceived(RewardInfo rewardInfo)
-            => _rewardHandler.Handle(rewardInfo);
+        private async Task OnRewardEventReceived(RewardInfo rewardInfo)
+            => await _rewardHandler.Handle(rewardInfo);
 
         private void OnPlatformEventReceived(PlatformEventInfo platformEventInfo)
         {
