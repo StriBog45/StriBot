@@ -12,7 +12,9 @@ using System.Linq;
 using StriBot.EventConainers.Models;
 using StriBot.EventConainers.Enums;
 using System.Net;
+using System.Security.Authentication;
 using System.Text;
+using TwitchLib.PubSub.Events;
 
 namespace StriBot.Bots
 {
@@ -29,7 +31,7 @@ namespace StriBot.Bots
         {
             _twitchInfo = new TwitchInfo();
 
-            var connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, _twitchInfo.BotAcessToken);
+            var connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, _twitchInfo.BotAccessToken);
 
             _twitchClient = new TwitchClient();
             _twitchClient.Initialize(connectionCredentials, _twitchInfo.Channel);
@@ -44,75 +46,34 @@ namespace StriBot.Bots
 
             _api = new TwitchAPI();
             _api.Settings.ClientId = _twitchInfo.BotClientId;
-            _api.Settings.AccessToken = _twitchInfo.BotAcessToken;
+            _api.Settings.AccessToken = _twitchInfo.BotAccessToken;
 
             _twitchPub = new TwitchPubSub();
             _twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected;
-            _twitchPub.OnListenResponse += OnListenResponse;
-            _twitchPub.OnRewardRedeemed += OnRewardRedeemed;
-            _twitchPub.OnChannelCommerceReceived += TwitchPub_OnChannelCommerceReceived;
-            _twitchPub.ListenToRewards(_twitchInfo.ChannelId);
-            _twitchPub.ListenToCommerce(_twitchInfo.ChannelId);
+            _twitchPub.OnListenResponse += TwitchPubOnOnListenResponse;
+            _twitchPub.OnChannelPointsRewardRedeemed += TwitchPubOnOnChannelPointsRewardRedeemed;
 
-            _twitchPub.ListenToVideoPlayback($"{{{_twitchInfo.Channel}}}");
-            //_twitchPub.Connect();
+            _twitchPub.ListenToChannelPoints(_twitchInfo.ChannelId);
+            _twitchPub.Connect();
 
-            //ExampleCallsAsync();
             GlobalEventContainer.SendMessage += SendMessage;
-
-            //GetTwitchTokens();
         }
 
-        private void GetTwitchTokens()
+        private static void TwitchPubOnOnListenResponse(object sender, OnListenResponseArgs e)
         {
-            // Create a request using a URL that can receive a post.
-            var linkParameters = $"?client_id={_twitchInfo.BotClientId}&redirect_uri=http://localhost&response_type=code&scope=viewing_activity_read";
-            WebRequest request = WebRequest.Create("https://id.twitch.tv/oauth2/authorize" + linkParameters);
-            // Set the Method property of the request to POST.
-            request.Method = "GET";
-
-            // Create POST data and convert it to a byte array.
-            var postData = "This is a test that posts this string to a Web server.";
-            var byteArray = Encoding.UTF8.GetBytes(postData);
-
-            //// Set the ContentType property of the WebRequest.
-            //request.ContentType = "application/x-www-form-urlencoded";
-            //// Set the ContentLength property of the WebRequest.
-            //request.ContentLength = byteArray.Length;
-
-            //// Get the request stream.
-            //Stream dataStream = request.GetRequestStream();
-            //// Write the data to the request stream.
-            //dataStream.Write(byteArray, 0, byteArray.Length);
-            //// Close the Stream object.
-            //dataStream.Close();
-
-            // Get the response.
-            var response = request.GetResponse();
-
-            // Get the stream containing content returned by the server.
-            // The using block ensures the stream is automatically closed.
-            //using (dataStream = response.GetResponseStream())
-            //{
-            //    // Open the stream using a StreamReader for easy access.
-            //    StreamReader reader = new StreamReader(dataStream);
-            //    // Read the content.
-            //    string responseFromServer = reader.ReadToEnd();
-            //    // Display the content.
-            //    Console.WriteLine(responseFromServer);
-            //}
-
-            var request2 = WebRequest.Create("https://id.twitch.tv/oauth2/token" + $"?client_id={_twitchInfo.BotClientId}&client_secret={"8bmk14cxel7fd39412va5wtdky2b6p"}&code={"3Dknbxrofioasvmo625pfga4ccbs3nee"}&grant_type=authorization_code&redirect_uri=http://localhost");
-            request.Method = "POST";
-            var response2 = request2.GetResponse();
-
-            // Close the response.
-            response.Close();
+            if (!e.Successful)
+                throw new AuthenticationException("TwitchPub OAuth failed");
         }
 
-        private void OnListenResponse(object sender, TwitchLib.PubSub.Events.OnListenResponseArgs e)
+        private static void TwitchPubOnOnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
         {
-            //SendMessage($"Topic: {e.Topic} Success: {e.Successful} SuccessByResponse: {e.Response.Successful}  Error: {e.Response.Error} Nonce {e.Response.Nonce}");
+            GlobalEventContainer.RewardEvent(new RewardInfo
+            {
+                Platform = Platform.Twitch,
+                RewardMessage = e.RewardRedeemed.Redemption.UserInput,
+                RewardName = e.RewardRedeemed.Redemption.Reward.Title,
+                UserName = e.RewardRedeemed.Redemption.User.DisplayName
+            });
         }
 
         public void Connect()
@@ -133,18 +94,11 @@ namespace StriBot.Bots
                 SendMessage(message);
         }
 
-        private void TwitchPub_OnChannelCommerceReceived(object sender, TwitchLib.PubSub.Events.OnChannelCommerceReceivedArgs e)
-            => SendMessage($"Тест: произошла коммерция {e.DisplayName} {e.ItemDescription} {e.Username} {e.PurchaseMessage}");
-
         private void TwitchPub_OnPubSubServiceConnected(object sender, EventArgs e)
         {
             //SendMessage("PubSub Connected");
             // SendTopics accepts an oauth optionally, which is necessary for some topics
-            _twitchPub.SendTopics(_twitchInfo.BotAcessToken);
-        }
-
-        private void OnRewardRedeemed(object sender, TwitchLib.PubSub.Events.OnRewardRedeemedArgs e)
-        {// SendMessage($"Тест: произошла награда {e.DisplayName} {e.RewardTitle} {e.RewardCost} {e.RewardPrompt} {e.RewardId}");
+            _twitchPub.SendTopics(_twitchInfo.ChannelAccessToken);
         }
 
         private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
@@ -168,37 +122,11 @@ namespace StriBot.Bots
             }
         }
 
-        public void UserTimeout(string userName, TimeSpan timeSpan, string timeoutText)
-            => TimeoutUserExt.TimeoutUser(_twitchClient, _twitchInfo.Channel, userName, timeSpan, timeoutText);
-
         public void Reconnect()
         {
             _twitchClient.Disconnect();
             _twitchClient.Reconnect();
         }
-
-        //private void ExampleCallsAsync()
-        //{
-        //    //Checks subscription for a specific user and the channel specified
-        //    Subscription subscription = _api.V5.Channels.CheckChannelSubscriptionByUserAsync(_twitchInfo.ChannelId, _twitchInfo.ChannelId).Result;
-
-        //    //Return bool if channel is online/offline.
-        //    bool isStreaming = _api.V5.Streams.BroadcasterOnlineAsync(_twitchInfo.ChannelId).Result;
-
-        //    ////Gets a list of all the subscritions of the specified channel.
-        //    var allSubscriptions = _api.V5.Channels.GetAllSubscribersAsync(_twitchInfo.ChannelId).Result;
-
-        //    //Get channels a specified user follows.
-        //    //GetUsersFollowsResponse userFollows = api.Helix.Users.GetUsersFollowsAsync(twitchInfo.ChannelId).Result;
-
-        //    //Get Specified Channel Follows
-        //    //var channelFollowers = api.V5.Channels.GetChannelFollowersAsync(twitchInfo.ChannelId).Result;
-
-        //    //Update Channel Title/Game
-        //    //await api.V5.Channels.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
-        //    if (isStreaming)
-        //        isStreaming = !isStreaming;
-        //}
 
         /// <summary>
         /// e.GiftedSubscription.DisplayName - кто подарил "Добро пожаловать OrloffNY"
@@ -252,40 +180,6 @@ namespace StriBot.Bots
                 e.Command.WhisperMessage.Username,
                 isTurbo: e.Command.WhisperMessage.IsTurbo));
         }
-
-        public void SmileMode()
-        {
-            if (_chatModeEnabled)
-            {
-                _twitchClient.EmoteOnlyOff(_twitchInfo.Channel);
-                _chatModeEnabled = false;
-            }
-            else
-            {
-                _twitchClient.EmoteOnlyOn(_twitchInfo.Channel);
-                _chatModeEnabled = true;
-            }
-        }
-
-        public void SubMode()
-        {
-            if (_chatModeEnabled)
-            {
-                _twitchClient.SubscribersOnlyOff(_twitchInfo.Channel);
-                _chatModeEnabled = false;
-            }
-            else
-            {
-                _twitchClient.SubscribersOnlyOn(_twitchInfo.Channel);
-                _chatModeEnabled = true;
-            }
-        }
-
-        public void FollowersMode()
-            => _twitchClient.FollowersOnlyOn(_twitchInfo.Channel, new TimeSpan());
-
-        public void FollowersModeOff()
-            => _twitchClient.FollowersOnlyOff(_twitchInfo.Channel);
 
 #warning GetUptime создан, но не привязан к команде
         //string GetUptime()

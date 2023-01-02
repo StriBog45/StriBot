@@ -7,6 +7,7 @@
         GiftSubscription,
         NewSubscription,
         ReSubscription,
-        Message
+        Message,
+        Reward
     }
 }

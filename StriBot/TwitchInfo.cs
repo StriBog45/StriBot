@@ -7,7 +7,8 @@ namespace StriBot
     internal class TwitchInfo
     {
         internal readonly string Channel;
-        internal readonly string BotAcessToken;
+        internal readonly string BotAccessToken;
+        internal readonly string ChannelAccessToken;
         internal readonly string BotName;
         internal readonly string BotClientId;
         internal readonly string ChannelId;
@@ -24,10 +25,11 @@ namespace StriBot
                     var line = sr.ReadToEnd().Split(new []{ '\r','\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                     Channel = line[0].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                    BotAcessToken = line[1].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                    BotName = line[2].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                    BotClientId = line[3].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                    ChannelId = line[4].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    BotAccessToken = line[1].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    ChannelAccessToken = line[2].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    BotName = line[3].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    BotClientId = line[4].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                    ChannelId = line[5].Split(new []{ ':', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1];
                 }
 
             }

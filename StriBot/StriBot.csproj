@@ -251,6 +251,12 @@
       <HintPath>..\packages\System.ServiceModel.Primitives.4.9.0\lib\net461\System.ServiceModel.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Speech" />
+    <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=6.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.6.0.6\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
       <Private>True</Private>
@@ -275,26 +281,26 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="TwitchLib.Api, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Api.3.5.2\lib\netstandard2.0\TwitchLib.Api.dll</HintPath>
+    <Reference Include="TwitchLib.Api, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Api.3.8.0\lib\netstandard2.0\TwitchLib.Api.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Api.Core, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Api.Core.3.5.2\lib\netstandard2.0\TwitchLib.Api.Core.dll</HintPath>
+    <Reference Include="TwitchLib.Api.Core, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Api.Core.3.8.0\lib\netstandard2.0\TwitchLib.Api.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Api.Core.Enums, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Api.Core.Enums.3.5.2\lib\netstandard2.0\TwitchLib.Api.Core.Enums.dll</HintPath>
+    <Reference Include="TwitchLib.Api.Core.Enums, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Api.Core.Enums.3.8.0\lib\netstandard2.0\TwitchLib.Api.Core.Enums.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Api.Core.Interfaces, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Api.Core.Interfaces.3.5.2\lib\netstandard2.0\TwitchLib.Api.Core.Interfaces.dll</HintPath>
+    <Reference Include="TwitchLib.Api.Core.Interfaces, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Api.Core.Interfaces.3.8.0\lib\netstandard2.0\TwitchLib.Api.Core.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Api.Core.Models, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Api.Core.Models.3.5.2\lib\netstandard2.0\TwitchLib.Api.Core.Models.dll</HintPath>
+    <Reference Include="TwitchLib.Api.Core.Models, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Api.Core.Models.3.8.0\lib\netstandard2.0\TwitchLib.Api.Core.Models.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Api.Helix, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Api.Helix.3.5.2\lib\netstandard2.0\TwitchLib.Api.Helix.dll</HintPath>
+    <Reference Include="TwitchLib.Api.Helix, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Api.Helix.3.8.0\lib\netstandard2.0\TwitchLib.Api.Helix.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Api.Helix.Models, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Api.Helix.Models.3.5.2\lib\netstandard2.0\TwitchLib.Api.Helix.Models.dll</HintPath>
+    <Reference Include="TwitchLib.Api.Helix.Models, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Api.Helix.Models.3.8.0\lib\netstandard2.0\TwitchLib.Api.Helix.Models.dll</HintPath>
     </Reference>
     <Reference Include="TwitchLib.Api.V5, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\TwitchLib.Api.V5.3.3.0\lib\netstandard2.0\TwitchLib.Api.V5.dll</HintPath>
@@ -302,20 +308,26 @@
     <Reference Include="TwitchLib.Api.V5.Models, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\TwitchLib.Api.V5.Models.3.4.0\lib\netstandard2.0\TwitchLib.Api.V5.Models.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Client, Version=3.2.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Client.3.2.4\lib\netstandard2.0\TwitchLib.Client.dll</HintPath>
+    <Reference Include="TwitchLib.Client, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Client.3.3.1\lib\netstandard2.0\TwitchLib.Client.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Client.Enums, Version=3.2.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Client.Enums.3.2.4\lib\netstandard2.0\TwitchLib.Client.Enums.dll</HintPath>
+    <Reference Include="TwitchLib.Client.Enums, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Client.Enums.3.3.1\lib\netstandard2.0\TwitchLib.Client.Enums.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.Client.Models, Version=3.2.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.Client.Models.3.2.4\lib\netstandard2.0\TwitchLib.Client.Models.dll</HintPath>
+    <Reference Include="TwitchLib.Client.Models, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.Client.Models.3.3.1\lib\netstandard2.0\TwitchLib.Client.Models.dll</HintPath>
     </Reference>
     <Reference Include="TwitchLib.Communication, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\TwitchLib.Communication.1.0.4\lib\netstandard2.0\TwitchLib.Communication.dll</HintPath>
     </Reference>
-    <Reference Include="TwitchLib.PubSub, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.PubSub.3.2.3\lib\netstandard2.0\TwitchLib.PubSub.dll</HintPath>
+    <Reference Include="TwitchLib.EventSub.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.EventSub.Core.2.0.0\lib\netstandard2.0\TwitchLib.EventSub.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.EventSub.Websockets, Version=0.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.EventSub.Websockets.0.0.3\lib\netstandard2.0\TwitchLib.EventSub.Websockets.dll</HintPath>
+    </Reference>
+    <Reference Include="TwitchLib.PubSub, Version=3.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.PubSub.3.2.6\lib\netstandard2.0\TwitchLib.PubSub.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -323,6 +335,7 @@
     <Compile Include="ApplicationSettings\SettingsFileManager.cs" />
     <Compile Include="Bots\ChatBot.cs" />
     <Compile Include="Bots\Enums\Platform.cs" />
+    <Compile Include="Bots\Handlers\RewardHandler.cs" />
     <Compile Include="CollectionHelper.cs" />
     <Compile Include="Commands\Models\Command.cs" />
     <Compile Include="Commands\BetsManager.cs" />
@@ -345,6 +358,7 @@
     <Compile Include="CustomData\Heroes.cs" />
     <Compile Include="DateBase\DataBase.cs" />
     <Compile Include="DryIoc\GlobalContainer.cs" />
+    <Compile Include="DryIoc\Implementations\BotHandlersFiller.cs" />
     <Compile Include="DryIoc\Implementations\CommandCommonFunctionsFiller.cs" />
     <Compile Include="DryIoc\Implementations\CommandsFiller.cs" />
     <Compile Include="DryIoc\Implementations\FillPriorityAttribute.cs" />
@@ -357,6 +371,7 @@
     <Compile Include="EventConainers\Models\CommandInfo.cs" />
     <Compile Include="EventConainers\GlobalEventContainer.cs" />
     <Compile Include="EventConainers\Models\PlatformEventInfo.cs" />
+    <Compile Include="EventConainers\Models\RewardInfo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -413,7 +428,6 @@
     <None Include="Resources\pled112x112.png" />
     <Content Include="Resources\robot.ico" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -424,9 +438,11 @@
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
     <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
+  <Import Project="..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets')" />
 </Project>

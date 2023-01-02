@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DryIoc;
 using StriBot.Bots.Enums;
+using StriBot.Bots.Handlers;
 using StriBot.Commands;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
@@ -29,8 +30,11 @@ namespace StriBot.Bots
         private readonly RememberManager _rememberManager;
         private readonly Currency _currency;
         private readonly RaffleManager _raffleManager;
+        private readonly RewardHandler _rewardHandler;
 
-        public ChatBot(Speaker speaker, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager, CurrencyBaseManager currencyBaseManager, BetsManager betsManager, RememberManager rememberManager, Currency currency, RaffleManager raffleManager)
+        public ChatBot(Speaker speaker, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager,
+            CurrencyBaseManager currencyBaseManager, BetsManager betsManager, RememberManager rememberManager,
+            Currency currency, RaffleManager raffleManager, RewardHandler rewardHandler)
         {
             _speaker = speaker;
             _twitchBot = twitchBot;
@@ -41,10 +45,15 @@ namespace StriBot.Bots
             _rememberManager = rememberManager;
             _currency = currency;
             _raffleManager = raffleManager;
+            _rewardHandler = rewardHandler;
 
             GlobalEventContainer.CommandReceived += OnChatCommandReceived;
             GlobalEventContainer.PlatformEventReceived += OnPlatformEventReceived;
+            GlobalEventContainer.RewardEventReceived += OnRewardEventReceived;
         }
+
+        private void OnRewardEventReceived(RewardInfo rewardInfo)
+            => _rewardHandler.Handle(rewardInfo);
 
         private void OnPlatformEventReceived(PlatformEventInfo platformEventInfo)
         {

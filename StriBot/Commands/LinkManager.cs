@@ -36,6 +36,11 @@ namespace StriBot.Commands
                     {
                         GlobalEventContainer.Message("https://goodgame.ru/channel/StriBog45/", e.Platform);
                     }, CommandType.Info),
+                new Command("vkplay", "Ссылка на дополнительный канал на VK Play",
+                    delegate(CommandInfo e)
+                    {
+                        GlobalEventContainer.Message("https://vkplay.live/stribog45/", e.Platform);
+                    }, CommandType.Info),
                 new Command("Discord", "Наш discord для связи!",
                     delegate(CommandInfo e) { GlobalEventContainer.Message("https://discord.gg/7Z6HGYZ", e.Platform); },
                     CommandType.Info),

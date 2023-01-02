@@ -10,9 +10,11 @@ namespace StriBot.EventConainers
         public delegate void CommandHandler(CommandInfo commandInfo);
         public delegate void MessageHandler(Platform[] platforms, string message);
         public delegate void PlatformEventHandler(PlatformEventInfo platformEventInfo);
+        public delegate void RewardEventHandler(RewardInfo rewardInfo);
         public static event CommandHandler CommandReceived;
         public static event MessageHandler SendMessage;
         public static event PlatformEventHandler PlatformEventReceived;
+        public static event RewardEventHandler RewardEventReceived;
 
         public static void CreateEventCommandCall(CommandInfo commandInfo)
         {
@@ -43,5 +45,8 @@ namespace StriBot.EventConainers
 
         public static void Event(PlatformEventInfo platformEventInfo)
             => PlatformEventReceived?.Invoke(platformEventInfo);
+
+        public static void RewardEvent(RewardInfo rewardInfo)
+            => RewardEventReceived?.Invoke(rewardInfo);
     }
 }
