@@ -15,6 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <LangVersion>10</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -357,11 +358,13 @@
     <Compile Include="Commands\Enums\CommandType.cs" />
     <Compile Include="CustomData\AnswerOptions.cs" />
     <Compile Include="CustomData\Heroes.cs" />
-    <Compile Include="DateBase\DataBase.cs" />
+    <Compile Include="DateBase\Implementations\DataBase.cs" />
+    <Compile Include="DateBase\Interfaces\IDataBase.cs" />
     <Compile Include="DryIoc\GlobalContainer.cs" />
     <Compile Include="DryIoc\Implementations\BotHandlersFiller.cs" />
     <Compile Include="DryIoc\Implementations\CommandCommonFunctionsFiller.cs" />
     <Compile Include="DryIoc\Implementations\CommandsFiller.cs" />
+    <Compile Include="DryIoc\Implementations\DataBaseFiller.cs" />
     <Compile Include="DryIoc\Implementations\FillPriorityAttribute.cs" />
     <Compile Include="DryIoc\Implementations\LanguageFiller.cs" />
     <Compile Include="DryIoc\Implementations\SpeakerFiller.cs" />

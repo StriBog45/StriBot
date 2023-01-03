@@ -3,7 +3,7 @@ using StriBot.Commands.CommonFunctions;
 using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase;
+using StriBot.DateBase.Interfaces;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using StriBot.Language.Extensions;
@@ -15,6 +15,7 @@ namespace StriBot.Commands
     {
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
+        private readonly IDataBase _dataBase;
 
         private bool _isDuelActive;
         private int _duelTimer;
@@ -22,10 +23,11 @@ namespace StriBot.Commands
         private CommandInfo _duelMember;
         private const int TimeoutTime = 120;
 
-        public DuelManager(Currency currency, ReadyMadePhrases readyMadePhrases)
+        public DuelManager(Currency currency, ReadyMadePhrases readyMadePhrases, IDataBase dataBase)
         {
             _currency = currency;
             _readyMadePhrases = readyMadePhrases;
+            _dataBase = dataBase;
 
             CleanDuelMember();
         }
@@ -41,7 +43,7 @@ namespace StriBot.Commands
                         {
                             if (int.TryParse(commandInfo.ArgumentsAsString, out int amount) && amount > 0)
                             {
-                                if (amount <= DataBase.GetMoney(commandInfo.DisplayName))
+                                if (amount <= _dataBase.GetMoney(commandInfo.DisplayName))
                                 {
                                     GlobalEventContainer.Message($"Кто осмелится принять вызов {commandInfo.DisplayName} в смертельной дуэли со ставкой в {_currency.Incline(amount, true)}?", 
                                         commandInfo.Platform);
@@ -63,7 +65,7 @@ namespace StriBot.Commands
                     {
                         if (_duelMember.DisplayName == commandInfo.DisplayName)
                             GlobalEventContainer.Message($"@{_duelMember.DisplayName} не торопись! Твоё время ещё не пришло", commandInfo.Platform);
-                        else if (DataBase.GetMoney(commandInfo.DisplayName) < _duelBet)
+                        else if (_dataBase.GetMoney(commandInfo.DisplayName) < _duelBet)
                             _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);
                         else
                         {
@@ -74,8 +76,8 @@ namespace StriBot.Commands
                                 winner = commandInfo;
                             else
                                 looser = commandInfo;
-                            DataBase.AddMoney(winner.DisplayName, _duelBet);
-                            DataBase.AddMoney(looser.DisplayName, -_duelBet);
+                            _dataBase.AddMoney(winner.DisplayName, _duelBet);
+                            _dataBase.AddMoney(looser.DisplayName, -_duelBet);
 
                             if (_duelBet > 0)
                                 GlobalEventContainer.Message($"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. {winner.DisplayName} получил за победу {_duelBet} {_currency.GenitiveMultiple}! Kappa )/",

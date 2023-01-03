@@ -1,15 +1,15 @@
-﻿using StriBot.Bots.Enums;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using StriBot.Bots.Enums;
 using StriBot.Commands.CommonFunctions;
 using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase;
+using StriBot.DateBase.Interfaces;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using StriBot.Language.Extensions;
 using StriBot.Language.Implementations;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace StriBot.Commands
 {
@@ -19,15 +19,17 @@ namespace StriBot.Commands
         private readonly ReadyMadePhrases _readyMadePhrases;
         private readonly Currency _currency;
         private readonly Minute _minute;
+        private readonly IDataBase _dataBase;
 
         private const int HalberdTimeoutTime = 5;
 
-        public HalberdManager(ReadyMadePhrases readyMadePhrases, Currency currency, Minute minute)
+        public HalberdManager(ReadyMadePhrases readyMadePhrases, Currency currency, Minute minute, IDataBase dataBase)
         {
             _halberdDictionary = new ConcurrentDictionary<string, (Platform Platform, int Time)>();
             _readyMadePhrases = readyMadePhrases;
             _currency = currency;
-            _minute = minute; 
+            _minute = minute;
+            _dataBase = dataBase;
         }
 
         public void Tick()
@@ -53,20 +55,20 @@ namespace StriBot.Commands
                 {
                     if (commandInfo.ArgumentsAsList.Count == 1)
                     {
-                        if (DataBase.GetMoney(commandInfo.DisplayName) >= PriceList.Halberd)
+                        if (_dataBase.GetMoney(commandInfo.DisplayName) >= PriceList.Halberd)
                         {
-                            DataBase.AddMoney(commandInfo.DisplayName, -PriceList.Halberd);
+                            _dataBase.AddMoney(commandInfo.DisplayName, -PriceList.Halberd);
 
                             if (_halberdDictionary.ContainsKey(commandInfo.ArgumentsAsList[0]))
                             {
-                                var clearName = DataBase.CleanNickname(commandInfo.ArgumentsAsList[0]);
+                                var clearName = _dataBase.CleanNickname(commandInfo.ArgumentsAsList[0]);
                                 var halberdValue = _halberdDictionary[clearName];
                                 halberdValue.Time += HalberdTimeoutTime;
                                 _halberdDictionary[clearName] = halberdValue;
 
                             }
                             else
-                                _halberdDictionary.TryAdd(DataBase.CleanNickname(commandInfo.ArgumentsAsList[0]), (commandInfo.Platform, HalberdTimeoutTime));
+                                _halberdDictionary.TryAdd(_dataBase.CleanNickname(commandInfo.ArgumentsAsList[0]), (commandInfo.Platform, HalberdTimeoutTime));
 
                             GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на {commandInfo.ArgumentsAsList[0]}! Цель обезаружена на {_minute.Incline(HalberdTimeoutTime)}!",
                                 commandInfo.Platform);
@@ -76,7 +78,7 @@ namespace StriBot.Commands
                     }
                     else
                     {
-                        _halberdDictionary.TryAdd(DataBase.CleanNickname(commandInfo.DisplayName), (commandInfo.Platform, HalberdTimeoutTime));
+                        _halberdDictionary.TryAdd(_dataBase.CleanNickname(commandInfo.DisplayName), (commandInfo.Platform, HalberdTimeoutTime));
                         GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на себя и не может использовать команды в течении {_minute.Incline(HalberdTimeoutTime)}!", 
                             commandInfo.Platform);
                     }
@@ -93,7 +95,7 @@ namespace StriBot.Commands
 
         public bool CanSendMessage(CommandInfo commandInfo)
         {
-            var clearName = DataBase.CleanNickname(commandInfo.DisplayName);
+            var clearName = _dataBase.CleanNickname(commandInfo.DisplayName);
             var result = !_halberdDictionary.ContainsKey(clearName);
 
             if (!result)

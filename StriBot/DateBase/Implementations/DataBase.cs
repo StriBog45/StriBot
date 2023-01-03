@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Data;
-using System.Data.SQLite;
 using System.Data.Common;
+using System.Data.SQLite;
+using StriBot.DateBase.Interfaces;
 
-namespace StriBot.DateBase
+namespace StriBot.DateBase.Implementations
 {
-    static public class DataBase
+    public class DataBase : IDataBase
     {
         static string baseName = @"DateBase\StriBot.db3";
         static string basePath = "Data Source = " + baseName;
@@ -14,12 +15,12 @@ namespace StriBot.DateBase
 
         static SQLiteFactory factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
 
-        public static void AddMoney(string nickname, int amount)
+        public void AddMoney(string nickname, int amount)
         {
             var clearName = CleanNickname(nickname);
 
             var dTable = new DataTable();
-            using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
+            using (var connection = (SQLiteConnection)factory.CreateConnection())
             {
                 connection.ConnectionString = basePath;
                 connection.Open();
@@ -48,7 +49,7 @@ namespace StriBot.DateBase
             }
         }
 
-        public static int GetMoney(string nickname)
+        public int GetMoney(string nickname)
         {
             var clearName = CleanNickname(nickname);
 
@@ -78,12 +79,12 @@ namespace StriBot.DateBase
                 : 0;
         }
 
-        public static string CleanNickname(string nick)
+        public string CleanNickname(string nick)
             => nick[0] != '@' 
                 ? nick 
                 : nick.Remove(0, 1);
 
-        public static string GetSteamTradeLink(string nickname)
+        public string GetSteamTradeLink(string nickname)
         {
             var clearName = CleanNickname(nickname);
 
@@ -113,7 +114,7 @@ namespace StriBot.DateBase
                 : null;
         }
 
-        public static void AddSteamTradeLink(string nickname, string steamTradeLink)
+        public void AddSteamTradeLink(string nickname, string steamTradeLink)
         {
             var clearName = CleanNickname(nickname);
 

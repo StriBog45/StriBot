@@ -1,14 +1,14 @@
-﻿using StriBot.Commands.CommonFunctions;
+﻿using System;
+using System.Collections.Generic;
+using StriBot.Commands.CommonFunctions;
 using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase;
+using StriBot.DateBase.Interfaces;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using StriBot.Language.Extensions;
 using StriBot.Language.Implementations;
-using System;
-using System.Collections.Generic;
 
 namespace StriBot.Commands
 {
@@ -16,14 +16,16 @@ namespace StriBot.Commands
     {
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
+        private readonly IDataBase _dataBase;
 
         private readonly List<(string, string, int)> _listOrders;
         private Action<List<(string, string, int)>> _updateOrders;
 
-        public OrderManager(Currency currency, ReadyMadePhrases readyMadePhrases)
+        public OrderManager(Currency currency, ReadyMadePhrases readyMadePhrases, IDataBase dataBase)
         {
             _currency = currency;
             _readyMadePhrases = readyMadePhrases;
+            _dataBase = dataBase;
 
             _listOrders = new List<(string, string, int)>();
         }
@@ -96,7 +98,7 @@ namespace StriBot.Commands
         {
             return delegate (CommandInfo commandInfo)
             {
-                if (DataBase.GetMoney(commandInfo.DisplayName) >= price)
+                if (_dataBase.GetMoney(commandInfo.DisplayName) >= price)
                 {
                     _listOrders.Add((product, commandInfo.DisplayName, price));
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ! {_currency.NominativeMultiple.Title()} будут сняты после принятия заказа", commandInfo.Platform);
@@ -111,7 +113,7 @@ namespace StriBot.Commands
         {
             return delegate (CommandInfo commandInfo)
             {
-                if (DataBase.GetMoney(commandInfo.DisplayName) >= price)
+                if (_dataBase.GetMoney(commandInfo.DisplayName) >= price)
                 {
                     if (commandInfo.ArgumentsAsList.Count != 0)
                     {
@@ -135,7 +137,7 @@ namespace StriBot.Commands
                     if (int.TryParse(commandInfo.ArgumentsAsList[0], out var customPrice))
                     {
                         CreateOrderDelegate(customPrice);
-                        if (DataBase.GetMoney(commandInfo.DisplayName) >= customPrice)
+                        if (_dataBase.GetMoney(commandInfo.DisplayName) >= customPrice)
                         {
                             _listOrders.Add((commandInfo.ArgumentsAsString.Substring(commandInfo.ArgumentsAsList[0].Length + 1), commandInfo.DisplayName, customPrice));
                             GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ!", commandInfo.Platform);

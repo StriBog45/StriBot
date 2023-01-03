@@ -1,18 +1,19 @@
-﻿using DryIoc;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Forms;
+using DryIoc;
 using StriBot.ApplicationSettings;
 using StriBot.Bots;
 using StriBot.Bots.Enums;
 using StriBot.Commands;
 using StriBot.Commands.Raffle;
-using StriBot.DateBase;
+using StriBot.DateBase.Interfaces;
 using StriBot.DryIoc;
 using StriBot.EventConainers;
 using StriBot.Language.Implementations;
 using StriBot.Language.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace StriBot
 {
@@ -30,6 +31,7 @@ namespace StriBot
         private readonly Currency _currency;
         private readonly SettingsFileManager _settingsFileManager;
         private readonly RaffleManager _raffleManager;
+        private readonly IDataBase _dataBase;
 
         public Form1()
         {
@@ -48,6 +50,7 @@ namespace StriBot
             _betsManager = GlobalContainer.Default.Resolve<BetsManager>();
             _rememberManager = GlobalContainer.Default.Resolve<RememberManager>();
             _raffleManager = GlobalContainer.Default.Resolve<RaffleManager>();
+            _dataBase = GlobalContainer.Default.Resolve<IDataBase>();
             _orderManager.SafeCallConnector(UpdateOrderList);
         }
 
@@ -86,7 +89,7 @@ namespace StriBot
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-            => System.Diagnostics.Process.Start("https://www.twitch.tv/stribog45");
+            => Process.Start("https://www.twitch.tv/stribog45");
 
         private void timer1_Tick(object sender, EventArgs e)
             => _chatBot.TimerTick();
@@ -99,7 +102,7 @@ namespace StriBot
         }
 
         private void buttonDistribution_Click(object sender, EventArgs e)
-            => _currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text), Bots.Enums.Platform.Twitch);
+            => _currencyBaseManager.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text), Platform.Twitch);
         private void buttonCreateOptions_Click(object sender, EventArgs e)
         {
             var options = TextBoxOptions.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
@@ -146,7 +149,7 @@ namespace StriBot
                 if (selected.SubItems[0].Text.Contains("youtube"))
                     webBrowser.Navigate(selected.SubItems[0].Text);
                 _orderManager.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, int.Parse(selected.SubItems[2].Text));
-                DataBase.AddMoney(selected.SubItems[1].Text, -int.Parse(selected.SubItems[2].Text));
+                _dataBase.AddMoney(selected.SubItems[1].Text, -int.Parse(selected.SubItems[2].Text));
                 GlobalEventContainer.Message(string.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text), Platform.Twitch);
                 listViewOrder.Items.Remove(selected);
             }
@@ -306,7 +309,7 @@ namespace StriBot
         private void labelRaffleLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (labelRaffleLink.Text.Contains("http"))
-                System.Diagnostics.Process.Start(labelRaffleLink.Text);
+                Process.Start(labelRaffleLink.Text);
         }
 
         private void buttonRaffleStart_Click(object sender, EventArgs e)

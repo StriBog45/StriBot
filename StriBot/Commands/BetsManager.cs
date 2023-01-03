@@ -5,7 +5,7 @@ using StriBot.Bots.Enums;
 using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase;
+using StriBot.DateBase.Interfaces;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using StriBot.Language.Implementations;
@@ -15,6 +15,7 @@ namespace StriBot.Commands
     public class BetsManager
     {
         private readonly Currency _currency;
+        private readonly IDataBase _dataBase;
 
         private bool _betsProcessing;
         private string[] _bettingOptions;
@@ -22,10 +23,11 @@ namespace StriBot.Commands
         private double _betsCoefficient;
         private readonly Dictionary<string, (int Choice, int BetSize)> _usersBetted;
 
-        public BetsManager(Currency currency)
+        public BetsManager(Currency currency, IDataBase dataBase)
         {
             _usersBetted = new Dictionary<string, (int, int)>();
             _currency = currency;
+            _dataBase = dataBase;
         }
 
         public void Tick(Platform[] platforms)
@@ -52,9 +54,9 @@ namespace StriBot.Commands
                 foreach (var bet in _usersBetted)
                 {
                     if (bet.Value.Choice == winner)
-                        DataBase.AddMoney(bet.Key, (int)(bet.Value.BetSize * _betsCoefficient) + (bet.Value.BetSize * (-1)));
+                        _dataBase.AddMoney(bet.Key, (int)(bet.Value.BetSize * _betsCoefficient) + (bet.Value.BetSize * (-1)));
                     else
-                        DataBase.AddMoney(bet.Key, bet.Value.BetSize * (-1));
+                        _dataBase.AddMoney(bet.Key, bet.Value.BetSize * (-1));
                 }
                 GlobalEventContainer.Message($"Победила ставка под номером {winner} - {_bettingOptions[winner]}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
 
@@ -108,7 +110,7 @@ namespace StriBot.Commands
                 {
                     if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[0], out var numberOfBets) && int.TryParse(commandInfo.ArgumentsAsList[1], out var betSize) && numberOfBets < _bettingOptions.Length && betSize > 0)
                     {
-                        if (DataBase.GetMoney(commandInfo.DisplayName) < betSize)
+                        if (_dataBase.GetMoney(commandInfo.DisplayName) < betSize)
                             GlobalEventContainer.Message($"{commandInfo.DisplayName} у тебя недостаточно {_currency.GenitiveMultiple} для такой ставки!", platforms);
                         else
                         {

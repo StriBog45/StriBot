@@ -1,17 +1,18 @@
-﻿using StriBot.Bots.Enums;
+﻿using System.Collections.Generic;
+using StriBot.Bots.Enums;
 using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
 using StriBot.Commands.Raffle.Models;
-using StriBot.DateBase;
+using StriBot.DateBase.Interfaces;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
-using System.Collections.Generic;
 
 namespace StriBot.Commands.Raffle
 {
     public class RaffleManager
     {
+        private readonly IDataBase _dataBase;
         private readonly List<RaffleParticipant> _participantsList;
         private string _commandName;
         
@@ -20,8 +21,9 @@ namespace StriBot.Commands.Raffle
 
         private bool IsProgress { get; set; }
 
-        public RaffleManager()
+        public RaffleManager(IDataBase dataBase)
         {
+            _dataBase = dataBase;
             _participantsList = new List<RaffleParticipant>();
         }
 
@@ -64,7 +66,7 @@ namespace StriBot.Commands.Raffle
                 {
                     var result = string.Empty;
                     var canParticipate = true;
-                    var steamTradeLink = DataBase.GetSteamTradeLink(commandInfo.DisplayName);
+                    var steamTradeLink = _dataBase.GetSteamTradeLink(commandInfo.DisplayName);
 
                     if (canParticipate && _participantsList.Exists(item => item.Nick == commandInfo.DisplayName))
                     {
@@ -80,7 +82,7 @@ namespace StriBot.Commands.Raffle
                     else if (commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer"))
                     {
                         steamTradeLink = commandInfo.ArgumentsAsString;
-                        DataBase.AddSteamTradeLink(commandInfo.DisplayName, steamTradeLink);
+                        _dataBase.AddSteamTradeLink(commandInfo.DisplayName, steamTradeLink);
                     }
 
                     if (canParticipate)

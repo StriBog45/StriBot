@@ -1,16 +1,16 @@
-﻿using StriBot.Bots.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using StriBot.Bots.Enums;
 using StriBot.Commands.CommonFunctions;
 using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase;
+using StriBot.DateBase.Interfaces;
 using StriBot.EventConainers;
 using StriBot.EventConainers.Models;
 using StriBot.Language.Extensions;
 using StriBot.Language.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace StriBot.Commands
 {
@@ -18,6 +18,7 @@ namespace StriBot.Commands
     {
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
+        private readonly IDataBase _dataBase;
         private readonly List<string> _receivedUsers;
         private readonly Dictionary<string, DateTime> _userLastMessage;
         private int _distributionAmountUsers;
@@ -26,10 +27,11 @@ namespace StriBot.Commands
         private int subCoefficient = 2;
         private bool _subBonus;
 
-        public CurrencyBaseManager(Currency currency, ReadyMadePhrases readyMadePhrases)
+        public CurrencyBaseManager(Currency currency, ReadyMadePhrases readyMadePhrases, IDataBase dataBase)
         {
             _currency = currency;
             _readyMadePhrases = readyMadePhrases;
+            _dataBase = dataBase;
 
             _receivedUsers = new List<string>();
             _userLastMessage = new Dictionary<string, DateTime>();
@@ -44,9 +46,9 @@ namespace StriBot.Commands
                     if (!_receivedUsers.Where(x => x.CompareTo(commandInfo.DisplayName) == 0).ToArray().Any())
                     {
                         if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
-                            DataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers * SubCoefficient);
+                            _dataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers * SubCoefficient);
                         else
-                            DataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers);
+                            _dataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers);
 
                         GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно стащил {_currency.Accusative}!", commandInfo.Platform);
                         _distributionAmountUsers--;
@@ -75,14 +77,14 @@ namespace StriBot.Commands
         {
             void Action(CommandInfo commandInfo)
             {
-                if (DataBase.GetMoney(commandInfo.DisplayName) > 0)
+                if (_dataBase.GetMoney(commandInfo.DisplayName) > 0)
                 {
                     if (_distributionAmountPerUsers == 0) _distributionAmountPerUsers = 1;
 
                     if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.HasValue)
-                        DataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers * SubCoefficient);
+                        _dataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers * SubCoefficient);
                     else
-                        DataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers);
+                        _dataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers);
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} незаметно вернул {_currency.Accusative}!", commandInfo.Platform);
                     _distributionAmountUsers++;
                     _receivedUsers.Remove(commandInfo.DisplayName);
@@ -100,7 +102,7 @@ namespace StriBot.Commands
             {
                 if (commandInfo.ArgumentsAsList.Count == 2)
                 {
-                    DataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]));
+                    _dataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]));
                     GlobalEventContainer.Message($"Вы успешно добавили {_currency.NominativeMultiple}! striboF", commandInfo.Platform);
                 }
                 else
@@ -117,7 +119,7 @@ namespace StriBot.Commands
             {
                 if (commandInfo.ArgumentsAsList.Count == 2 && Convert.ToInt32(commandInfo.ArgumentsAsList[1]) > 0)
                 {
-                    DataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]) * (-1));
+                    _dataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]) * (-1));
                     GlobalEventContainer.Message($"Успешно изъяли {_currency.NominativeMultiple}! striboPeka ", commandInfo.Platform);
                 }
                 else
@@ -133,12 +135,12 @@ namespace StriBot.Commands
             {
                 if (commandInfo.ArgumentsAsList.Count == 0)
                 {
-                    var amount = DataBase.GetMoney(commandInfo.DisplayName);
+                    var amount = _dataBase.GetMoney(commandInfo.DisplayName);
                     GlobalEventContainer.Message($"{commandInfo.DisplayName} имеет {_currency.Incline(amount, true)}! ", commandInfo.Platform);
                 }
                 else
                 {
-                    var amount = DataBase.GetMoney(commandInfo.ArgumentsAsString);
+                    var amount = _dataBase.GetMoney(commandInfo.ArgumentsAsString);
                     GlobalEventContainer.Message($"{commandInfo.ArgumentsAsString} имеет {_currency.Incline(amount, true)}!", commandInfo.Platform);
                 }
             }
@@ -152,10 +154,10 @@ namespace StriBot.Commands
             {
                 if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[1], out var amount) && amount > 0)
                 {
-                    if (DataBase.GetMoney(commandInfo.DisplayName) >= amount)
+                    if (_dataBase.GetMoney(commandInfo.DisplayName) >= amount)
                     {
-                        DataBase.AddMoney(commandInfo.DisplayName, -amount);
-                        DataBase.AddMoney(commandInfo.ArgumentsAsList[0], amount);
+                        _dataBase.AddMoney(commandInfo.DisplayName, -amount);
+                        _dataBase.AddMoney(commandInfo.ArgumentsAsList[0], amount);
                         GlobalEventContainer.Message($"{commandInfo.DisplayName} подарил {_currency.Incline(amount, true)} {commandInfo.ArgumentsAsList[0]}! ", commandInfo.Platform);
                     }
                     else
@@ -174,9 +176,9 @@ namespace StriBot.Commands
             {
                 if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[0], out var amountForPer) && int.TryParse(commandInfo.ArgumentsAsList[1], out int amountPeople) && amountForPer > 0 && amountPeople > 0)
                 {
-                    if (DataBase.GetMoney(commandInfo.DisplayName) >= amountForPer * amountPeople)
+                    if (_dataBase.GetMoney(commandInfo.DisplayName) >= amountForPer * amountPeople)
                     {
-                        DataBase.AddMoney(commandInfo.DisplayName, amountForPer * amountPeople * (-1));
+                        _dataBase.AddMoney(commandInfo.DisplayName, amountForPer * amountPeople * (-1));
                         DistributionMoney(amountForPer, amountPeople, commandInfo.Platform, false);
                     }
                     else
@@ -204,17 +206,17 @@ namespace StriBot.Commands
 
         public void ReceivedMessage(string displayName)
         {
-            var cleanName = DataBase.CleanNickname(displayName);
+            var cleanName = _dataBase.CleanNickname(displayName);
             
             if (!_userLastMessage.ContainsKey(cleanName))
             {
                 _userLastMessage.Add(cleanName, DateTime.Now);
-                DataBase.AddMoney(cleanName, 1);
+                _dataBase.AddMoney(cleanName, 1);
             }
             else if (_userLastMessage[cleanName] < DateTime.Now.AddHours(-1))
             {
                 _userLastMessage[cleanName] = DateTime.Now;
-                DataBase.AddMoney(cleanName, 1);
+                _dataBase.AddMoney(cleanName, 1);
             }
         }
     }
