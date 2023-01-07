@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DryIoc;
-using StriBot.Bots.Enums;
+using StriBot.Application.Bot.Enums;
+using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Enums;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Localization.Extensions;
+using StriBot.Application.Localization.Implementations;
+using StriBot.Application.Platforms.Enums;
 using StriBot.Bots.Handlers;
 using StriBot.Commands;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
 using StriBot.Commands.Raffle;
-using StriBot.DateBase.Interfaces;
 using StriBot.DryIoc;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Enums;
-using StriBot.EventConainers.Models;
-using StriBot.Language.Extensions;
-using StriBot.Language.Implementations;
 using StriBot.Speakers;
 
 namespace StriBot.Bots
@@ -50,9 +51,9 @@ namespace StriBot.Bots
             _rewardHandler = rewardHandler;
             _dataBase = dataBase;
 
-            GlobalEventContainer.CommandReceived += OnChatCommandReceived;
-            GlobalEventContainer.PlatformEventReceived += OnPlatformEventReceived;
-            GlobalEventContainer.RewardEventReceived += OnRewardEventReceived;
+            EventContainer.CommandReceived += OnChatCommandReceived;
+            EventContainer.PlatformEventReceived += OnPlatformEventReceived;
+            EventContainer.RewardEventReceived += OnRewardEventReceived;
         }
 
         private async Task OnRewardEventReceived(RewardInfo rewardInfo)
@@ -83,14 +84,14 @@ namespace StriBot.Bots
 
         private void Subsctiption(PlatformEventInfo platformEventInfo)
         {
-            GlobalEventContainer.Message($"{platformEventInfo.UserName} подписался! PogChamp Срочно плед этому господину! А пока возьми {PriceList.ToysForSub} {_currency.Incline(PriceList.ToysForSub, true)} :)", platformEventInfo.Platform);
+            EventContainer.Message($"{platformEventInfo.UserName} подписался! PogChamp Срочно плед этому господину! А пока возьми {PriceList.ToysForSub} {_currency.Incline(PriceList.ToysForSub, true)} :)", platformEventInfo.Platform);
             _dataBase.AddMoney(platformEventInfo.UserName, PriceList.ToysForSub);
             _speaker.Say("Спасибо за подписку!");
         }
 
         private void GiftSubscription(PlatformEventInfo platformEventInfo)
         {
-            GlobalEventContainer.Message($"{platformEventInfo.UserName} подарил подписку для {platformEventInfo.SecondName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {_currency.Incline(PriceList.ToysForSub)}", platformEventInfo.Platform);
+            EventContainer.Message($"{platformEventInfo.UserName} подарил подписку для {platformEventInfo.SecondName}! PogChamp Спасибо большое! Прими нашу небольшую благодарность в качестве {_currency.Incline(PriceList.ToysForSub)}", platformEventInfo.Platform);
             _dataBase.AddMoney(platformEventInfo.UserName, PriceList.ToysForSub);
             _speaker.Say("Спасибо за подарочную подписку!");
         }
@@ -100,7 +101,7 @@ namespace StriBot.Bots
 
         private void Raid(PlatformEventInfo platformEventInfo)
         {
-            GlobalEventContainer.Message($"Нас атакует армия {platformEventInfo.UserName}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ", platformEventInfo.Platform);
+            EventContainer.Message($"Нас атакует армия {platformEventInfo.UserName}! Поднимаем щиты! PurpleStar PurpleStar PurpleStar ", platformEventInfo.Platform);
             _speaker.Say("Нас атакуют! Поднимайте щиты!");
         }
 
@@ -230,6 +231,6 @@ namespace StriBot.Bots
         }
 
         private void SendMessage(string text)
-            => GlobalEventContainer.Message(text, Platform.Twitch);
+            => EventContainer.Message(text, Platform.Twitch);
     }
 }

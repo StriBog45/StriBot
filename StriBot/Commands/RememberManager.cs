@@ -1,10 +1,11 @@
-﻿using StriBot.Bots.Enums;
-using StriBot.Commands.Enums;
+﻿using System.Collections.Generic;
+using StriBot.Application.Bot.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Platforms.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using System.Collections.Generic;
 
 namespace StriBot.Commands
 {
@@ -27,11 +28,11 @@ namespace StriBot.Commands
                     TextReminder = commandInfo.ArgumentsAsString;
                     if (TextReminder.Length > 0)
                     {
-                        GlobalEventContainer.Message($"Напоминание: \"{commandInfo.ArgumentsAsString}\" создано", commandInfo.Platform);
+                        EventContainer.Message($"Напоминание: \"{commandInfo.ArgumentsAsString}\" создано", commandInfo.Platform);
                         _platform = commandInfo.Platform;
                     }
                     else
-                        GlobalEventContainer.Message("Напоминание удалено", commandInfo.Platform);
+                        EventContainer.Message("Напоминание удалено", commandInfo.Platform);
                 }, new [] { "текст" }, CommandType.Interactive);
 
             return result;
@@ -40,7 +41,7 @@ namespace StriBot.Commands
         public void Tick(int timer)
         {
             if (timer % 10 == 0 && !string.IsNullOrEmpty(TextReminder))
-                GlobalEventContainer.Message("Напоминание: " + TextReminder, _platform);
+                EventContainer.Message("Напоминание: " + TextReminder, _platform);
         }
     }
 }

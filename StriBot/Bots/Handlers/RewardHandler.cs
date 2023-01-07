@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using StriBot.DateBase.Interfaces;
-using StriBot.EventConainers.Models;
+using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.Events.Models;
 
 namespace StriBot.Bots.Handlers
 {

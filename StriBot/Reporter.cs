@@ -1,10 +1,11 @@
-﻿using StriBot.Commands.Enums;
-using StriBot.Commands.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using StriBot.Application.Bot.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Commands.Models;
 
 namespace StriBot
 {

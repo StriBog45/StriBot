@@ -4,16 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DryIoc;
+using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.Events;
+using StriBot.Application.Localization.Implementations;
+using StriBot.Application.Localization.Models;
+using StriBot.Application.Platforms.Enums;
 using StriBot.ApplicationSettings;
 using StriBot.Bots;
-using StriBot.Bots.Enums;
 using StriBot.Commands;
 using StriBot.Commands.Raffle;
-using StriBot.DateBase.Interfaces;
 using StriBot.DryIoc;
-using StriBot.EventConainers;
-using StriBot.Language.Implementations;
-using StriBot.Language.Models;
 
 namespace StriBot
 {
@@ -57,7 +57,7 @@ namespace StriBot
         private void Form1_Load(object sender, EventArgs e)
         {
             textBoxMMR.Text = _managerMMR.MMR.ToString();
-            comboBoxCurrency.DataSource = _currency.GetCurrencies();
+            comboBoxCurrency.DataSource = Currency.GetCurrencies();
 
             if (!string.IsNullOrEmpty(_settingsFileManager.CurrencyName))
             {
@@ -150,7 +150,7 @@ namespace StriBot
                     webBrowser.Navigate(selected.SubItems[0].Text);
                 _orderManager.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, int.Parse(selected.SubItems[2].Text));
                 _dataBase.AddMoney(selected.SubItems[1].Text, -int.Parse(selected.SubItems[2].Text));
-                GlobalEventContainer.Message(string.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text), Platform.Twitch);
+                EventContainer.Message(string.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text), Platform.Twitch);
                 listViewOrder.Items.Remove(selected);
             }
         }
@@ -159,7 +159,7 @@ namespace StriBot
             foreach (ListViewItem selected in listViewOrder.SelectedItems)
             {
                 _orderManager.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, int.Parse(selected.SubItems[2].Text));
-                GlobalEventContainer.Message(string.Format("Заказ @{0} отменен", selected.SubItems[1].Text), Platform.Twitch);
+                EventContainer.Message(string.Format("Заказ @{0} отменен", selected.SubItems[1].Text), Platform.Twitch);
                 listViewOrder.Items.Remove(selected);
             }
         }
@@ -225,7 +225,7 @@ namespace StriBot
         private void buttonReminderClear_Click(object sender, EventArgs e)
         {
             _rememberManager.TextReminder = string.Empty;
-            GlobalEventContainer.Message("Напоминание удалено", Platform.Twitch);
+            EventContainer.Message("Напоминание удалено", Platform.Twitch);
         }
 
         private void buttonReconnect_Click(object sender, EventArgs e)
@@ -281,7 +281,7 @@ namespace StriBot
                 var phrase = comboBoxCurrency.Text != currencyName
                     ? $"Валюта {currencyName} создана!"
                     : $"Валюта {currencyName} перезаписана";
-                comboBoxCurrency.DataSource = _currency.GetCurrencies();
+                comboBoxCurrency.DataSource = Currency.GetCurrencies();
                 comboBoxCurrency.SelectedItem = currencyName;
                 MessageBox.Show(phrase);
             }

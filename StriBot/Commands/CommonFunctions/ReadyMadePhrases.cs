@@ -1,6 +1,6 @@
-﻿using StriBot.Bots.Enums;
-using StriBot.EventConainers;
-using StriBot.Language.Implementations;
+﻿using StriBot.Application.Events;
+using StriBot.Application.Localization.Implementations;
+using StriBot.Application.Platforms.Enums;
 
 namespace StriBot.Commands.CommonFunctions
 {
@@ -14,9 +14,9 @@ namespace StriBot.Commands.CommonFunctions
         }
 
         public void NoMoney(string displayName, Platform platform)
-            => GlobalEventContainer.Message($"{displayName} у вас недостаточно {_currency.GenitiveMultiple}! striboCry ", platform);
+            => EventContainer.Message($"{displayName} у вас недостаточно {_currency.GenitiveMultiple}! striboCry ", platform);
 
         public static void IncorrectCommand(Platform platform)
-            => GlobalEventContainer.Message("Некорректное использование команды!", platform);
+            => EventContainer.Message("Некорректное использование команды!", platform);
     }
 }

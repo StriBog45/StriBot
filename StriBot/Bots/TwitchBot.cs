@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Authentication;
-using StriBot.Bots.Enums;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Enums;
-using StriBot.EventConainers.Models;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Enums;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Platforms.Enums;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
@@ -44,7 +44,7 @@ namespace StriBot.Bots
             _twitchPub.ListenToChannelPoints(_twitchInfo.ChannelId);
             _twitchPub.Connect();
 
-            GlobalEventContainer.SendMessage += SendMessage;
+            EventContainer.SendMessage += SendMessage;
         }
 
         private static void TwitchPubOnOnListenResponse(object sender, OnListenResponseArgs e)
@@ -54,7 +54,7 @@ namespace StriBot.Bots
         }
 
         private static void TwitchPubOnOnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
-            => GlobalEventContainer.RewardEvent(new RewardInfo
+            => EventContainer.RewardEvent(new RewardInfo
             {
                 Platform = Platform.Twitch,
                 RewardMessage = e.RewardRedeemed.Redemption.UserInput,
@@ -90,7 +90,7 @@ namespace StriBot.Bots
 
         private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            GlobalEventContainer.Event(e.ChatMessage.IsHighlighted
+            EventContainer.Event(e.ChatMessage.IsHighlighted
                 ? new PlatformEventInfo(PlatformEventType.HighlightedMessage, Platform.Twitch,
                     displayName: e.ChatMessage.DisplayName, message: e.ChatMessage.Message)
                 : new PlatformEventInfo(PlatformEventType.Message, Platform.Twitch,
@@ -121,7 +121,7 @@ namespace StriBot.Bots
         /// e.GiftedSubscription.MsgParamRecipientUserName - кому подарили "Добро пожаловать syndicatereara!"
         /// </summary>
         private static void OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
-            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.GiftSubscription, Platform.Twitch,
+            => EventContainer.Event(new PlatformEventInfo(PlatformEventType.GiftSubscription, Platform.Twitch,
                 displayName: e.GiftedSubscription.DisplayName,
                 secondName: e.GiftedSubscription.MsgParamRecipientUserName));
 
@@ -129,17 +129,17 @@ namespace StriBot.Bots
             => SendMessage("Бот успешно подключился!");
 
         private static void OnRaidNotification(object sender, OnRaidNotificationArgs e)
-            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.Raid, Platform.Twitch, e.RaidNotification.DisplayName));
+            => EventContainer.Event(new PlatformEventInfo(PlatformEventType.Raid, Platform.Twitch, e.RaidNotification.DisplayName));
 
         private static void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
-            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, e.Subscriber.DisplayName));
+            => EventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, e.Subscriber.DisplayName));
 
         private static void OnReSubscriber(object sender, OnReSubscriberArgs e)
-            => GlobalEventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, e.ReSubscriber.DisplayName));
+            => EventContainer.Event(new PlatformEventInfo(PlatformEventType.NewSubscription, Platform.Twitch, e.ReSubscriber.DisplayName));
 
         private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
-            GlobalEventContainer.CreateEventCommandCall(new CommandInfo(
+            EventContainer.CreateEventCommandCall(new CommandInfo(
                 Platform.Twitch,
                 e.Command.ArgumentsAsList, 
                 e.Command.ArgumentsAsString, 
@@ -158,7 +158,7 @@ namespace StriBot.Bots
         private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
         {
             //TODO Определение роли пользователя для канала
-            GlobalEventContainer.CreateEventCommandCall(new CommandInfo(
+            EventContainer.CreateEventCommandCall(new CommandInfo(
                 Platform.Twitch,
                 e.Command.ArgumentsAsList,
                 e.Command.ArgumentsAsString,

@@ -1,10 +1,11 @@
-﻿using StriBot.Commands.Enums;
+﻿using System.Collections.Generic;
+using System.Text;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Extensions;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StriBot.Commands
 {
@@ -82,9 +83,9 @@ namespace StriBot.Commands
                 delegate (CommandInfo commandInfo)
                 {
                         if(string.IsNullOrEmpty( commandInfo.ArgumentsAsString))
-                            GlobalEventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.DisplayName), commandInfo.Platform);
+                            EventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.DisplayName), commandInfo.Platform);
                         else
-                            GlobalEventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.ArgumentsAsString), commandInfo.Platform);
+                            EventContainer.Message(string.Format("Несу {0} для {1}! HahaCat ", BurgerCombiner(), commandInfo.ArgumentsAsString), commandInfo.Platform);
                 }, new[] {"Объект"}, CommandType.Interactive)
             };
     }

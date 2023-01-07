@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Localization.Extensions;
+using StriBot.Application.Localization.Implementations;
 using StriBot.Commands.CommonFunctions;
-using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase.Interfaces;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using StriBot.Language.Extensions;
-using StriBot.Language.Implementations;
 
 namespace StriBot.Commands
 {
@@ -101,7 +101,7 @@ namespace StriBot.Commands
                 if (_dataBase.GetMoney(commandInfo.DisplayName) >= price)
                 {
                     _listOrders.Add((product, commandInfo.DisplayName, price));
-                    GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ! {_currency.NominativeMultiple.Title()} будут сняты после принятия заказа", commandInfo.Platform);
+                    EventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ! {_currency.NominativeMultiple.Title()} будут сняты после принятия заказа", commandInfo.Platform);
                     _updateOrders(_listOrders);
                 }
                 else
@@ -118,7 +118,7 @@ namespace StriBot.Commands
                     if (commandInfo.ArgumentsAsList.Count != 0)
                     {
                         _listOrders.Add((commandInfo.ArgumentsAsString, commandInfo.DisplayName, price));
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ!", commandInfo.Platform);
+                        EventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ!", commandInfo.Platform);
                         _updateOrders(_listOrders);
                     }
                     else
@@ -140,7 +140,7 @@ namespace StriBot.Commands
                         if (_dataBase.GetMoney(commandInfo.DisplayName) >= customPrice)
                         {
                             _listOrders.Add((commandInfo.ArgumentsAsString.Substring(commandInfo.ArgumentsAsList[0].Length + 1), commandInfo.DisplayName, customPrice));
-                            GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ!", commandInfo.Platform);
+                            EventContainer.Message($"{commandInfo.DisplayName} успешно сделал заказ!", commandInfo.Platform);
                             _updateOrders(_listOrders);
                         }
                         else

@@ -1,6 +1,5 @@
-﻿using StriBot.DryIoc;
-using System;
-using System.Windows.Forms;
+﻿using System;
+using StriBot.DryIoc;
 
 namespace StriBot
 {
@@ -12,10 +11,10 @@ namespace StriBot
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             GlobalContainer.Initialize();
-            Application.Run(new Form1());
+            System.Windows.Forms.Application.Run(new Form1());
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using DryIoc;
+using StriBot.Application.Localization.Implementations;
 using StriBot.DryIoc.Interfaces;
-using StriBot.Language.Implementations;
 
 namespace StriBot.DryIoc.Implementations
 {

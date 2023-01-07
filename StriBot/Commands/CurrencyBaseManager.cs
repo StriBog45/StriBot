@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StriBot.Bots.Enums;
+using StriBot.Application.Bot.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Localization.Extensions;
+using StriBot.Application.Localization.Implementations;
+using StriBot.Application.Platforms.Enums;
 using StriBot.Commands.CommonFunctions;
-using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase.Interfaces;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using StriBot.Language.Extensions;
-using StriBot.Language.Implementations;
 
 namespace StriBot.Commands
 {
@@ -50,15 +51,15 @@ namespace StriBot.Commands
                         else
                             _dataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers);
 
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно стащил {_currency.Accusative}!", commandInfo.Platform);
+                        EventContainer.Message($"{commandInfo.DisplayName} успешно стащил {_currency.Accusative}!", commandInfo.Platform);
                         _distributionAmountUsers--;
                         _receivedUsers.Add(commandInfo.DisplayName);
                     }
                     else
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} вы уже забрали {_currency.Accusative}! Не жадничайте!", commandInfo.Platform);
+                        EventContainer.Message($"{commandInfo.DisplayName} вы уже забрали {_currency.Accusative}! Не жадничайте!", commandInfo.Platform);
                 }
                 else
-                    GlobalEventContainer.Message($"{commandInfo.DisplayName} {_currency.GenitiveMultiple} не осталось!", commandInfo.Platform);
+                    EventContainer.Message($"{commandInfo.DisplayName} {_currency.GenitiveMultiple} не осталось!", commandInfo.Platform);
             }
 
             return new Command("Стащить", $"Крадет {_currency.Accusative} без присмотра", Action, CommandType.Interactive);
@@ -69,7 +70,7 @@ namespace StriBot.Commands
             _subBonus = bonus;
             _distributionAmountPerUsers = perUser;
             _distributionAmountUsers = maxUsers;
-            GlobalEventContainer.Message($"Замечены {_currency.NominativeMultiple} без присмотра! PogChamp ", platform);
+            EventContainer.Message($"Замечены {_currency.NominativeMultiple} без присмотра! PogChamp ", platform);
             _receivedUsers.Clear();
         }
 
@@ -85,7 +86,7 @@ namespace StriBot.Commands
                         _dataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers * SubCoefficient);
                     else
                         _dataBase.AddMoney(commandInfo.DisplayName, -_distributionAmountPerUsers);
-                    GlobalEventContainer.Message($"{commandInfo.DisplayName} незаметно вернул {_currency.Accusative}!", commandInfo.Platform);
+                    EventContainer.Message($"{commandInfo.DisplayName} незаметно вернул {_currency.Accusative}!", commandInfo.Platform);
                     _distributionAmountUsers++;
                     _receivedUsers.Remove(commandInfo.DisplayName);
                 }
@@ -103,7 +104,7 @@ namespace StriBot.Commands
                 if (commandInfo.ArgumentsAsList.Count == 2)
                 {
                     _dataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]));
-                    GlobalEventContainer.Message($"Вы успешно добавили {_currency.NominativeMultiple}! striboF", commandInfo.Platform);
+                    EventContainer.Message($"Вы успешно добавили {_currency.NominativeMultiple}! striboF", commandInfo.Platform);
                 }
                 else
                     ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
@@ -120,7 +121,7 @@ namespace StriBot.Commands
                 if (commandInfo.ArgumentsAsList.Count == 2 && Convert.ToInt32(commandInfo.ArgumentsAsList[1]) > 0)
                 {
                     _dataBase.AddMoney(commandInfo.ArgumentsAsList[0], Convert.ToInt32(commandInfo.ArgumentsAsList[1]) * (-1));
-                    GlobalEventContainer.Message($"Успешно изъяли {_currency.NominativeMultiple}! striboPeka ", commandInfo.Platform);
+                    EventContainer.Message($"Успешно изъяли {_currency.NominativeMultiple}! striboPeka ", commandInfo.Platform);
                 }
                 else
                     ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
@@ -136,12 +137,12 @@ namespace StriBot.Commands
                 if (commandInfo.ArgumentsAsList.Count == 0)
                 {
                     var amount = _dataBase.GetMoney(commandInfo.DisplayName);
-                    GlobalEventContainer.Message($"{commandInfo.DisplayName} имеет {_currency.Incline(amount, true)}! ", commandInfo.Platform);
+                    EventContainer.Message($"{commandInfo.DisplayName} имеет {_currency.Incline(amount, true)}! ", commandInfo.Platform);
                 }
                 else
                 {
                     var amount = _dataBase.GetMoney(commandInfo.ArgumentsAsString);
-                    GlobalEventContainer.Message($"{commandInfo.ArgumentsAsString} имеет {_currency.Incline(amount, true)}!", commandInfo.Platform);
+                    EventContainer.Message($"{commandInfo.ArgumentsAsString} имеет {_currency.Incline(amount, true)}!", commandInfo.Platform);
                 }
             }
 
@@ -158,7 +159,7 @@ namespace StriBot.Commands
                     {
                         _dataBase.AddMoney(commandInfo.DisplayName, -amount);
                         _dataBase.AddMoney(commandInfo.ArgumentsAsList[0], amount);
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} подарил {_currency.Incline(amount, true)} {commandInfo.ArgumentsAsList[0]}! ", commandInfo.Platform);
+                        EventContainer.Message($"{commandInfo.DisplayName} подарил {_currency.Incline(amount, true)} {commandInfo.ArgumentsAsList[0]}! ", commandInfo.Platform);
                     }
                     else
                         _readyMadePhrases.NoMoney(commandInfo.DisplayName, commandInfo.Platform);

@@ -1,11 +1,12 @@
-﻿using StriBot.Bots.Enums;
-using StriBot.Commands.Enums;
+﻿using System.Collections.Generic;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Extensions;
+using StriBot.Application.Platforms.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
 using StriBot.CustomData;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using System.Collections.Generic;
 
 namespace StriBot.Commands
 {
@@ -209,6 +210,6 @@ namespace StriBot.Commands
                 }, CommandType.Interactive);
 
         private static void SendMessage(string message, Platform platform)
-            => GlobalEventContainer.Message(message, platform);
+            => EventContainer.Message(message, platform);
     }
 }

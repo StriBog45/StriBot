@@ -1,12 +1,13 @@
-﻿using StriBot.Commands.Enums;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using StriBot.Application.Bot.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Commands.Extensions;
+using StriBot.Commands.Models;
 
 namespace StriBot.Commands
 {
@@ -60,9 +61,9 @@ namespace StriBot.Commands
                 delegate (CommandInfo e)
                 {
                     if (_bosses.Count > 0)
-                        GlobalEventContainer.Message(_bosses.ToString(), e.Platform);
+                        EventContainer.Message(_bosses.ToString(), e.Platform);
                     else
-                        GlobalEventContainer.Message("Боссов нет", e.Platform);
+                        EventContainer.Message("Боссов нет", e.Platform);
                 }, CommandType.Interactive);
 
         private Command CreateBossCommand()
@@ -75,7 +76,7 @@ namespace StriBot.Commands
                         RecordBoss(commandInfo.ArgumentsAsString);
                         _bossUpdate();
 
-                        GlobalEventContainer.Message($"Босс {commandInfo.ArgumentsAsString} успешно добавлен!", commandInfo.Platform);
+                        EventContainer.Message($"Босс {commandInfo.ArgumentsAsString} успешно добавлен!", commandInfo.Platform);
                     }
                 }, new [] { "Имя босса" }, CommandType.Interactive);
 
@@ -92,7 +93,7 @@ namespace StriBot.Commands
             => new Command("Смертей", "Показывает количество смертей",
                 delegate (CommandInfo commandInfo)
                 {
-                    GlobalEventContainer.Message(string.Format("Смертей: {0}", Deaths), commandInfo.Platform);
+                    EventContainer.Message(string.Format("Смертей: {0}", Deaths), commandInfo.Platform);
                 }, CommandType.Interactive);
 
         private Command CreateDeathCommand()
@@ -101,8 +102,8 @@ namespace StriBot.Commands
                 {
                     Deaths++;
                     _deathUpdate();
-                    GlobalEventContainer.Message(string.Format("Смертей: {0}", Deaths), commandInfo.Platform);
-                    GlobalEventContainer.Message("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ ……………..............……...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ…….……….........…..… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬", commandInfo.Platform);
+                    EventContainer.Message(string.Format("Смертей: {0}", Deaths), commandInfo.Platform);
+                    EventContainer.Message("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ ……………..............……...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ…….……….........…..… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬", commandInfo.Platform);
                 }, CommandType.Interactive);
 
         public Dictionary<string, Command> CreateCommands()

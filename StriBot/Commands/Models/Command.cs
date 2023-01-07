@@ -1,6 +1,7 @@
-﻿using StriBot.Commands.Enums;
-using StriBot.EventConainers.Models;
-using System;
+﻿using System;
+using StriBot.Application.Bot.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.Events.Models;
 
 namespace StriBot.Commands.Models
 {

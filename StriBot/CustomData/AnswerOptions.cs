@@ -1,4 +1,6 @@
-﻿namespace StriBot.CustomData
+﻿using StriBot.Application.Extensions;
+
+namespace StriBot.CustomData
 {
     public class AnswerOptions
     {

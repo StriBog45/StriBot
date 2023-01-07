@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StriBot.Bots.Enums;
-using StriBot.Commands.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Localization.Implementations;
+using StriBot.Application.Platforms.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase.Interfaces;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using StriBot.Language.Implementations;
 
 namespace StriBot.Commands
 {
@@ -44,7 +44,7 @@ namespace StriBot.Commands
         {
             _betsProcessing = false;
             _betsTimer = 0;
-            GlobalEventContainer.Message("Ставки больше не принимаются", platforms);
+            EventContainer.Message("Ставки больше не принимаются", platforms);
         }
 
         public void SetBetsWinner(int winner, Platform[] platforms)
@@ -58,7 +58,7 @@ namespace StriBot.Commands
                     else
                         _dataBase.AddMoney(bet.Key, bet.Value.BetSize * (-1));
                 }
-                GlobalEventContainer.Message($"Победила ставка под номером {winner} - {_bettingOptions[winner]}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
+                EventContainer.Message($"Победила ставка под номером {winner} - {_bettingOptions[winner]}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
 
                 var winners = _usersBetted.Where(x => x.Value.Choice == winner)
                     .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
@@ -66,14 +66,14 @@ namespace StriBot.Commands
                     .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
 
                 if (!string.IsNullOrEmpty(winners))
-                    GlobalEventContainer.Message("Победили: " + winners, platforms);
+                    EventContainer.Message("Победили: " + winners, platforms);
                 else
-                    GlobalEventContainer.Message("Победителей нет", platforms);
+                    EventContainer.Message("Победителей нет", platforms);
 
                 if (!string.IsNullOrEmpty(losers))
-                    GlobalEventContainer.Message("Проиграли: " + losers, platforms);
+                    EventContainer.Message("Проиграли: " + losers, platforms);
                 else
-                    GlobalEventContainer.Message("Проигравших нет", platforms);
+                    EventContainer.Message("Проигравших нет", platforms);
 
                 _usersBetted.Clear();
                 _betsProcessing = false;
@@ -90,7 +90,7 @@ namespace StriBot.Commands
             _usersBetted.Clear();
             _betsCoefficient = (options.Length * 0.5);
 
-            GlobalEventContainer.Message($"Время ставок! Коэффициент {_betsCoefficient}. Для участия необходимо написать !ставка [номер ставки] [сколько ставите]", platforms);
+            EventContainer.Message($"Время ставок! Коэффициент {_betsCoefficient}. Для участия необходимо написать !ставка [номер ставки] [сколько ставите]", platforms);
 
             var messageBuilder = new StringBuilder($"{options[0]}: ");
             for (var i = 0; i < _bettingOptions.Length; i++)
@@ -99,7 +99,7 @@ namespace StriBot.Commands
                     messageBuilder.Append(", ");
                 messageBuilder.Append($"{i} - {_bettingOptions[i]}");
             }
-            GlobalEventContainer.Message(messageBuilder.ToString(), platforms);
+            EventContainer.Message(messageBuilder.ToString(), platforms);
         }
 
         private Command CreateBetCommand(Platform[] platforms)
@@ -111,23 +111,23 @@ namespace StriBot.Commands
                     if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[0], out var numberOfBets) && int.TryParse(commandInfo.ArgumentsAsList[1], out var betSize) && numberOfBets < _bettingOptions.Length && betSize > 0)
                     {
                         if (_dataBase.GetMoney(commandInfo.DisplayName) < betSize)
-                            GlobalEventContainer.Message($"{commandInfo.DisplayName} у тебя недостаточно {_currency.GenitiveMultiple} для такой ставки!", platforms);
+                            EventContainer.Message($"{commandInfo.DisplayName} у тебя недостаточно {_currency.GenitiveMultiple} для такой ставки!", platforms);
                         else
                         {
                             if (!_usersBetted.ContainsKey(commandInfo.DisplayName))
                             {
                                 _usersBetted.Add(commandInfo.DisplayName, (numberOfBets, betSize));
-                                GlobalEventContainer.Message($"{commandInfo.DisplayName} успешно сделал ставку!", platforms);
+                                EventContainer.Message($"{commandInfo.DisplayName} успешно сделал ставку!", platforms);
                             }
                             else
-                                GlobalEventContainer.Message($"{commandInfo.DisplayName} уже сделал ставку!", platforms);
+                                EventContainer.Message($"{commandInfo.DisplayName} уже сделал ставку!", platforms);
                         }
                     }
                     else
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} вы неправильно указали ставку", platforms);
+                        EventContainer.Message($"{commandInfo.DisplayName} вы неправильно указали ставку", platforms);
                 }
                 else
-                    GlobalEventContainer.Message("В данный момент ставить нельзя!", platforms);
+                    EventContainer.Message("В данный момент ставить нельзя!", platforms);
             }
 
             return new Command("Ставка", "Сделать ставку", Action, new[] { "на что", "сколько" }, CommandType.Interactive);

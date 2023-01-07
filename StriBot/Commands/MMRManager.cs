@@ -1,10 +1,12 @@
-﻿using StriBot.Bots.Enums;
-using StriBot.Commands.Enums;
+﻿using System.Collections.Generic;
+using StriBot.Application.Bot.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Extensions;
+using StriBot.Application.Platforms.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using System.Collections.Generic;
 
 namespace StriBot.Commands
 {
@@ -23,14 +25,14 @@ namespace StriBot.Commands
                 {
                     Wins++;
                     MMR += _MMRChange;
-                    GlobalEventContainer.Message($"Побед: {Wins}, Поражений: {Losses}", commandInfo.Platform);
+                    EventContainer.Message($"Побед: {Wins}, Поражений: {Losses}", commandInfo.Platform);
                 }, CommandType.Interactive);
 
             return result;
         }
 
         private void SendCurrentAccount(Platform platform)
-            => GlobalEventContainer.Message($"Побед: {Wins}, Поражений: {Losses}", platform);
+            => EventContainer.Message($"Побед: {Wins}, Поражений: {Losses}", platform);
 
         private Command AddLose()
         {
@@ -56,7 +58,7 @@ namespace StriBot.Commands
             => new Command("mmr", "Узнать рейтинг стримера в Dota 2",
                 delegate (CommandInfo commandInfo)
                 {
-                    GlobalEventContainer.Message($"Рейтинг: {MMR} Звание: {_medallion}", commandInfo.Platform);
+                    EventContainer.Message($"Рейтинг: {MMR} Звание: {_medallion}", commandInfo.Platform);
                 }, CommandType.Info);
 
         private Command CheckMMR()
@@ -64,9 +66,9 @@ namespace StriBot.Commands
                 delegate (CommandInfo commandInfo)
                 {
                     if (string.IsNullOrEmpty(commandInfo.ArgumentsAsString))
-                        GlobalEventContainer.Message($"Ваш рейтинг: {RandomHelper.Random.Next(1, 7000)}", commandInfo.Platform);
+                        EventContainer.Message($"Ваш рейтинг: {RandomHelper.Random.Next(1, 7000)}", commandInfo.Platform);
                     else
-                        GlobalEventContainer.Message($"Рейтинг {commandInfo.ArgumentsAsString}: {RandomHelper.Random.Next(1, 10000)}", commandInfo.Platform);
+                        EventContainer.Message($"Рейтинг {commandInfo.ArgumentsAsString}: {RandomHelper.Random.Next(1, 10000)}", commandInfo.Platform);
                 }, new[] { "Объект" }, CommandType.Interactive);
 
         public Dictionary<string, Command> CreateCommands()

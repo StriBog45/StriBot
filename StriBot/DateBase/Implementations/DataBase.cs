@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
-using StriBot.DateBase.Interfaces;
+using StriBot.Application.DataBase.Interfaces;
 
 namespace StriBot.DateBase.Implementations
 {

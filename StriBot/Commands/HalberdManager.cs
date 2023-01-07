@@ -1,15 +1,15 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using StriBot.Bots.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.Events;
+using StriBot.Application.Events.Models;
+using StriBot.Application.Localization.Extensions;
+using StriBot.Application.Localization.Implementations;
+using StriBot.Application.Platforms.Enums;
 using StriBot.Commands.CommonFunctions;
-using StriBot.Commands.Enums;
 using StriBot.Commands.Extensions;
 using StriBot.Commands.Models;
-using StriBot.DateBase.Interfaces;
-using StriBot.EventConainers;
-using StriBot.EventConainers.Models;
-using StriBot.Language.Extensions;
-using StriBot.Language.Implementations;
 
 namespace StriBot.Commands
 {
@@ -42,7 +42,7 @@ namespace StriBot.Commands
 
                 if (_halberdDictionary[user.Key].Time <= 0)
                 {
-                    GlobalEventContainer.Message($"{user.Key} может использовать команды!", user.Value.Platform);
+                    EventContainer.Message($"{user.Key} может использовать команды!", user.Value.Platform);
                     _halberdDictionary.TryRemove(user.Key, out _);
                 }
             }
@@ -70,7 +70,7 @@ namespace StriBot.Commands
                             else
                                 _halberdDictionary.TryAdd(_dataBase.CleanNickname(commandInfo.ArgumentsAsList[0]), (commandInfo.Platform, HalberdTimeoutTime));
 
-                            GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на {commandInfo.ArgumentsAsList[0]}! Цель обезаружена на {_minute.Incline(HalberdTimeoutTime)}!",
+                            EventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на {commandInfo.ArgumentsAsList[0]}! Цель обезаружена на {_minute.Incline(HalberdTimeoutTime)}!",
                                 commandInfo.Platform);
                         }
                         else
@@ -79,7 +79,7 @@ namespace StriBot.Commands
                     else
                     {
                         _halberdDictionary.TryAdd(_dataBase.CleanNickname(commandInfo.DisplayName), (commandInfo.Platform, HalberdTimeoutTime));
-                        GlobalEventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на себя и не может использовать команды в течении {_minute.Incline(HalberdTimeoutTime)}!", 
+                        EventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на себя и не может использовать команды в течении {_minute.Incline(HalberdTimeoutTime)}!", 
                             commandInfo.Platform);
                     }
                 }, new[] { "цель" }, CommandType.Interactive);
@@ -100,7 +100,7 @@ namespace StriBot.Commands
 
             if (!result)
             {
-                GlobalEventContainer.Message($"{commandInfo.DisplayName} не может использовать команды ещё {_minute.Incline(_halberdDictionary[clearName].Time)}!", commandInfo.Platform);
+                EventContainer.Message($"{commandInfo.DisplayName} не может использовать команды ещё {_minute.Incline(_halberdDictionary[clearName].Time)}!", commandInfo.Platform);
             }
 
             return result;
