@@ -168,6 +168,23 @@
     <ItemGroup>
         <Compile Include="Bot\Enums\Role.cs" />
         <Compile Include="Commands\Enums\CommandType.cs" />
+        <Compile Include="Commands\Enums\PriceList.cs" />
+        <Compile Include="Commands\Extensions\DictionaryExtensions.cs" />
+        <Compile Include="Commands\Handlers\BetsHandler.cs" />
+        <Compile Include="Commands\Handlers\BurgerHandler.cs" />
+        <Compile Include="Commands\Handlers\CurrencyBaseHandler.cs" />
+        <Compile Include="Commands\Handlers\DuelHandler.cs" />
+        <Compile Include="Commands\Handlers\HalberdHandler.cs" />
+        <Compile Include="Commands\Handlers\LinkHandler.cs" />
+        <Compile Include="Commands\Handlers\MMRHandler.cs" />
+        <Compile Include="Commands\Handlers\OrderHandler.cs" />
+        <Compile Include="Commands\Handlers\Progress\Models\BossList.cs" />
+        <Compile Include="Commands\Handlers\Progress\ProgressHandler.cs" />
+        <Compile Include="Commands\Handlers\Raffle\Models\RaffleParticipant.cs" />
+        <Compile Include="Commands\Handlers\Raffle\RaffleHandler.cs" />
+        <Compile Include="Commands\Handlers\RandomAnswerHandler.cs" />
+        <Compile Include="Commands\Handlers\RememberHandler.cs" />
+        <Compile Include="Commands\Models\Command.cs" />
         <Compile Include="DataBase\Interfaces\IDataBase.cs" />
         <Compile Include="Events\Enums\PlatformEventType.cs" />
         <Compile Include="Events\EventContainer.cs" />
@@ -175,14 +192,18 @@
         <Compile Include="Events\Models\PlatformEventInfo.cs" />
         <Compile Include="Events\Models\RewardInfo.cs" />
         <Compile Include="Extensions\RandomHelper.cs" />
+        <Compile Include="Localization\AnswerOptions.cs" />
         <Compile Include="Localization\Extensions\CasesExtension.cs" />
         <Compile Include="Localization\Extensions\StringExtension.cs" />
+        <Compile Include="Localization\Heroes.cs" />
         <Compile Include="Localization\Implementations\Currency.cs" />
         <Compile Include="Localization\Implementations\Minute.cs" />
         <Compile Include="Localization\Interfaces\ICases.cs" />
         <Compile Include="Localization\Models\Cases.cs" />
+        <Compile Include="Localization\ReadyPhrases.cs" />
         <Compile Include="Platforms\Enums\Platform.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Speaker\Interfaces\ISpeaker.cs" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Commands\Implementations" />

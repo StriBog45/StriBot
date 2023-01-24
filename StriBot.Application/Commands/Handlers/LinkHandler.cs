@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class LinkManager
+    public class LinkHandler
     {
-        public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>
+        public static Dictionary<string, Command> CreateCommands()
+            => new()
             {
                 #region Информационные
 

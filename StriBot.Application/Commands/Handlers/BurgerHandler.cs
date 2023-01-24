@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Extensions;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class BurgerManager
+    public class BurgerHandler
     {
         private static readonly int _maxBurgerSize = 3;
         private static readonly string[] ListStuffing =  {
@@ -27,7 +27,7 @@ namespace StriBot.Commands
             "тертым чесноком",
             "чесночным соусом",
             "чесноком кубиками",
-            "горчицой",
+            "горчицей",
             "кетчупом",
             "помидором",
             "варенной колбасой",

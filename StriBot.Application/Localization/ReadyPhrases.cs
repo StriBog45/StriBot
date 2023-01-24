@@ -2,7 +2,7 @@
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 
-namespace StriBot.Commands.CommonFunctions
+namespace StriBot.Application.Localization
 {
     public class ReadyMadePhrases
     {

@@ -1,6 +1,6 @@
 ﻿using StriBot.Application.Extensions;
 
-namespace StriBot.CustomData
+namespace StriBot.Application.Localization
 {
     public class AnswerOptions
     {

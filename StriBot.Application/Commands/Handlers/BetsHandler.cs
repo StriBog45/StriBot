@@ -2,17 +2,17 @@
 using System.Linq;
 using System.Text;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class BetsManager
+    public class BetsHandler
     {
         private readonly Currency _currency;
         private readonly IDataBase _dataBase;
@@ -21,11 +21,11 @@ namespace StriBot.Commands
         private string[] _bettingOptions;
         private int _betsTimer;
         private double _betsCoefficient;
-        private readonly Dictionary<string, (int Choice, int BetSize)> _usersBetted;
+        private readonly Dictionary<string, (int Choice, int BetSize)> _usersBid;
 
-        public BetsManager(Currency currency, IDataBase dataBase)
+        public BetsHandler(Currency currency, IDataBase dataBase)
         {
-            _usersBetted = new Dictionary<string, (int, int)>();
+            _usersBid = new Dictionary<string, (int, int)>();
             _currency = currency;
             _dataBase = dataBase;
         }
@@ -51,18 +51,18 @@ namespace StriBot.Commands
         {
             if (_betsProcessing)
             {
-                foreach (var bet in _usersBetted)
+                foreach (var bet in _usersBid)
                 {
                     if (bet.Value.Choice == winner)
                         _dataBase.AddMoney(bet.Key, (int)(bet.Value.BetSize * _betsCoefficient) + (bet.Value.BetSize * (-1)));
                     else
                         _dataBase.AddMoney(bet.Key, bet.Value.BetSize * (-1));
                 }
-                EventContainer.Message($"Победила ставка под номером {winner} - {_bettingOptions[winner]}! В ставках участвовало {_usersBetted.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
+                EventContainer.Message($"Победила ставка под номером {winner} - {_bettingOptions[winner]}! В ставках участвовало {_usersBid.Count} енотов! Вы можете проверить свой запас {_currency.GenitiveMultiple}", platforms);
 
-                var winners = _usersBetted.Where(x => x.Value.Choice == winner)
+                var winners = _usersBid.Where(x => x.Value.Choice == winner)
                     .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
-                var losers = _usersBetted.Where(x => x.Value.Choice != winner)
+                var losers = _usersBid.Where(x => x.Value.Choice != winner)
                     .Aggregate(new StringBuilder(), (current, next) => current.Append(current.Length == 0 ? string.Empty : ", ").Append($"{next.Key}:{next.Value.BetSize}")).ToString();
 
                 if (!string.IsNullOrEmpty(winners))
@@ -75,7 +75,7 @@ namespace StriBot.Commands
                 else
                     EventContainer.Message("Проигравших нет", platforms);
 
-                _usersBetted.Clear();
+                _usersBid.Clear();
                 _betsProcessing = false;
             }
         }
@@ -87,7 +87,7 @@ namespace StriBot.Commands
                 _bettingOptions[i] = options[i + 1];
             _betsProcessing = true;
             _betsTimer = 0;
-            _usersBetted.Clear();
+            _usersBid.Clear();
             _betsCoefficient = (options.Length * 0.5);
 
             EventContainer.Message($"Время ставок! Коэффициент {_betsCoefficient}. Для участия необходимо написать !ставка [номер ставки] [сколько ставите]", platforms);
@@ -114,9 +114,9 @@ namespace StriBot.Commands
                             EventContainer.Message($"{commandInfo.DisplayName} у тебя недостаточно {_currency.GenitiveMultiple} для такой ставки!", platforms);
                         else
                         {
-                            if (!_usersBetted.ContainsKey(commandInfo.DisplayName))
+                            if (!_usersBid.ContainsKey(commandInfo.DisplayName))
                             {
-                                _usersBetted.Add(commandInfo.DisplayName, (numberOfBets, betSize));
+                                _usersBid.Add(commandInfo.DisplayName, (numberOfBets, betSize));
                                 EventContainer.Message($"{commandInfo.DisplayName} успешно сделал ставку!", platforms);
                             }
                             else

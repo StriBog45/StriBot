@@ -337,25 +337,6 @@
     <Compile Include="Bots\ChatBot.cs" />
     <Compile Include="Bots\Handlers\RewardHandler.cs" />
     <Compile Include="Bots\TwitchApiClient.cs" />
-    <Compile Include="CollectionHelper.cs" />
-    <Compile Include="Commands\Models\Command.cs" />
-    <Compile Include="Commands\BetsManager.cs" />
-    <Compile Include="Commands\CommonFunctions\ReadyMadePhrases.cs" />
-    <Compile Include="Commands\CurrencyBaseManager.cs" />
-    <Compile Include="Commands\Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Commands\DuelManager.cs" />
-    <Compile Include="Commands\HalberdManager.cs" />
-    <Compile Include="Commands\LinkManager.cs" />
-    <Compile Include="Commands\MMRManager.cs" />
-    <Compile Include="Commands\OrderManager.cs" />
-    <Compile Include="Commands\ProgressManager.cs" />
-    <Compile Include="Commands\Raffle\Models\RaffleParticipant.cs" />
-    <Compile Include="Commands\Raffle\RaffleManager.cs" />
-    <Compile Include="Commands\RandomAnswerManager.cs" />
-    <Compile Include="Commands\RememberManager.cs" />
-    <Compile Include="Commands\BurgerManager.cs" />
-    <Compile Include="CustomData\AnswerOptions.cs" />
-    <Compile Include="CustomData\Heroes.cs" />
     <Compile Include="DateBase\Implementations\DataBase.cs" />
     <Compile Include="DryIoc\GlobalContainer.cs" />
     <Compile Include="DryIoc\Implementations\BotHandlersFiller.cs" />
@@ -374,7 +355,6 @@
     <Compile Include="Form1.designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="PriceList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reporter.cs" />
@@ -418,14 +398,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bots\Enums" />
-    <Folder Include="Commands\Enums" />
-    <Folder Include="DateBase\Interfaces" />
     <Folder Include="EventContainers\Enums" />
     <Folder Include="EventContainers\Models" />
-    <Folder Include="Language\Extensions" />
-    <Folder Include="Language\Implementations" />
-    <Folder Include="Language\Interfaces" />
-    <Folder Include="Language\Models" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StriBot.Application\StriBot.Application.csproj">

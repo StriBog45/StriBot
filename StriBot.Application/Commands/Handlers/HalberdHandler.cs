@@ -1,19 +1,19 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
+using StriBot.Application.Localization;
 using StriBot.Application.Localization.Extensions;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
-using StriBot.Commands.CommonFunctions;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class HalberdManager
+    public class HalberdHandler
     {
         private readonly ConcurrentDictionary<string, (Platform Platform, int Time)> _halberdDictionary;
         private readonly ReadyMadePhrases _readyMadePhrases;
@@ -23,7 +23,7 @@ namespace StriBot.Commands
 
         private const int HalberdTimeoutTime = 5;
 
-        public HalberdManager(ReadyMadePhrases readyMadePhrases, Currency currency, Minute minute, IDataBase dataBase)
+        public HalberdHandler(ReadyMadePhrases readyMadePhrases, Currency currency, Minute minute, IDataBase dataBase)
         {
             _halberdDictionary = new ConcurrentDictionary<string, (Platform Platform, int Time)>();
             _readyMadePhrases = readyMadePhrases;
@@ -88,7 +88,7 @@ namespace StriBot.Commands
         }
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>()
+            => new()
             {
                 CreateHalberdCommand()
             };

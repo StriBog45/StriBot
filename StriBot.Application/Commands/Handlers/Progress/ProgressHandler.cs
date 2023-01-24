@@ -1,51 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 using StriBot.Application.Bot.Enums;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Handlers.Progress.Models;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers.Progress
 {
-    public class ProgressManager
+    public class ProgressHandler
     {
-        public int Deaths { get; set; } = 0;
+        public int Deaths { get; set; }
 
         private Action _bossUpdate;
         private Action _deathUpdate;
         private const string Catalog = "Отчеты";
         private const string BossesFileName = "Боссы";
 
-        private readonly CollectionHelper _bosses;
+        private readonly BossList _bosses;
 
-        public ProgressManager()
+        public ProgressHandler()
         {
-            _bosses = new CollectionHelper();
+            _bosses = new BossList();
             LoadBosses();
         }
 
         private void LoadBosses()
         {
             var path = GetPath(BossesFileName);
-            try
-            {
-                using (var streamReader = new StreamReader(path))
-                {
-                    var lines = streamReader.ReadToEnd().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    foreach (var line in lines)
-                    {
-                        _bosses.Add(line);
-                    }
-                }
-            }
-            catch (Exception exception)
+            using (var streamReader = new StreamReader(path))
             {
-                MessageBox.Show($"{exception.StackTrace}{Environment.NewLine}{exception.Message}", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var lines = streamReader.ReadToEnd()
+                    .Split(new char[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var line in lines)
+                {
+                    _bosses.Add(line);
+                }
             }
         }
 

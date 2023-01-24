@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using StriBot.Application.Bot.Enums;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Handlers.Raffle.Models;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Extensions;
 using StriBot.Application.Platforms.Enums;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
-using StriBot.Commands.Raffle.Models;
 
-namespace StriBot.Commands.Raffle
+namespace StriBot.Application.Commands.Handlers.Raffle
 {
-    public class RaffleManager
+    public class RaffleHandler
     {
         private readonly IDataBase _dataBase;
         private readonly List<RaffleParticipant> _participantsList;
@@ -23,7 +23,7 @@ namespace StriBot.Commands.Raffle
 
         private bool IsProgress { get; set; }
 
-        public RaffleManager(IDataBase dataBase)
+        public RaffleHandler(IDataBase dataBase)
         {
             _dataBase = dataBase;
             _participantsList = new List<RaffleParticipant>();

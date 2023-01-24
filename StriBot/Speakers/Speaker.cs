@@ -1,8 +1,9 @@
 ﻿using System.Speech.Synthesis;
+using StriBot.Application.Speaker.Interfaces;
 
 namespace StriBot.Speakers
 {
-    public class Speaker
+    public class Speaker : ISpeaker
     {
         private readonly SpeechSynthesizer _speechSynthesizer;
 

@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
 using StriBot.Application.Bot.Enums;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Platforms.Enums;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class RememberManager
+    public class RememberHandler
     {
         public string TextReminder { get; set; } = string.Empty;
         private Platform _platform;
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>
+            => new()
             {
                 CreateRemindCommand()
             };

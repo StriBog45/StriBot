@@ -1,5 +1,5 @@
 ﻿using DryIoc;
-using StriBot.Commands.CommonFunctions;
+using StriBot.Application.Localization;
 using StriBot.DryIoc.Interfaces;
 
 namespace StriBot.DryIoc.Implementations

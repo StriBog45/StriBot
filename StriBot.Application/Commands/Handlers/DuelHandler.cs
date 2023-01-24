@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Extensions;
+using StriBot.Application.Localization;
 using StriBot.Application.Localization.Extensions;
 using StriBot.Application.Localization.Implementations;
-using StriBot.Commands.CommonFunctions;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class DuelManager
+    public class DuelHandler
     {
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
@@ -24,7 +24,7 @@ namespace StriBot.Commands
         private CommandInfo _duelMember;
         private const int TimeoutTime = 120;
 
-        public DuelManager(Currency currency, ReadyMadePhrases readyMadePhrases, IDataBase dataBase)
+        public DuelHandler(Currency currency, ReadyMadePhrases readyMadePhrases, IDataBase dataBase)
         {
             _currency = currency;
             _readyMadePhrases = readyMadePhrases;

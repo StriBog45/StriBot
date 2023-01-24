@@ -2,6 +2,12 @@
 using System.Threading.Tasks;
 using DryIoc;
 using StriBot.Application.Bot.Enums;
+using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Handlers;
+using StriBot.Application.Commands.Handlers.Progress;
+using StriBot.Application.Commands.Handlers.Raffle;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Enums;
@@ -9,13 +15,9 @@ using StriBot.Application.Events.Models;
 using StriBot.Application.Localization.Extensions;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
+using StriBot.Application.Speaker.Interfaces;
 using StriBot.Bots.Handlers;
-using StriBot.Commands;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
-using StriBot.Commands.Raffle;
 using StriBot.DryIoc;
-using StriBot.Speakers;
 
 namespace StriBot.Bots
 {
@@ -23,37 +25,39 @@ namespace StriBot.Bots
     {
         public Dictionary<string, Command> Commands { get; set; }
         private int _timer;
-        private readonly CurrencyBaseManager _currencyBaseManager;
-        private readonly HalberdManager _halberdManager;
-        private readonly DuelManager _duelManager;
-        private readonly Speaker _speaker;
-        private readonly BetsManager _betsManager;
+        private readonly CurrencyBaseHandler _currencyBaseHandler;
+        private readonly HalberdHandler _halberdHandler;
+        private readonly DuelHandler _duelHandler;
+        private readonly ISpeaker _speaker;
+        private readonly BetsHandler _betsHandler;
         private readonly TwitchBot _twitchBot;
-        private readonly RememberManager _rememberManager;
+        private readonly RememberHandler _rememberHandler;
         private readonly Currency _currency;
-        private readonly RaffleManager _raffleManager;
+        private readonly RaffleHandler _raffleHandler;
         private readonly RewardHandler _rewardHandler;
         private readonly IDataBase _dataBase;
 
-        public ChatBot(Speaker speaker, TwitchBot twitchBot, DuelManager duelManager, HalberdManager halberdManager,
-            CurrencyBaseManager currencyBaseManager, BetsManager betsManager, RememberManager rememberManager,
-            Currency currency, RaffleManager raffleManager, RewardHandler rewardHandler, IDataBase dataBase)
+        public ChatBot(ISpeaker speaker, TwitchBot twitchBot, DuelHandler duelHandler, HalberdHandler halberdHandler,
+            CurrencyBaseHandler currencyBaseHandler, BetsHandler betsHandler, RememberHandler rememberHandler,
+            Currency currency, RaffleHandler raffleHandler, RewardHandler rewardHandler, IDataBase dataBase)
         {
             _speaker = speaker;
             _twitchBot = twitchBot;
-            _halberdManager = halberdManager;
-            _currencyBaseManager = currencyBaseManager;
-            _duelManager = duelManager;
-            _betsManager = betsManager;
-            _rememberManager = rememberManager;
+            _halberdHandler = halberdHandler;
+            _currencyBaseHandler = currencyBaseHandler;
+            _duelHandler = duelHandler;
+            _betsHandler = betsHandler;
+            _rememberHandler = rememberHandler;
             _currency = currency;
-            _raffleManager = raffleManager;
+            _raffleHandler = raffleHandler;
             _rewardHandler = rewardHandler;
             _dataBase = dataBase;
 
             EventContainer.CommandReceived += OnChatCommandReceived;
             EventContainer.PlatformEventReceived += OnPlatformEventReceived;
             EventContainer.RewardEventReceived += OnRewardEventReceived;
+
+            CreateCommands();
         }
 
         private async Task OnRewardEventReceived(RewardInfo rewardInfo)
@@ -77,7 +81,7 @@ namespace StriBot.Bots
                     Subsctiption(platformEventInfo);
                     break;
                 case PlatformEventType.Message:
-                    _currencyBaseManager.ReceivedMessage(platformEventInfo.UserName);
+                    _currencyBaseHandler.ReceivedMessage(platformEventInfo.UserName);
                     break;
             }
         }
@@ -109,7 +113,7 @@ namespace StriBot.Bots
         {
             _timer++;
 
-            _betsManager.Tick(new Platform[] { Platform.Twitch });
+            _betsHandler.Tick(new Platform[] { Platform.Twitch });
 
             // if (_timer == 40)
             //     _currencyBaseManager.DistributionMoney(1, 5, Platform.Twitch);
@@ -122,9 +126,9 @@ namespace StriBot.Bots
             if (_timer == 60)
                 SendMessage("Список команд https://vk.cc/a6Giqf");
 
-            _rememberManager.Tick(_timer);
-            _duelManager.Tick();
-            _halberdManager.Tick();
+            _rememberHandler.Tick(_timer);
+            _duelHandler.Tick();
+            _halberdHandler.Tick();
 
             if (_timer == 60)
                 _timer = 0;
@@ -162,19 +166,19 @@ namespace StriBot.Bots
                 _speaker.Say("Бот переподключился");
         }
 
-        public void CreateCommands()
+        private void CreateCommands()
         {
             var container = GlobalContainer.Default;
-            var managerMmr = container.Resolve<MMRManager>();
-            var orderManager = container.Resolve<OrderManager>();
-            var linkManager = container.Resolve<LinkManager>();
-            var randomAnswerManager = container.Resolve<RandomAnswerManager>();
-            var burgerManager = container.Resolve<BurgerManager>();
-            var progressManager = container.Resolve<ProgressManager>();
+            var managerMmr = container.Resolve<MMRHandler>();
+            var orderManager = container.Resolve<OrderHandler>();
+            var linkManager = container.Resolve<LinkHandler>();
+            var randomAnswerManager = container.Resolve<RandomAnswerHandler>();
+            var burgerManager = container.Resolve<BurgerHandler>();
+            var progressManager = container.Resolve<ProgressHandler>();
 
             Commands = new Dictionary<string, Command>()
             {
-                linkManager.CreateCommands(),
+                LinkHandler.CreateCommands(),
                 managerMmr.CreateCommands(),
                 randomAnswerManager.CreateCommands(),
                 burgerManager.CreateCommands(),
@@ -184,13 +188,13 @@ namespace StriBot.Bots
                 //delegate (CommandInfo e) {
                 //    SendMessage( $"Трансляция длится: { GetUptime()}"); }, CommandType.Info)},
 
-                _rememberManager.CreateCommands(),
+                _rememberHandler.CreateCommands(),
                 orderManager.CreateCommands(),
-                _currencyBaseManager.CreateCommands(),
-                _duelManager.CreateCommands(),
-                _halberdManager.CreateCommands(),
-                _betsManager.CreateCommands(),
-                _raffleManager.CreateCommands()
+                _currencyBaseHandler.CreateCommands(),
+                _duelHandler.CreateCommands(),
+                _halberdHandler.CreateCommands(),
+                _betsHandler.CreateCommands(),
+                _raffleHandler.CreateCommands()
             };
         }
 
@@ -199,13 +203,13 @@ namespace StriBot.Bots
             if (Commands.ContainsKey(commandInfo.CommandText))
             {
                 if (IsAccessAllowed(Commands[commandInfo.CommandText].Requires, commandInfo)
-                    && _halberdManager.CanSendMessage(commandInfo))
+                    && _halberdHandler.CanSendMessage(commandInfo))
                     Commands[commandInfo.CommandText].Action(commandInfo);
             }
             else if (Commands.ContainsKey(commandInfo.CommandText.ToLower()))
             {
                 if (IsAccessAllowed(Commands[commandInfo.CommandText.ToLower()].Requires, commandInfo)
-                    && _halberdManager.CanSendMessage(commandInfo))
+                    && _halberdHandler.CanSendMessage(commandInfo))
                     Commands[commandInfo.CommandText.ToLower()].Action(commandInfo);
             }
         }

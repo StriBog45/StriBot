@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using StriBot.Application.Bot.Enums;
 using StriBot.Application.Commands.Enums;
-using StriBot.Commands.Models;
+using StriBot.Application.Commands.Models;
 
 namespace StriBot
 {

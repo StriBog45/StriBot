@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
+using StriBot.Application.Localization;
 using StriBot.Application.Localization.Extensions;
 using StriBot.Application.Localization.Implementations;
-using StriBot.Commands.CommonFunctions;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class OrderManager
+    public class OrderHandler
     {
         private readonly Currency _currency;
         private readonly ReadyMadePhrases _readyMadePhrases;
@@ -21,7 +21,7 @@ namespace StriBot.Commands
         private readonly List<(string, string, int)> _listOrders;
         private Action<List<(string, string, int)>> _updateOrders;
 
-        public OrderManager(Currency currency, ReadyMadePhrases readyMadePhrases, IDataBase dataBase)
+        public OrderHandler(Currency currency, ReadyMadePhrases readyMadePhrases, IDataBase dataBase)
         {
             _currency = currency;
             _readyMadePhrases = readyMadePhrases;

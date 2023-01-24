@@ -1,4 +1,5 @@
 ﻿using DryIoc;
+using StriBot.Application.Speaker.Interfaces;
 using StriBot.DryIoc.Interfaces;
 using StriBot.Speakers;
 
@@ -8,7 +9,7 @@ namespace StriBot.DryIoc.Implementations
     {
         public void Fill(IContainer container)
         {
-            container.Register<Speaker>(Reuse.Singleton);
+            container.Register<ISpeaker, Speaker>(Reuse.Singleton);
         }
     }
 }

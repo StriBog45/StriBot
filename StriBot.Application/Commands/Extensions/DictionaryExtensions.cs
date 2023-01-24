@@ -1,7 +1,7 @@
-﻿using StriBot.Commands.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using StriBot.Application.Commands.Models;
 
-namespace StriBot.Commands.Extensions
+namespace StriBot.Application.Commands.Extensions
 {
     public static class DictionaryExtensions
     {

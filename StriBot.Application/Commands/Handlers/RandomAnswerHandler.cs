@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Extensions;
+using StriBot.Application.Localization;
 using StriBot.Application.Platforms.Enums;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
-using StriBot.CustomData;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class RandomAnswerManager
+    public class RandomAnswerHandler
     {
         private readonly AnswerOptions _customArray;
 
-        public RandomAnswerManager (AnswerOptions customArray)
+        public RandomAnswerHandler (AnswerOptions customArray)
         {
             _customArray = customArray;
         }
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>()
+            => new()
             {
                 CreateSnowCommand(),
                 CreateRollCommand(),

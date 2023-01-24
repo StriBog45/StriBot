@@ -1,4 +1,4 @@
-﻿namespace StriBot.Commands.Raffle.Models
+﻿namespace StriBot.Application.Commands.Handlers.Raffle.Models
 {
     public class RaffleParticipant
     {

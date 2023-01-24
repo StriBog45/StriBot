@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
 using StriBot.Application.Bot.Enums;
 using StriBot.Application.Commands.Enums;
+using StriBot.Application.Commands.Extensions;
+using StriBot.Application.Commands.Models;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Extensions;
 using StriBot.Application.Platforms.Enums;
-using StriBot.Commands.Extensions;
-using StriBot.Commands.Models;
 
-namespace StriBot.Commands
+namespace StriBot.Application.Commands.Handlers
 {
-    public class MMRManager
+    public class MMRHandler
     {
         public int MMR { get; set; } = 4400;
-        public int Wins { get; set; } = 0;
-        public int Losses { get; set; } = 0;
-        private int _MMRChange = 30;
-        private string _medallion = "Властелин 3";
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+
+        private const int MMRChange = 30;
+        private const string Medallion = "Властелин 3";
 
         private Command AddWin()
         {
@@ -24,7 +25,7 @@ namespace StriBot.Commands
                 delegate (CommandInfo commandInfo)
                 {
                     Wins++;
-                    MMR += _MMRChange;
+                    MMR += MMRChange;
                     EventContainer.Message($"Побед: {Wins}, Поражений: {Losses}", commandInfo.Platform);
                 }, CommandType.Interactive);
 
@@ -40,7 +41,7 @@ namespace StriBot.Commands
                 delegate (CommandInfo commandInfo)
                 {
                     Losses++;
-                    MMR -= _MMRChange;
+                    MMR -= MMRChange;
                     SendCurrentAccount(commandInfo.Platform);
                 }, CommandType.Interactive);
 
@@ -58,7 +59,7 @@ namespace StriBot.Commands
             => new Command("mmr", "Узнать рейтинг стримера в Dota 2",
                 delegate (CommandInfo commandInfo)
                 {
-                    EventContainer.Message($"Рейтинг: {MMR} Звание: {_medallion}", commandInfo.Platform);
+                    EventContainer.Message($"Рейтинг: {MMR} Звание: {Medallion}", commandInfo.Platform);
                 }, CommandType.Info);
 
         private Command CheckMMR()
@@ -72,7 +73,7 @@ namespace StriBot.Commands
                 }, new[] { "Объект" }, CommandType.Interactive);
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>()
+            => new()
             {
                 CurrentMMR(),
                 CurrentAccount(),

@@ -1,4 +1,4 @@
-﻿namespace StriBot
+﻿namespace StriBot.Application.Commands.Enums
 {
     public static class PriceList
     {

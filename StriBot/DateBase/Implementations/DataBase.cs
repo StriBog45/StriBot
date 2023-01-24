@@ -54,7 +54,7 @@ namespace StriBot.DateBase.Implementations
             var clearName = CleanNickname(nickname);
 
             var dTable = new DataTable();
-            using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
+            using (var connection = (SQLiteConnection)factory.CreateConnection())
             {
                 connection.ConnectionString = basePath;
                 connection.Open();
@@ -89,7 +89,7 @@ namespace StriBot.DateBase.Implementations
             var clearName = CleanNickname(nickname);
 
             var dTable = new DataTable();
-            using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
+            using (var connection = (SQLiteConnection)factory.CreateConnection())
             {
                 connection.ConnectionString = basePath;
                 connection.Open();
@@ -119,7 +119,7 @@ namespace StriBot.DateBase.Implementations
             var clearName = CleanNickname(nickname);
 
             var dTable = new DataTable();
-            using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
+            using (var connection = (SQLiteConnection)factory.CreateConnection())
             {
                 connection.ConnectionString = basePath;
                 connection.Open();
@@ -131,7 +131,7 @@ namespace StriBot.DateBase.Implementations
 
                 try // чтение
                 {
-                    var sqlQuery = string.Format("SELECT nick, money, steam_trade_link FROM Money WHERE nick = '{0}'", clearName);
+                    var sqlQuery = $"SELECT nick, money, steam_trade_link FROM Money WHERE nick = '{clearName}'";
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
                     adapter.Fill(dTable);
 

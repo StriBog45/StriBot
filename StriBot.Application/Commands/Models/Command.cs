@@ -3,7 +3,7 @@ using StriBot.Application.Bot.Enums;
 using StriBot.Application.Commands.Enums;
 using StriBot.Application.Events.Models;
 
-namespace StriBot.Commands.Models
+namespace StriBot.Application.Commands.Models
 {
     public class Command
     {
