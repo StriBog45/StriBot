@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot", "StriBot\StriBot.csproj", "{A2E7E865-E9A1-49C5-99DE-4C5471E2171D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot.Application3", "StriBot.Application3\StriBot.Application3.csproj", "{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot.Application", "StriBot.Application3\StriBot.Application.csproj", "{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

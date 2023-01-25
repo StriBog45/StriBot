@@ -397,9 +397,9 @@
     <Content Include="Resources\robot.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StriBot.Application3\StriBot.Application3.csproj">
+    <ProjectReference Include="..\StriBot.Application3\StriBot.Application.csproj">
       <Project>{46e5be23-8f72-4d2f-b0fa-224c60c89cd5}</Project>
-      <Name>StriBot.Application3</Name>
+      <Name>StriBot.Application</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
