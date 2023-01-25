@@ -1,9 +1,9 @@
 ﻿using ProtoBuf;
 
-namespace StriBot.ApplicationSettings.Models
+namespace StriBot.Application.FileManager.Models
 {
     [ProtoContract]
-    public class StoredSettings
+    public class CurrencyFile
     {
         [ProtoMember(1)]
         public string CurrencyName { get; set; }

@@ -1,14 +1,14 @@
-﻿using ProtoBuf;
-using System.IO;
-using StriBot.ApplicationSettings.Models;
+﻿using System.IO;
+using ProtoBuf;
+using StriBot.Application.FileManager.Models;
 
-namespace StriBot.ApplicationSettings
+namespace StriBot.Application.FileManager
 {
     public class SettingsFileManager
     {
         private const string FileName = "UserSettings";
         private readonly string _fileNameWithExtension = $"{FileName}.bin";
-        private StoredSettings _storedSettings;
+        private CurrencyFile _currencyFile;
 
         public SettingsFileManager()
         {
@@ -21,12 +21,12 @@ namespace StriBot.ApplicationSettings
             {
                 using (var file = File.OpenRead(_fileNameWithExtension))
                 {
-                    _storedSettings = Serializer.Deserialize<StoredSettings>(file);
+                    _currencyFile = Serializer.Deserialize<CurrencyFile>(file);
                 }
             }
             else
             {
-                _storedSettings = new StoredSettings();
+                _currencyFile = new CurrencyFile();
             }
         }
 
@@ -34,14 +34,14 @@ namespace StriBot.ApplicationSettings
         {
             using (var file = File.Create(_fileNameWithExtension))
             {
-                Serializer.Serialize(file, _storedSettings);
+                Serializer.Serialize(file, _currencyFile);
             }
         }
 
         public string CurrencyName
-            => _storedSettings.CurrencyName;
+            => _currencyFile.CurrencyName;
 
         public void SetCurrencyName(string name)
-            => _storedSettings.CurrencyName = name;
+            => _currencyFile.CurrencyName = name;
     }
 }

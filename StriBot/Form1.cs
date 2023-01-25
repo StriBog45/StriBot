@@ -9,10 +9,10 @@ using StriBot.Application.Commands.Handlers.Progress;
 using StriBot.Application.Commands.Handlers.Raffle;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
+using StriBot.Application.FileManager;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Localization.Models;
 using StriBot.Application.Platforms.Enums;
-using StriBot.ApplicationSettings;
 using StriBot.Bots;
 using StriBot.DryIoc;
 

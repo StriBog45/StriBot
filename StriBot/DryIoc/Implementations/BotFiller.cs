@@ -1,7 +1,7 @@
 ﻿using DryIoc;
 using StriBot.Application.Bot;
 using StriBot.Application.Bot.Interfaces;
-using StriBot.ApplicationSettings;
+using StriBot.Application.FileManager;
 using StriBot.Bots;
 using StriBot.DryIoc.Interfaces;
 
