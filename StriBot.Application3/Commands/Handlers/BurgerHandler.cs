@@ -77,7 +77,7 @@ namespace StriBot.Application.Commands.Handlers
         }
 
         public Dictionary<string, Command> CreateCommands()
-            => new()
+            => new Dictionary<string, Command>()
             {
                 new Command("Бутерброд","Выдает бутерброд тебе или объекту",
                 delegate (CommandInfo commandInfo)

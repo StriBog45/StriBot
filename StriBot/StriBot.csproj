@@ -397,14 +397,9 @@
     <Content Include="Resources\robot.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Bots\Enums" />
-    <Folder Include="EventContainers\Enums" />
-    <Folder Include="EventContainers\Models" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\StriBot.Application\StriBot.Application.csproj">
-      <Project>{d2ca1fb4-d2e6-4001-a59d-ce4b1c399d32}</Project>
-      <Name>StriBot.Application</Name>
+    <ProjectReference Include="..\StriBot.Application3\StriBot.Application3.csproj">
+      <Project>{46e5be23-8f72-4d2f-b0fa-224c60c89cd5}</Project>
+      <Name>StriBot.Application3</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

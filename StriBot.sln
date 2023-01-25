@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.87
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot", "StriBot\StriBot.csproj", "{A2E7E865-E9A1-49C5-99DE-4C5471E2171D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot.Application", "StriBot.Application\StriBot.Application.csproj", "{D2CA1FB4-D2E6-4001-A59D-CE4B1C399D32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot.Application3", "StriBot.Application3\StriBot.Application3.csproj", "{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{A2E7E865-E9A1-49C5-99DE-4C5471E2171D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2E7E865-E9A1-49C5-99DE-4C5471E2171D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2E7E865-E9A1-49C5-99DE-4C5471E2171D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2CA1FB4-D2E6-4001-A59D-CE4B1C399D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2CA1FB4-D2E6-4001-A59D-CE4B1C399D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2CA1FB4-D2E6-4001-A59D-CE4B1C399D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2CA1FB4-D2E6-4001-A59D-CE4B1C399D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
