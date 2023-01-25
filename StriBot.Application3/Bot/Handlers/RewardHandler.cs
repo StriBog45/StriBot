@@ -2,7 +2,7 @@
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events.Models;
 
-namespace StriBot.Bots.Handlers
+namespace StriBot.Application.Bot.Handlers
 {
     public class RewardHandler
     {

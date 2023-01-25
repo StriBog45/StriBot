@@ -228,9 +228,6 @@ namespace StriBot
             EventContainer.Message("Напоминание удалено", Platform.Twitch);
         }
 
-        private void buttonReconnect_Click(object sender, EventArgs e)
-            => _chatBot.Reconnect(new[] { Platform.Twitch });
-
         private void buttonSmileMode_Click(object sender, EventArgs e)
         {
             //chatBot.SmileMode();

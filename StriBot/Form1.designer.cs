@@ -40,7 +40,6 @@
             this.buttonFollowMode = new System.Windows.Forms.Button();
             this.SubMode = new System.Windows.Forms.Button();
             this.buttonSmileMode = new System.Windows.Forms.Button();
-            this.buttonReconnect = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.buttonBetsDota2 = new System.Windows.Forms.Button();
             this.numericUpDownWinnerSelcter = new System.Windows.Forms.NumericUpDown();
@@ -127,11 +126,11 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.labelRaffleWinner = new System.Windows.Forms.Label();
             this.labelRaffleLink = new System.Windows.Forms.LinkLabel();
+            this.buttonRaffleStart = new System.Windows.Forms.Button();
             this.buttonGiveaway = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.textBoxRaffle = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.buttonRaffleStart = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -217,7 +216,6 @@
             this.tabPage1.Controls.Add(this.buttonFollowMode);
             this.tabPage1.Controls.Add(this.SubMode);
             this.tabPage1.Controls.Add(this.buttonSmileMode);
-            this.tabPage1.Controls.Add(this.buttonReconnect);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.buttonReminderClear);
             this.tabPage1.Controls.Add(this.panel3);
@@ -271,16 +269,6 @@
             this.buttonSmileMode.Text = "SmileMode";
             this.buttonSmileMode.UseVisualStyleBackColor = true;
             this.buttonSmileMode.Click += new System.EventHandler(this.buttonSmileMode_Click);
-            // 
-            // buttonReconnect
-            // 
-            this.buttonReconnect.Location = new System.Drawing.Point(9, 436);
-            this.buttonReconnect.Name = "buttonReconnect";
-            this.buttonReconnect.Size = new System.Drawing.Size(115, 23);
-            this.buttonReconnect.TabIndex = 13;
-            this.buttonReconnect.Text = "Переподключение";
-            this.buttonReconnect.UseVisualStyleBackColor = true;
-            this.buttonReconnect.Click += new System.EventHandler(this.buttonReconnect_Click);
             // 
             // groupBox4
             // 
@@ -1140,6 +1128,16 @@
             this.labelRaffleLink.Text = "Ссылка";
             this.labelRaffleLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.labelRaffleLink_LinkClicked);
             // 
+            // buttonRaffleStart
+            // 
+            this.buttonRaffleStart.Location = new System.Drawing.Point(8, 39);
+            this.buttonRaffleStart.Name = "buttonRaffleStart";
+            this.buttonRaffleStart.Size = new System.Drawing.Size(121, 23);
+            this.buttonRaffleStart.TabIndex = 2;
+            this.buttonRaffleStart.Text = "Начать розыгрыш";
+            this.buttonRaffleStart.UseVisualStyleBackColor = true;
+            this.buttonRaffleStart.Click += new System.EventHandler(this.buttonRaffleStart_Click);
+            // 
             // buttonGiveaway
             // 
             this.buttonGiveaway.Location = new System.Drawing.Point(135, 39);
@@ -1171,16 +1169,6 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // buttonRaffleStart
-            // 
-            this.buttonRaffleStart.Location = new System.Drawing.Point(8, 39);
-            this.buttonRaffleStart.Name = "buttonRaffleStart";
-            this.buttonRaffleStart.Size = new System.Drawing.Size(121, 23);
-            this.buttonRaffleStart.TabIndex = 2;
-            this.buttonRaffleStart.Text = "Начать розыгрыш";
-            this.buttonRaffleStart.UseVisualStyleBackColor = true;
-            this.buttonRaffleStart.Click += new System.EventHandler(this.buttonRaffleStart_Click);
             // 
             // Form1
             // 
@@ -1282,7 +1270,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.Button buttonReconnect;
         private System.Windows.Forms.Button buttonSmileMode;
         private System.Windows.Forms.Button buttonFollowMode;
         private System.Windows.Forms.Button SubMode;

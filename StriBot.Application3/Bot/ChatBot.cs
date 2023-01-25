@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DryIoc;
 using StriBot.Application.Bot.Enums;
+using StriBot.Application.Bot.Handlers;
 using StriBot.Application.Commands.Enums;
 using StriBot.Application.Commands.Extensions;
 using StriBot.Application.Commands.Handlers;
@@ -16,14 +16,13 @@ using StriBot.Application.Localization.Extensions;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Speaker.Interfaces;
-using StriBot.Bots.Handlers;
-using StriBot.DryIoc;
 
 namespace StriBot.Bots
 {
     public class ChatBot
     {
-        public Dictionary<string, Command> Commands { get; set; }
+        public Dictionary<string, Command> Commands { get; }
+
         private int _timer;
         private readonly CurrencyBaseHandler _currencyBaseHandler;
         private readonly HalberdHandler _halberdHandler;
@@ -33,13 +32,26 @@ namespace StriBot.Bots
         private readonly TwitchBot _twitchBot;
         private readonly RememberHandler _rememberHandler;
         private readonly Currency _currency;
-        private readonly RaffleHandler _raffleHandler;
         private readonly RewardHandler _rewardHandler;
         private readonly IDataBase _dataBase;
 
-        public ChatBot(ISpeaker speaker, TwitchBot twitchBot, DuelHandler duelHandler, HalberdHandler halberdHandler,
-            CurrencyBaseHandler currencyBaseHandler, BetsHandler betsHandler, RememberHandler rememberHandler,
-            Currency currency, RaffleHandler raffleHandler, RewardHandler rewardHandler, IDataBase dataBase)
+        public ChatBot(ISpeaker speaker, 
+            TwitchBot twitchBot, 
+            DuelHandler duelHandler, 
+            HalberdHandler halberdHandler,
+            CurrencyBaseHandler currencyBaseHandler,
+            BetsHandler betsHandler, 
+            RememberHandler rememberHandler,
+            Currency currency, 
+            RaffleHandler raffleHandler, 
+            RewardHandler rewardHandler, 
+            IDataBase dataBase,
+            MMRHandler mmrHandler,
+            LinkHandler linkHandler,
+            BurgerHandler burgerHandler,
+            RandomAnswerHandler randomAnswerHandler,
+            OrderHandler orderHandler,
+            ProgressHandler progressHandler)
         {
             _speaker = speaker;
             _twitchBot = twitchBot;
@@ -49,7 +61,6 @@ namespace StriBot.Bots
             _betsHandler = betsHandler;
             _rememberHandler = rememberHandler;
             _currency = currency;
-            _raffleHandler = raffleHandler;
             _rewardHandler = rewardHandler;
             _dataBase = dataBase;
 
@@ -57,7 +68,21 @@ namespace StriBot.Bots
             EventContainer.PlatformEventReceived += OnPlatformEventReceived;
             EventContainer.RewardEventReceived += OnRewardEventReceived;
 
-            CreateCommands();
+            Commands = new Dictionary<string, Command>
+            {
+                linkHandler.CreateCommands(),
+                mmrHandler.CreateCommands(),
+                randomAnswerHandler.CreateCommands(),
+                burgerHandler.CreateCommands(),
+                progressHandler.CreateCommands(),
+                _rememberHandler.CreateCommands(),
+                orderHandler.CreateCommands(),
+                _currencyBaseHandler.CreateCommands(),
+                _duelHandler.CreateCommands(),
+                _halberdHandler.CreateCommands(),
+                _betsHandler.CreateCommands(),
+                raffleHandler.CreateCommands()
+            };
         }
 
         private async Task OnRewardEventReceived(RewardInfo rewardInfo)
@@ -164,38 +189,6 @@ namespace StriBot.Bots
 
             if (_twitchBot.IsConnected())
                 _speaker.Say("Бот переподключился");
-        }
-
-        private void CreateCommands()
-        {
-            var container = GlobalContainer.Default;
-            var managerMmr = container.Resolve<MMRHandler>();
-            var orderManager = container.Resolve<OrderHandler>();
-            var linkManager = container.Resolve<LinkHandler>();
-            var randomAnswerManager = container.Resolve<RandomAnswerHandler>();
-            var burgerManager = container.Resolve<BurgerHandler>();
-            var progressManager = container.Resolve<ProgressHandler>();
-
-            Commands = new Dictionary<string, Command>()
-            {
-                LinkHandler.CreateCommands(),
-                managerMmr.CreateCommands(),
-                randomAnswerManager.CreateCommands(),
-                burgerManager.CreateCommands(),
-                progressManager.CreateCommands(),
-#warning сделать команду uptime
-                //{ "uptime", new Command("Uptime","Длительность текущей трансляции",
-                //delegate (CommandInfo e) {
-                //    SendMessage( $"Трансляция длится: { GetUptime()}"); }, CommandType.Info)},
-
-                _rememberHandler.CreateCommands(),
-                orderManager.CreateCommands(),
-                _currencyBaseHandler.CreateCommands(),
-                _duelHandler.CreateCommands(),
-                _halberdHandler.CreateCommands(),
-                _betsHandler.CreateCommands(),
-                _raffleHandler.CreateCommands()
-            };
         }
 
         private void OnChatCommandReceived(CommandInfo commandInfo)

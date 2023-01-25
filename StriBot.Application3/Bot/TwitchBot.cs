@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Authentication;
+using StriBot.Application.Bot.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Enums;
 using StriBot.Application.Events.Models;
@@ -16,12 +17,12 @@ namespace StriBot.Bots
     public class TwitchBot
     {
         private readonly TwitchClient _twitchClient;
-        private readonly TwitchInfo _twitchInfo;
+        private readonly ITwitchInfo _twitchInfo;
         private readonly TwitchPubSub _twitchPub;
 
-        public TwitchBot()
+        public TwitchBot(ITwitchInfo twitchInfo)
         {
-            _twitchInfo = new TwitchInfo();
+            _twitchInfo = twitchInfo;
 
             var connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, _twitchInfo.BotAccessToken);
 

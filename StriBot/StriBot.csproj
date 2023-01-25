@@ -334,9 +334,6 @@
   <ItemGroup>
     <Compile Include="ApplicationSettings\Models\StoredSettings.cs" />
     <Compile Include="ApplicationSettings\SettingsFileManager.cs" />
-    <Compile Include="Bots\ChatBot.cs" />
-    <Compile Include="Bots\Handlers\RewardHandler.cs" />
-    <Compile Include="Bots\TwitchApiClient.cs" />
     <Compile Include="DateBase\Implementations\DataBase.cs" />
     <Compile Include="DryIoc\GlobalContainer.cs" />
     <Compile Include="DryIoc\Implementations\BotHandlersFiller.cs" />
@@ -359,7 +356,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reporter.cs" />
     <Compile Include="Speakers\Speaker.cs" />
-    <Compile Include="Bots\TwitchBot.cs" />
     <Compile Include="TwitchInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -401,6 +397,9 @@
       <Project>{46e5be23-8f72-4d2f-b0fa-224c60c89cd5}</Project>
       <Name>StriBot.Application</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bots\Handlers" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

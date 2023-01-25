@@ -1,5 +1,5 @@
 ﻿using DryIoc;
-using StriBot.Bots.Handlers;
+using StriBot.Application.Bot.Handlers;
 using StriBot.DryIoc.Interfaces;
 
 namespace StriBot.DryIoc.Implementations

@@ -1,4 +1,6 @@
 ﻿using DryIoc;
+using StriBot.Application.Bot;
+using StriBot.Application.Bot.Interfaces;
 using StriBot.ApplicationSettings;
 using StriBot.Bots;
 using StriBot.DryIoc.Interfaces;
@@ -10,6 +12,7 @@ namespace StriBot.DryIoc.Implementations
     {
         public void Fill(IContainer container)
         {
+            container.Register<ITwitchInfo, TwitchInfo>(Reuse.Singleton);
             container.Register<SettingsFileManager>(Reuse.Singleton);
             container.Register<ChatBot>(Reuse.Singleton);
             container.Register<TwitchBot>(Reuse.Singleton);
