@@ -20,7 +20,7 @@ namespace StriBot.Application.Commands.Handlers
         }
 
         public Dictionary<string, Command> CreateCommands()
-            => new()
+            => new Dictionary<string, Command>()
             {
                 CreateSnowCommand(),
                 CreateRollCommand(),

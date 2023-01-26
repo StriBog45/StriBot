@@ -1,14 +1,15 @@
-﻿namespace StriBot.Application.DataBase.Interfaces;
-
-public interface IDataBase
+﻿namespace StriBot.Application.DataBase.Interfaces
 {
-    void AddMoney(string nickname, int amount);
+    public interface IDataBase
+    {
+        void AddMoney(string nickname, int amount);
 
-    int GetMoney(string nickname);
+        int GetMoney(string nickname);
 
-    string CleanNickname(string nick);
+        string CleanNickname(string nick);
 
-    string GetSteamTradeLink(string nickname);
+        string GetSteamTradeLink(string nickname);
 
-    void AddSteamTradeLink(string nickname, string steamTradeLink);
+        void AddSteamTradeLink(string nickname, string steamTradeLink);
+    }
 }

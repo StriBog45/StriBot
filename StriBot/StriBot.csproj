@@ -352,9 +352,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reporter.cs" />
     <Compile Include="Speakers\Speaker.cs" />
-    <Compile Include="TwitchInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -391,7 +389,7 @@
     <Content Include="Resources\robot.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StriBot.Application3\StriBot.Application.csproj">
+    <ProjectReference Include="..\StriBot.Application\StriBot.Application.csproj">
       <Project>{46e5be23-8f72-4d2f-b0fa-224c60c89cd5}</Project>
       <Name>StriBot.Application</Name>
     </ProjectReference>

@@ -15,10 +15,7 @@ namespace StriBot.Application.Commands.Handlers
         private Platform _platform;
 
         public Dictionary<string, Command> CreateCommands()
-            => new()
-            {
-                CreateRemindCommand()
-            };
+            => new Dictionary<string, Command>() { CreateRemindCommand() };
 
         private Command CreateRemindCommand()
         {

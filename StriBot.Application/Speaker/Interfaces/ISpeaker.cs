@@ -1,6 +1,7 @@
-﻿namespace StriBot.Application.Speaker.Interfaces;
-
-public interface ISpeaker
+﻿namespace StriBot.Application.Speaker.Interfaces
 {
-    void Say(string text);
+    public interface ISpeaker
+    {
+        void Say(string text);
+    }
 }

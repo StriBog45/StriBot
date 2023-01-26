@@ -73,7 +73,7 @@ namespace StriBot.Application.Commands.Handlers
                 }, new[] { "Объект" }, CommandType.Interactive);
 
         public Dictionary<string, Command> CreateCommands()
-            => new()
+            => new Dictionary<string, Command>()
             {
                 CurrentMMR(),
                 CurrentAccount(),

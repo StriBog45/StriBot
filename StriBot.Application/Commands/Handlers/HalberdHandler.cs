@@ -15,7 +15,7 @@ namespace StriBot.Application.Commands.Handlers
 {
     public class HalberdHandler
     {
-        private readonly ConcurrentDictionary<string, (Platform Platform, int Time)> _halberdDictionary;
+        private readonly ConcurrentDictionary<string, (Platforms.Enums.Platform Platform, int Time)> _halberdDictionary;
         private readonly ReadyMadePhrases _readyMadePhrases;
         private readonly Currency _currency;
         private readonly Minute _minute;
@@ -88,7 +88,7 @@ namespace StriBot.Application.Commands.Handlers
         }
 
         public Dictionary<string, Command> CreateCommands()
-            => new()
+            => new Dictionary<string, Command>()
             {
                 CreateHalberdCommand()
             };

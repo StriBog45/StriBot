@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot", "StriBot\StriBot.csproj", "{A2E7E865-E9A1-49C5-99DE-4C5471E2171D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot.Application", "StriBot.Application3\StriBot.Application.csproj", "{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot.Application", "StriBot.Application\StriBot.Application.csproj", "{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StriBot.ConsoleView", "StriBot.ConsoleView\StriBot.ConsoleView.csproj", "{392C76D7-FB57-477D-B9BF-8C56888A126F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46E5BE23-8F72-4D2F-B0FA-224C60C89CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{392C76D7-FB57-477D-B9BF-8C56888A126F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{392C76D7-FB57-477D-B9BF-8C56888A126F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{392C76D7-FB57-477D-B9BF-8C56888A126F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{392C76D7-FB57-477D-B9BF-8C56888A126F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,8 +9,8 @@ namespace StriBot.Application.Commands.Handlers
 {
     public class LinkHandler
     {
-        public static Dictionary<string, Command> CreateCommands()
-            => new()
+        public Dictionary<string, Command> CreateCommands()
+            => new Dictionary<string, Command>()
             {
                 #region Информационные
 
