@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DryIoc;
+using StriBot.Application.Bot;
 using StriBot.Application.Commands.Handlers;
 using StriBot.Application.Commands.Handlers.Progress;
 using StriBot.Application.Commands.Handlers.Raffle;
@@ -13,7 +14,6 @@ using StriBot.Application.FileManager;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Localization.Models;
 using StriBot.Application.Platforms.Enums;
-using StriBot.Bots;
 using StriBot.DryIoc;
 
 namespace StriBot

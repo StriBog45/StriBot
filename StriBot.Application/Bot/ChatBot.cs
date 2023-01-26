@@ -16,8 +16,9 @@ using StriBot.Application.Localization.Extensions;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Speaker.Interfaces;
+using StriBot.Bots;
 
-namespace StriBot.Bots
+namespace StriBot.Application.Bot
 {
     public class ChatBot
     {

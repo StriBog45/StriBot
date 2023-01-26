@@ -32,14 +32,17 @@ namespace StriBot.Application.Commands.Handlers.Progress
         {
             var path = GetPath(BossesFileName);
 
-            using (var streamReader = new StreamReader(path))
+            if (Directory.Exists(path))
             {
-                var lines = streamReader.ReadToEnd()
-                    .Split(new char[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var line in lines)
+                using (var streamReader = new StreamReader(path))
                 {
-                    _bosses.Add(line);
+                    var lines = streamReader.ReadToEnd()
+                        .Split(new char[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var line in lines)
+                    {
+                        _bosses.Add(line);
+                    }
                 }
             }
         }
