@@ -14,7 +14,6 @@ using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Speaker.Interfaces;
 using StriBot.Bots;
-using StriBot.ConsoleView.DataBase.Implementations;
 using StriBot.ConsoleView.Speakers.Implementations;
 
 namespace StriBot.ConsoleView
@@ -54,7 +53,7 @@ namespace StriBot.ConsoleView
                 .AddSingleton<AnswerOptions>()
 
                 // DataBase
-                .AddSingleton<IDataBase, DataBaseEmpty>()
+                .AddSingleton<IDataBase, DataBase.Implementations.DataBase>()
 
                 // LanguageFiller
                 .AddSingleton<Currency>()

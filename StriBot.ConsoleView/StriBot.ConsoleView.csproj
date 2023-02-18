@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+      <PackageReference Include="SQLite" Version="3.13.0" />
     </ItemGroup>
 
 </Project>
