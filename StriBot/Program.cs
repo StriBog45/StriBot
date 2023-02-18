@@ -12,6 +12,7 @@ namespace StriBot
         static void Main()
         {
             System.Windows.Forms.Application.EnableVisualStyles();
+            //Application.SetHighDpiMode(HighDpiMode.SystemAware);
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             GlobalContainer.Initialize();
             System.Windows.Forms.Application.Run(new Form1());
