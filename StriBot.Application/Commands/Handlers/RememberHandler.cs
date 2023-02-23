@@ -12,6 +12,7 @@ namespace StriBot.Application.Commands.Handlers
     public class RememberHandler
     {
         public string TextReminder { get; set; } = string.Empty;
+        private string _firstViewer;
         private Platform _platform;
 
         public Dictionary<string, Command> CreateCommands()
@@ -19,7 +20,7 @@ namespace StriBot.Application.Commands.Handlers
 
         private Command CreateRemindCommand()
         {
-            var result = new Command("Напомнить", "Создает напоминалку. При использовании без указания текста, напоминание будет удалено", Role.Moderator,
+            var result = new Command("Напомнить", "Создает напоминание. При использовании без указания текста, напоминание будет удалено", Role.Moderator,
                 delegate (CommandInfo commandInfo)
                 {
                     TextReminder = commandInfo.ArgumentsAsString;
@@ -38,7 +39,12 @@ namespace StriBot.Application.Commands.Handlers
         public void Tick(int timer)
         {
             if (timer % 10 == 0 && !string.IsNullOrEmpty(TextReminder))
-                EventContainer.Message("Напоминание: " + TextReminder, _platform);
+                EventContainer.Message($"Напоминание: {TextReminder}", _platform);
+            if (timer % 30 == 0 && !string.IsNullOrEmpty(_firstViewer))
+                EventContainer.Message($"Первый зритель нашей трансляции: {_firstViewer}! hugBack ", _platform);
         }
+
+        public void SetFirstViewer(string name)
+            => _firstViewer = name;
     }
 }
