@@ -57,9 +57,12 @@ namespace StriBot.DateBase.Implementations
             command.Parameters.AddWithValue("$nick", clearName);
 
             using var reader = command.ExecuteReader();
-            reader.Read();
 
-            return reader.GetString(0);
+            return reader.Read()
+                ? reader.IsDBNull(0)
+                    ? null
+                    : reader.GetString(0)
+                : null;
         }
 
         public void AddSteamTradeLink(string nickname, string steamTradeLink)
@@ -70,7 +73,7 @@ namespace StriBot.DateBase.Implementations
             connection.Open();
 
             var command = connection.CreateCommand();
-            command.CommandText = $"INSERT INTO Money ('nick', 'money', 'steam_trade_link') VALUES('{clearName}', 0, 'steamTradeLink') ON CONFLICT(nick) DO UPDATE SET steamTradeLink = '{steamTradeLink}'";
+            command.CommandText = $"INSERT INTO Money ('nick', 'money', 'steam_trade_link') VALUES('{clearName}', 0, 'steamTradeLink') ON CONFLICT(nick) DO UPDATE SET steam_trade_link = '{steamTradeLink}'";
             command.ExecuteNonQuery();
         }
     }

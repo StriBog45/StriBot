@@ -17,6 +17,7 @@ namespace StriBot.Application.Commands.Handlers.Raffle
         private readonly IDataBase _dataBase;
         private readonly List<RaffleParticipant> _participantsList;
         private string _commandName;
+        private int _price;
         
         private const int SubscriberBonus = 3;
         private int _participantsCount;
@@ -32,13 +33,14 @@ namespace StriBot.Application.Commands.Handlers.Raffle
         public string GetCurrentCommandName()
             => _commandName;
 
-        public void RaffleStart(string name)
+        public void RaffleStart(string name, int price)
         {
             _participantsList.Clear();
             IsProgress = true;
             _commandName = name;
             _participantsCount = 0;
-            EventContainer.Message($"Розыгрыш начался! Пиши команду !{_commandName}", Platform.Twitch);
+            _price = price;
+            EventContainer.Message($"Розыгрыш начался! Пиши команду !{_commandName} И (ссылка на торговлю в steam)", Platform.Twitch);
         }
 
         public Dictionary<string, Command> CreateCommands()
@@ -70,7 +72,7 @@ namespace StriBot.Application.Commands.Handlers.Raffle
                     var canParticipate = true;
                     var steamTradeLink = _dataBase.GetSteamTradeLink(commandInfo.DisplayName);
 
-                    if (canParticipate && _participantsList.Exists(item => item.Nick == commandInfo.DisplayName))
+                    if (_participantsList.Exists(item => item.Nick == commandInfo.DisplayName))
                     {
                         result = $"{commandInfo.DisplayName} уже участвует в розыгрыше!";
                         canParticipate = false;
@@ -87,13 +89,20 @@ namespace StriBot.Application.Commands.Handlers.Raffle
                         _dataBase.AddSteamTradeLink(commandInfo.DisplayName, steamTradeLink);
                     }
 
+                    var money = _dataBase.GetMoney(commandInfo.DisplayName);
+                    if (money < _price)
+                    {
+                        canParticipate = false;
+                        result = $"{commandInfo.DisplayName} у тебя не хватает валюты!";
+                    }
+
                     if (canParticipate)
                     {
-                        if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
-                            for (var index = 0; index < SubscriberBonus; index++)
-                                _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, steamTradeLink));
-                        else
-                            _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, steamTradeLink));
+                        // if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
+                        //     for (var index = 0; index < SubscriberBonus; index++)
+                        //         _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, steamTradeLink));
+                        // else
+                        _participantsList.Add(new RaffleParticipant(commandInfo.DisplayName, steamTradeLink));
                         _participantsCount++;
 
                         result = $"{commandInfo.DisplayName} участвует в розыгрыше!";
@@ -115,6 +124,9 @@ namespace StriBot.Application.Commands.Handlers.Raffle
                 _participantsList.Remove(result);
                 IsProgress = false;
                 EventContainer.Message($"Победитель розыгрыша: {result.Nick}!", Platform.Twitch);
+
+                foreach (var participant in _participantsList)
+                    _dataBase.AddMoney(participant.Nick, -_price);
             }
             return result;
         }

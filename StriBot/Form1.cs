@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using DryIoc;
 using StriBot.Application.Bot;
@@ -89,7 +90,27 @@ namespace StriBot
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-            => Process.Start("https://www.twitch.tv/stribog45");
+        {
+            var url = "https://www.twitch.tv/stribog45";
+
+            try
+            {
+                Process.Start(url);
+            }
+            catch
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    url = url.Replace("&", "^&");
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
             => _chatBot.TimerTick();
@@ -103,11 +124,13 @@ namespace StriBot
 
         private void buttonDistribution_Click(object sender, EventArgs e)
             => _currencyBaseHandler.DistributionMoney(Convert.ToInt32(DistributionMoneyPerUser.Text), Convert.ToInt32(DistributionMaxUsers.Text), Platform.Twitch);
+
         private void buttonCreateOptions_Click(object sender, EventArgs e)
         {
             var options = TextBoxOptions.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
             _betsHandler.CreateBets(options, new[] { Platform.Twitch });
         }
+
         private void buttonBetsOfManiac_Click(object sender, EventArgs e)
             => _betsHandler.CreateBets(new[] { "Количество повешанных", "0", "1", "2", "3", "4" }, new[] { Platform.Twitch });
 
@@ -165,13 +188,16 @@ namespace StriBot
         }
         private void buttonMMRSet_Click(object sender, EventArgs e)
             => _handlerMMR.MMR = Convert.ToInt32(textBoxMMR.Text);
+
         private void buttonMMRCheck_Click(object sender, EventArgs e)
             => textBoxMMR.Text = _handlerMMR.MMR.ToString();
+
         private void buttonWinsCheck_Click(object sender, EventArgs e)
         {
             textBox1.Text = _handlerMMR.Wins.ToString();
             textBox2.Text = _handlerMMR.Losses.ToString();
         }
+
         private void buttonWinsSet_Click(object sender, EventArgs e)
         {
             _handlerMMR.Wins = Convert.ToInt32(textBox1.Text);
@@ -305,8 +331,34 @@ namespace StriBot
 
         private void labelRaffleLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (labelRaffleLink.Text.Contains("http"))
-                Process.Start(labelRaffleLink.Text);
+            try
+            {
+                if (labelRaffleLink.Text.Contains("http"))
+                {
+                    var url = labelRaffleLink.Text;
+                    try
+                    {
+                        Process.Start(url);
+                    }
+                    catch
+                    {
+                        // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                            url = url.Replace("&", "^&");
+                            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
         }
 
         private void buttonRaffleStart_Click(object sender, EventArgs e)
@@ -323,7 +375,8 @@ namespace StriBot
                 if (!string.IsNullOrEmpty(currentCommandName))
                     _chatBot.Commands.Remove(currentCommandName);
 
-                _raffleHandler.RaffleStart(commandName);
+                int.TryParse(textBoxGiveawayPrice.Text, out var giveawayPrice);
+                _raffleHandler.RaffleStart(commandName, giveawayPrice);
 
                 if (!string.IsNullOrEmpty(commandName) && !_chatBot.Commands.ContainsKey(commandName))
                     _chatBot.Commands.Add(commandName, _raffleHandler.Participate());
