@@ -40,7 +40,7 @@ namespace StriBot.Application.Commands.Handlers.Raffle
             _commandName = name;
             _participantsCount = 0;
             _price = price;
-            EventContainer.Message($"Розыгрыш начался! Пиши команду !{_commandName} И (ссылка на торговлю в steam)", Platform.Twitch);
+            EventContainer.Message($"Розыгрыш начался! Пиши команду !{_commandName}", Platform.Twitch);
         }
 
         public Dictionary<string, Command> CreateCommands()
@@ -78,10 +78,11 @@ namespace StriBot.Application.Commands.Handlers.Raffle
                         canParticipate = false;
                     }
 
-                    if (!commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer") && string.IsNullOrEmpty(steamTradeLink))
+                    if (string.IsNullOrEmpty(steamTradeLink) &&
+                        !commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer"))
                     {
-                            result = $"{commandInfo.DisplayName} добавь steam-ссылку на торговлю";
-                            canParticipate = false;
+                        result = $"{commandInfo.DisplayName} дай ссылку на торговлю в чат. Гайд https://docs.google.com/document/d/1cz4eTqQAMK64YDf-iF1nxa9fRoyOqlskVYqFJPskBkE";
+                        canParticipate = false;
                     }
                     else if (commandInfo.ArgumentsAsString.Contains("steamcommunity.com/tradeoffer"))
                     {
@@ -129,6 +130,15 @@ namespace StriBot.Application.Commands.Handlers.Raffle
                     _dataBase.AddMoney(participant.Nick, -_price);
             }
             return result;
+        }
+
+        public void TryAddSteamTradeLink(string nickname, string message)
+        {
+            if (message != null && message.Contains("steamcommunity.com/tradeoffer"))
+            {
+                _dataBase.AddSteamTradeLink(nickname, message);
+                EventContainer.Message($"@{nickname} твоя ссылка на торговлю добавлена!", Platform.Twitch);
+            }
         }
     }
 }

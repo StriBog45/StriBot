@@ -35,6 +35,7 @@ namespace StriBot.Application.Bot
         private readonly Currency _currency;
         private readonly RewardHandler _rewardHandler;
         private readonly IDataBase _dataBase;
+        private readonly RaffleHandler _raffleHandler;
 
         public ChatBot(ISpeaker speaker, 
             TwitchBot twitchBot, 
@@ -62,6 +63,7 @@ namespace StriBot.Application.Bot
             _betsHandler = betsHandler;
             _rememberHandler = rememberHandler;
             _currency = currency;
+            _raffleHandler = raffleHandler;
             _rewardHandler = rewardHandler;
             _dataBase = dataBase;
 
@@ -108,6 +110,7 @@ namespace StriBot.Application.Bot
                     break;
                 case PlatformEventType.Message:
                     _currencyBaseHandler.ReceivedMessage(platformEventInfo.UserName);
+                    _raffleHandler.TryAddSteamTradeLink(platformEventInfo.UserName, platformEventInfo.Message);
                     break;
             }
         }
