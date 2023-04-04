@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using StriBot.Application.Bot.Enums;
 using StriBot.Application.Bot.Handlers;
 using StriBot.Application.Commands.Enums;
@@ -16,7 +17,6 @@ using StriBot.Application.Localization.Extensions;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Speaker.Interfaces;
-using StriBot.Bots;
 
 namespace StriBot.Application.Bot
 {
@@ -36,6 +36,8 @@ namespace StriBot.Application.Bot
         private readonly RewardHandler _rewardHandler;
         private readonly IDataBase _dataBase;
         private readonly RaffleHandler _raffleHandler;
+        private readonly IConfiguration _configuration;
+        private readonly RepeatMessagesHandler _repeatMessagesHandler;
 
         public ChatBot(ISpeaker speaker, 
             TwitchBot twitchBot, 
@@ -49,11 +51,13 @@ namespace StriBot.Application.Bot
             RewardHandler rewardHandler, 
             IDataBase dataBase,
             MMRHandler mmrHandler,
-            LinkHandler linkHandler,
+            CustomCommandHandler customCommandHandler,
             BurgerHandler burgerHandler,
             RandomAnswerHandler randomAnswerHandler,
             OrderHandler orderHandler,
-            ProgressHandler progressHandler)
+            ProgressHandler progressHandler,
+            IConfiguration configuration,
+            RepeatMessagesHandler repeatMessagesHandler)
         {
             _speaker = speaker;
             _twitchBot = twitchBot;
@@ -66,6 +70,9 @@ namespace StriBot.Application.Bot
             _raffleHandler = raffleHandler;
             _rewardHandler = rewardHandler;
             _dataBase = dataBase;
+            _configuration = configuration;
+            _repeatMessagesHandler = repeatMessagesHandler;
+            var testCustomCommands = _configuration.GetSection("ChannelSettings").GetValue<string>("SomeKey");
 
             EventContainer.CommandReceived += OnChatCommandReceived;
             EventContainer.PlatformEventReceived += OnPlatformEventReceived;
@@ -73,7 +80,7 @@ namespace StriBot.Application.Bot
 
             Commands = new Dictionary<string, Command>
             {
-                linkHandler.CreateCommands(),
+                customCommandHandler.CreateCommands(),
                 mmrHandler.CreateCommands(),
                 randomAnswerHandler.CreateCommands(),
                 burgerHandler.CreateCommands(),
@@ -140,27 +147,13 @@ namespace StriBot.Application.Bot
 
         public void TimerTick()
         {
-            _timer++;
-
-            _betsHandler.Tick(new Platform[] { Platform.Twitch });
-
-            // if (_timer == 40)
-            //     _currencyBaseManager.DistributionMoney(1, 5, Platform.Twitch);
-            if (_timer == 15)
-                SendMessage("Если увидел крутой момент, запечатли это! Сделай клип! striboF ");
-            if (_timer == 30)
-                SendMessage("Поддержи нас на второй площадке! <3 https://vkplay.live/stribog45");
-            if (_timer == 45)
-                SendMessage("Спасибо за вашу поддержку! <3 ");
-            if (_timer == 60)
-                SendMessage("Список команд https://vk.cc/a6Giqf");
-
+            _betsHandler.Tick(new[] {Platform.Twitch});
+            _repeatMessagesHandler.Tick(_timer);
             _rememberHandler.Tick(_timer);
             _duelHandler.Tick();
             _halberdHandler.Tick();
 
-            if (_timer == 60)
-                _timer = 0;
+            _timer++;
         }
 
         public void Connect(Platform[] platforms)
@@ -230,8 +223,5 @@ namespace StriBot.Application.Bot
 
             return result;
         }
-
-        private void SendMessage(string text)
-            => EventContainer.Message(text, Platform.Twitch);
     }
 }

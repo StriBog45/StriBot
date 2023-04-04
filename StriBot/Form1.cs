@@ -53,6 +53,9 @@ namespace StriBot
             _raffleHandler = GlobalContainer.Default.Resolve<RaffleHandler>();
             _dataBase = GlobalContainer.Default.Resolve<IDataBase>();
             _orderHandler.SafeCallConnector(UpdateOrderList);
+
+            // Для вызова 0-й минуты
+            _chatBot.TimerTick();
         }
 
         private void Form1_Load(object sender, EventArgs e)

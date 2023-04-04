@@ -16,7 +16,7 @@ namespace StriBot.DryIoc.Implementations
             container.Register<CurrencyBaseHandler>(Reuse.Singleton);
             container.Register<HalberdHandler>(Reuse.Singleton);
             container.Register<DuelHandler>(Reuse.Singleton);
-            container.Register<LinkHandler>();
+            container.Register<CustomCommandHandler>();
             container.Register<RandomAnswerHandler>(Reuse.Singleton);
             container.Register<BurgerHandler>(Reuse.Singleton);
             container.Register<BetsHandler>(Reuse.Singleton);

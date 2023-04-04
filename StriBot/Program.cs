@@ -1,20 +1,23 @@
 ﻿using System;
+using Microsoft.Extensions.Configuration;
 using StriBot.DryIoc;
 
 namespace StriBot
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
+            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, false);
+            IConfiguration config = builder.Build();
+
             System.Windows.Forms.Application.EnableVisualStyles();
-            //Application.SetHighDpiMode(HighDpiMode.SystemAware);
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            GlobalContainer.Initialize();
+            GlobalContainer.Initialize(config);
             System.Windows.Forms.Application.Run(new Form1());
         }
     }

@@ -1,4 +1,5 @@
 ﻿using DryIoc;
+using Microsoft.Extensions.Configuration;
 using StriBot.DryIoc.Registrators;
 
 namespace StriBot.DryIoc
@@ -7,13 +8,14 @@ namespace StriBot.DryIoc
     {
         public static IContainer Default { get; private set; }
 
-        public static void Initialize()
+        public static void Initialize(IConfiguration configuration)
         {
-            Default = InitializeContainer();
+            Default = InitializeContainer(configuration);
         }
 
-        private static IContainer InitializeContainer()
+        private static IContainer InitializeContainer(IConfiguration configuration)
             => new Container()
-                .RegistrateFillers();
+                .RegisterConfiguration(configuration)
+                .RegisterFillers();
     }
 }

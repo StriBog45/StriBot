@@ -13,7 +13,6 @@ using StriBot.Application.Localization;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Speaker.Interfaces;
-using StriBot.Bots;
 using StriBot.ConsoleView.Speakers.Implementations;
 
 namespace StriBot.ConsoleView
@@ -43,7 +42,7 @@ namespace StriBot.ConsoleView
                 .AddSingleton<CurrencyBaseHandler>()
                 .AddSingleton<HalberdHandler>()
                 .AddSingleton<DuelHandler>()
-                .AddSingleton<LinkHandler>()
+                .AddSingleton<CustomCommandHandler>()
                 .AddSingleton<RandomAnswerHandler>()
                 .AddSingleton<BurgerHandler>()
                 .AddSingleton<BetsHandler>()

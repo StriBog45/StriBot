@@ -12,7 +12,7 @@ namespace StriBot.DryIoc.Registrators
     {
         private const int DefaultPriority = 10;
 
-        public static IContainer RegistrateFillers(this IContainer owner)
+        public static IContainer RegisterFillers(this IContainer owner)
         {
             var containerFillers = Assembly
                 .GetExecutingAssembly()

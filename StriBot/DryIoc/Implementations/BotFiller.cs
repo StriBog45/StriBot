@@ -2,7 +2,6 @@
 using StriBot.Application.Bot;
 using StriBot.Application.Bot.Interfaces;
 using StriBot.Application.FileManager;
-using StriBot.Bots;
 using StriBot.DryIoc.Interfaces;
 
 namespace StriBot.DryIoc.Implementations
@@ -17,6 +16,7 @@ namespace StriBot.DryIoc.Implementations
             container.Register<ChatBot>(Reuse.Singleton);
             container.Register<TwitchBot>(Reuse.Singleton);
             container.Register<TwitchApiClient>(Reuse.Singleton);
+            container.Register<RepeatMessagesHandler>(Reuse.Singleton);
         }
     }
 }

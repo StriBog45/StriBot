@@ -12,7 +12,7 @@ using TwitchLib.Client.Models;
 using TwitchLib.PubSub;
 using TwitchLib.PubSub.Events;
 
-namespace StriBot.Bots
+namespace StriBot.Application.Bot
 {
     public class TwitchBot
     {
