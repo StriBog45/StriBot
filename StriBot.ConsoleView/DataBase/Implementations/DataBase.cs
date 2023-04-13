@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
 using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.DataBase.Models;
 
 namespace StriBot.ConsoleView.DataBase.Implementations
 {
@@ -157,5 +159,15 @@ namespace StriBot.ConsoleView.DataBase.Implementations
                 }
             }
         }
+
+        public int GetBananaSize(string nickname)
+            => 0;
+
+        public void IncreaseBananaSize(string nickname)
+        {
+        }
+
+        public List<BananaInfo> GetTopBananas()
+            => new();
     }
 }

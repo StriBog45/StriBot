@@ -57,7 +57,8 @@ namespace StriBot.Application.Bot
             OrderHandler orderHandler,
             ProgressHandler progressHandler,
             IConfiguration configuration,
-            RepeatMessagesHandler repeatMessagesHandler)
+            RepeatMessagesHandler repeatMessagesHandler,
+            BananaHandler bananaHandler)
         {
             _speaker = speaker;
             _twitchBot = twitchBot;
@@ -91,7 +92,8 @@ namespace StriBot.Application.Bot
                 _duelHandler.CreateCommands(),
                 _halberdHandler.CreateCommands(),
                 _betsHandler.CreateCommands(),
-                raffleHandler.CreateCommands()
+                raffleHandler.CreateCommands(),
+                bananaHandler.CreateCommands()
             };
         }
 

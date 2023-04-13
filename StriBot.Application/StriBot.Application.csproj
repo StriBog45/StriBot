@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Bot\Handlers\" />
-    <Folder Include="Commands\Implementations\" />
-    <Folder Include="Commands\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

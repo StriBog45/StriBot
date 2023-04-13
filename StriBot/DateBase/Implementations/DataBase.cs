@@ -1,5 +1,7 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Collections.Generic;
+using Microsoft.Data.Sqlite;
 using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.DataBase.Models;
 
 namespace StriBot.DateBase.Implementations
 {
@@ -75,6 +77,65 @@ namespace StriBot.DateBase.Implementations
             var command = connection.CreateCommand();
             command.CommandText = $"INSERT INTO Money ('nick', 'money', 'steam_trade_link') VALUES('{clearName}', 0, 'steamTradeLink') ON CONFLICT(nick) DO UPDATE SET steam_trade_link = '{steamTradeLink}'";
             command.ExecuteNonQuery();
+        }
+
+        public int GetBananaSize(string nickname)
+        {
+            var clearName = CleanNickname(nickname);
+            var bananaSize = 0;
+
+            using var connection = new SqliteConnection(BasePath);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"SELECT banana_size FROM Money WHERE nick = $nick";
+            command.Parameters.AddWithValue("$nick", clearName);
+
+            using var reader = command.ExecuteReader();
+            reader.Read();
+            if (int.TryParse(reader.GetString(0), out var result)) 
+                bananaSize = result;
+
+            return bananaSize;
+        }
+
+        public void IncreaseBananaSize(string nickname)
+        {
+            var clearName = CleanNickname(nickname);
+
+            using var connection = new SqliteConnection(BasePath);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = $"UPDATE Money SET banana_size = banana_size + 1 WHERE nick = $nick";
+            command.Parameters.AddWithValue("$nick", clearName);
+            command.ExecuteNonQuery();
+        }
+
+        public List<BananaInfo> GetTopBananas()
+        {
+            var result = new List<BananaInfo>();
+            using var connection = new SqliteConnection(BasePath);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = $"SELECT nick, banana_size FROM Money ORDER BY banana_size DESC LIMIT 3";
+            command.ExecuteScalar();
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var nick = reader.GetString(reader.GetOrdinal("nick"));
+                var bananaSize = reader.GetInt32(reader.GetOrdinal("banana_size"));
+
+                result.Add(new BananaInfo
+                {
+                    Nick = nick,
+                    BananaSize = bananaSize
+                });
+            }
+
+            return result;
         }
     }
 }

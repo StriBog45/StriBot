@@ -1,4 +1,7 @@
-﻿namespace StriBot.Application.DataBase.Interfaces
+﻿using System.Collections.Generic;
+using StriBot.Application.DataBase.Models;
+
+namespace StriBot.Application.DataBase.Interfaces
 {
     public interface IDataBase
     {
@@ -11,5 +14,11 @@
         string GetSteamTradeLink(string nickname);
 
         void AddSteamTradeLink(string nickname, string steamTradeLink);
+
+        int GetBananaSize(string nickname);
+
+        void IncreaseBananaSize(string nickname);
+
+        List<BananaInfo> GetTopBananas();
     }
 }

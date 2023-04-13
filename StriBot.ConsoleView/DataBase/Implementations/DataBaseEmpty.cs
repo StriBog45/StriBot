@@ -1,4 +1,6 @@
-﻿using StriBot.Application.DataBase.Interfaces;
+﻿using System.Collections.Generic;
+using StriBot.Application.DataBase.Interfaces;
+using StriBot.Application.DataBase.Models;
 
 namespace StriBot.ConsoleView.DataBase.Implementations
 {
@@ -20,5 +22,15 @@ namespace StriBot.ConsoleView.DataBase.Implementations
         public void AddSteamTradeLink(string nickname, string steamTradeLink)
         {
         }
+
+        public int GetBananaSize(string nickname)
+            => 0;
+
+        public void IncreaseBananaSize(string nickname)
+        {
+        }
+
+        public List<BananaInfo> GetTopBananas()
+            => new();
     }
 }

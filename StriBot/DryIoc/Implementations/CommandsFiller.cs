@@ -24,6 +24,7 @@ namespace StriBot.DryIoc.Implementations
             container.Register<RememberHandler>(Reuse.Singleton);
             container.Register<RaffleHandler>(Reuse.Singleton);
             container.Register<AnswerOptions>(Reuse.Singleton);
+            container.Register<BananaHandler>();
         }
     }
 }

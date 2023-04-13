@@ -14,13 +14,19 @@ namespace StriBot.Application.Bot.Handlers
         private readonly IDataBase _dataBase;
         private readonly Currency _currency;
         private readonly RememberHandler _rememberHandler;
+        private readonly BananaHandler _bananaHandler;
 
-        public RewardHandler(TwitchApiClient twitchApiClient, IDataBase dataBase, Currency currency, RememberHandler rememberHandler)
+        public RewardHandler(TwitchApiClient twitchApiClient,
+            IDataBase dataBase,
+            Currency currency,
+            RememberHandler rememberHandler,
+            BananaHandler bananaHandler)
         {
             _twitchApiClient = twitchApiClient;
             _dataBase = dataBase;
             _currency = currency;
             _rememberHandler = rememberHandler;
+            _bananaHandler = bananaHandler;
         }
 
         public async Task Handle(RewardInfo rewardInfo)
@@ -36,6 +42,9 @@ namespace StriBot.Application.Bot.Handlers
                     EventContainer.Message($"{rewardInfo.UserName} сегодня первый зритель нашей трансляции! Держи за это {_currency.Incline(5)}", rewardInfo.Platform);
                     _rememberHandler.SetFirstViewer(rewardInfo.UserName);
                     await _twitchApiClient.CompleteReward(rewardInfo.RewardId, rewardInfo.RedemptionId);
+                    break;
+                case "УВЕЛМЧЕНИЕ БАНАНА":
+                    _bananaHandler.IncreaseBananaSize(rewardInfo.UserName);
                     break;
             }
         }
