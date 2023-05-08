@@ -15,9 +15,6 @@
     <Reference Include="System.Speech" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TwitchInfo.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\robot.ico" />
   </ItemGroup>
   <ItemGroup>

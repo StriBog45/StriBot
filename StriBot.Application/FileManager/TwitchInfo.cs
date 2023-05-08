@@ -1,34 +1,32 @@
-﻿using System;
-using System.IO;
+﻿using Microsoft.Extensions.Configuration;
 using StriBot.Application.Bot.Interfaces;
+using StriBot.Application.Configurations.Models;
 
 namespace StriBot.Application.FileManager
 {
     public class TwitchInfo : ITwitchInfo
     {
         public string Channel { get; }
-        public string BotAccessToken { get; }
+        public string ChannelId { get; }
+        public string ChannelClientId { get; }
         public string ChannelAccessToken { get; }
         public string BotName { get; }
         public string BotClientId { get; }
-        public string ChannelId { get; }
+        public string BotAccessToken { get; }
 
-        private readonly string fileName = "TwitchInfo.txt";
-        private readonly string error = "Error";
-
-        public TwitchInfo()
+        public TwitchInfo(IConfiguration configuration)
         {
-            using (var streamReader = new StreamReader(fileName))
-            {
-                var line = streamReader.ReadToEnd().Split(new[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+            var channelSettings = configuration.GetSection(nameof(ChannelSettings)).Get<ChannelSettings>();
+            var botSettings = configuration.GetSection(nameof(BotSettings)).Get<BotSettings>();
 
-                Channel = line[0].Split(new[] {':', ' ', '\t'}, StringSplitOptions.RemoveEmptyEntries)[1];
-                BotAccessToken = line[1].Split(new[] {':', ' ', '\t'}, StringSplitOptions.RemoveEmptyEntries)[1];
-                ChannelAccessToken = line[2].Split(new[] {':', ' ', '\t'}, StringSplitOptions.RemoveEmptyEntries)[1];
-                BotName = line[3].Split(new[] {':', ' ', '\t'}, StringSplitOptions.RemoveEmptyEntries)[1];
-                BotClientId = line[4].Split(new[] {':', ' ', '\t'}, StringSplitOptions.RemoveEmptyEntries)[1];
-                ChannelId = line[5].Split(new[] {':', ' ', '\t'}, StringSplitOptions.RemoveEmptyEntries)[1];
-            }
+            Channel = channelSettings.ChannelName;
+            ChannelId = channelSettings.ChannelId;
+            ChannelClientId = channelSettings.ClientId;
+            ChannelAccessToken = channelSettings.AccessToken;
+
+            BotName = botSettings.ChannelName;
+            BotClientId = botSettings.ClientId;
+            BotAccessToken = botSettings.AccessToken;
         }
     }
 }

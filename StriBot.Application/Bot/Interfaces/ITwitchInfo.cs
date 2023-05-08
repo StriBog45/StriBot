@@ -10,7 +10,7 @@
 
         string BotName { get; }
 
-        string BotClientId { get; }
+        string ChannelClientId { get; }
 
         string ChannelId { get; }
     }
