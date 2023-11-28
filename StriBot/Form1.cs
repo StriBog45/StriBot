@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using DryIoc;
+using StriBot.Application.Authorization;
 using StriBot.Application.Bot;
 using StriBot.Application.Commands.Handlers;
 using StriBot.Application.Commands.Handlers.Progress;
@@ -40,7 +41,7 @@ namespace StriBot
             InitializeComponent();
 
             _chatBot = GlobalContainer.Default.Resolve<ChatBot>();
-            _chatBot.Connect(new[] {Platform.Twitch});
+            _chatBot.Connect(new[] { Platform.Twitch });
             _settingsFileManager = GlobalContainer.Default.Resolve<SettingsFileManager>();
             _currency = GlobalContainer.Default.Resolve<Currency>();
             _progressHandler = GlobalContainer.Default.Resolve<ProgressHandler>();
@@ -93,9 +94,10 @@ namespace StriBot
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            var url = "https://www.twitch.tv/stribog45";
+            => OpenLink("https://www.twitch.tv/stribog45");
 
+        private static void OpenLink(string url)
+        {
             try
             {
                 Process.Start(url);
@@ -383,6 +385,19 @@ namespace StriBot
 
                 if (!string.IsNullOrEmpty(commandName) && !_chatBot.Commands.ContainsKey(commandName))
                     _chatBot.Commands.Add(commandName, _raffleHandler.Participate());
+            }
+        }
+
+        private async void buttonAuth_Click(object sender, EventArgs e)
+        {
+            OpenLink(TwitchAuthorization.GetAuthorizationCodeUrl());
+            try
+            {
+                await TwitchAuthorization.StartAuth();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString(), "Ошибка");
             }
         }
     }
