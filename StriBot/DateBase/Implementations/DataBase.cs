@@ -137,5 +137,38 @@ namespace StriBot.DateBase.Implementations
 
             return result;
         }
+
+        public int GetFirstViewerTimes(string nickname)
+        {
+            var clearName = CleanNickname(nickname);
+            var bananaSize = 0;
+
+            using var connection = new SqliteConnection(BasePath);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"SELECT first_viewer_times FROM Money WHERE nick = $nick";
+            command.Parameters.AddWithValue("$nick", clearName);
+
+            using var reader = command.ExecuteReader();
+            reader.Read();
+            if (int.TryParse(reader.GetString(0), out var result)) 
+                bananaSize = result;
+
+            return bananaSize;
+        }
+
+        public void IncreaseFirstViewerTimes(string nickname)
+        {
+            var clearName = CleanNickname(nickname);
+
+            using var connection = new SqliteConnection(BasePath);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = $"UPDATE Money SET first_viewer_times = COALESCE(first_viewer_times, 0) + 1 WHERE nick = $nick";
+            command.Parameters.AddWithValue("$nick", clearName);
+            command.ExecuteNonQuery();
+        }
     }
 }

@@ -3,8 +3,10 @@ using StriBot.Application.Bot.Enums;
 using StriBot.Application.Commands.Enums;
 using StriBot.Application.Commands.Extensions;
 using StriBot.Application.Commands.Models;
+using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
+using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 
 namespace StriBot.Application.Commands.Handlers
@@ -14,9 +16,17 @@ namespace StriBot.Application.Commands.Handlers
         public string TextReminder { get; set; } = string.Empty;
         private string _firstViewer;
         private Platform _platform;
+        private readonly IDataBase _dataBase;
+        private readonly Currency _currency;
+
+        public RememberHandler(IDataBase dataBase, Currency currency)
+        {
+            _dataBase = dataBase;
+            _currency = currency;
+        }
 
         public Dictionary<string, Command> CreateCommands()
-            => new Dictionary<string, Command>() { CreateRemindCommand() };
+            => new Dictionary<string, Command> { CreateRemindCommand() };
 
         private Command CreateRemindCommand()
         {
@@ -45,6 +55,12 @@ namespace StriBot.Application.Commands.Handlers
         }
 
         public void SetFirstViewer(string name)
-            => _firstViewer = name;
+        {
+            _dataBase.AddMoney(name, 5);
+            _dataBase.IncreaseFirstViewerTimes(name);
+            var firstViewerTimes = _dataBase.GetFirstViewerTimes(name);
+            EventContainer.Message($"{name} первый зритель трансляции! Получил награду в {firstViewerTimes}-й раз!", Platform.Twitch);
+            _firstViewer = name;
+        }
     }
 }
