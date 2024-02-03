@@ -21,7 +21,7 @@ namespace StriBot.Application.Bot
                 {
                     ClientId = _twitchInfo.ChannelClientId,
                     AccessToken = _twitchInfo.ChannelAccessToken
-                },
+                }
             };
         }
 

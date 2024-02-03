@@ -16,36 +16,13 @@ namespace StriBot.Application.Bot
 {
     public class TwitchBot
     {
-        private readonly TwitchClient _twitchClient;
         private readonly ITwitchInfo _twitchInfo;
-        private readonly TwitchPubSub _twitchPub;
+        private TwitchClient _twitchClient;
+        private TwitchPubSub _twitchPub;
 
         public TwitchBot(ITwitchInfo twitchInfo)
         {
             _twitchInfo = twitchInfo;
-
-            var connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, _twitchInfo.BotAccessToken);
-
-            _twitchClient = new TwitchClient();
-            _twitchClient.Initialize(connectionCredentials, _twitchInfo.Channel);
-            _twitchClient.OnChatCommandReceived += OnChatCommandReceived;
-            _twitchClient.OnWhisperCommandReceived += OnWhisperCommandReceived;
-            _twitchClient.OnJoinedChannel += OnJoinedChannel;
-            _twitchClient.OnNewSubscriber += OnNewSubscriber;
-            _twitchClient.OnReSubscriber += OnReSubscriber;
-            _twitchClient.OnGiftedSubscription += OnGiftedSubscription;
-            _twitchClient.OnRaidNotification += OnRaidNotification;
-            _twitchClient.OnMessageReceived += OnMessageReceived;
-
-            _twitchPub = new TwitchPubSub();
-            _twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected;
-            _twitchPub.OnListenResponse += TwitchPubOnOnListenResponse;
-            _twitchPub.OnChannelPointsRewardRedeemed += TwitchPubOnOnChannelPointsRewardRedeemed;
-
-            _twitchPub.ListenToChannelPoints(_twitchInfo.ChannelId);
-            _twitchPub.Connect();
-
-            EventContainer.SendMessage += SendMessage;
         }
 
         private static void TwitchPubOnOnListenResponse(object sender, OnListenResponseArgs e)
@@ -66,16 +43,41 @@ namespace StriBot.Application.Bot
             });
 
         public void Connect()
-        { 
+        {
+            if (_twitchClient?.IsConnected == true)
+            {
+                EventContainer.SendMessage -= SendMessage;
+                _twitchClient.Disconnect();
+            }
+
+            _twitchClient = new TwitchClient();
+            _twitchClient.OnChatCommandReceived += OnChatCommandReceived;
+            _twitchClient.OnWhisperCommandReceived += OnWhisperCommandReceived;
+            _twitchClient.OnJoinedChannel += OnJoinedChannel;
+            _twitchClient.OnNewSubscriber += OnNewSubscriber;
+            _twitchClient.OnReSubscriber += OnReSubscriber;
+            _twitchClient.OnGiftedSubscription += OnGiftedSubscription;
+            _twitchClient.OnRaidNotification += OnRaidNotification;
+            _twitchClient.OnMessageReceived += OnMessageReceived;
+
+            var connectionCredentials = new ConnectionCredentials(_twitchInfo.BotName, 
+                _twitchInfo.BotAccessToken);
+            _twitchClient.Initialize(connectionCredentials, _twitchInfo.Channel);
             _twitchClient.Connect();
+
+            _twitchPub = new TwitchPubSub();
+            _twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected;
+            _twitchPub.OnListenResponse += TwitchPubOnOnListenResponse;
+            _twitchPub.OnChannelPointsRewardRedeemed += TwitchPubOnOnChannelPointsRewardRedeemed;
+
+            _twitchPub.ListenToChannelPoints(_twitchInfo.ChannelId);
             _twitchPub.Connect();
+
+            EventContainer.SendMessage += SendMessage;
         }
 
         public bool IsConnected()
             => _twitchClient.IsConnected;
-
-        public void Disconnect()
-            => _twitchClient.Disconnect();
 
         private void SendMessage(Platform[] platforms, string message)
         {

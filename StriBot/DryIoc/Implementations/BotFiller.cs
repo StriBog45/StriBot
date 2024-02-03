@@ -1,4 +1,5 @@
 ﻿using DryIoc;
+using StriBot.Application.Authorization;
 using StriBot.Application.Bot;
 using StriBot.Application.Bot.Interfaces;
 using StriBot.Application.FileManager;
@@ -15,7 +16,8 @@ namespace StriBot.DryIoc.Implementations
             container.Register<SettingsFileManager>(Reuse.Singleton);
             container.Register<ChatBot>(Reuse.Singleton);
             container.Register<TwitchBot>(Reuse.Singleton);
-            container.Register<TwitchApiClient>(Reuse.Singleton);
+            container.Register<TwitchApiClient>();
+            container.Register<TwitchAuthorization>();
             container.Register<RepeatMessagesHandler>(Reuse.Singleton);
         }
     }

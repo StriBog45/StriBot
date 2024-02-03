@@ -1,4 +1,7 @@
-﻿namespace StriBot.Application.Bot.Interfaces
+﻿using TwitchLib.Api.Auth;
+using TwitchLib.Api.Helix.Models.Users.GetUsers;
+
+namespace StriBot.Application.Bot.Interfaces
 {
     public interface ITwitchInfo
     {
@@ -13,5 +16,9 @@
         string ChannelClientId { get; }
 
         string ChannelId { get; }
+
+        void SetChannel(AuthCodeResponse authCodeResponse, User streamer);
+
+        void SetBot(AuthCodeResponse authCodeResponse, User userBot);
     }
 }

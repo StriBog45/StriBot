@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new System.Windows.Forms.Panel();
+            buttonAuth = new System.Windows.Forms.Button();
             linkLabel1 = new System.Windows.Forms.LinkLabel();
             pictureBox1 = new System.Windows.Forms.PictureBox();
             panel2 = new System.Windows.Forms.Panel();
@@ -133,7 +134,7 @@
             label24 = new System.Windows.Forms.Label();
             textBoxRaffle = new System.Windows.Forms.TextBox();
             timer1 = new System.Windows.Forms.Timer(components);
-            buttonAuth = new System.Windows.Forms.Button();
+            buttonAuthBot = new System.Windows.Forms.Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -159,6 +160,7 @@
             // panel1
             // 
             panel1.BackColor = System.Drawing.Color.Red;
+            panel1.Controls.Add(buttonAuthBot);
             panel1.Controls.Add(buttonAuth);
             panel1.Controls.Add(linkLabel1);
             panel1.Controls.Add(pictureBox1);
@@ -168,6 +170,17 @@
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(234, 594);
             panel1.TabIndex = 0;
+            // 
+            // buttonAuth
+            // 
+            buttonAuth.Location = new System.Drawing.Point(13, 395);
+            buttonAuth.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            buttonAuth.Name = "buttonAuth";
+            buttonAuth.Size = new System.Drawing.Size(213, 27);
+            buttonAuth.TabIndex = 16;
+            buttonAuth.Text = "Авторизовать канал";
+            buttonAuth.UseVisualStyleBackColor = true;
+            buttonAuth.Click += buttonAuth_Click;
             // 
             // linkLabel1
             // 
@@ -1285,16 +1298,16 @@
             timer1.Interval = 60000;
             timer1.Tick += timer1_Tick;
             // 
-            // buttonAuth
+            // buttonAuthBot
             // 
-            buttonAuth.Location = new System.Drawing.Point(49, 395);
-            buttonAuth.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            buttonAuth.Name = "buttonAuth";
-            buttonAuth.Size = new System.Drawing.Size(126, 27);
-            buttonAuth.TabIndex = 16;
-            buttonAuth.Text = "Авторизоваться";
-            buttonAuth.UseVisualStyleBackColor = true;
-            buttonAuth.Click += buttonAuth_Click;
+            buttonAuthBot.Location = new System.Drawing.Point(13, 428);
+            buttonAuthBot.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            buttonAuthBot.Name = "buttonAuthBot";
+            buttonAuthBot.Size = new System.Drawing.Size(213, 27);
+            buttonAuthBot.TabIndex = 16;
+            buttonAuthBot.Text = "Авторизовать бота";
+            buttonAuthBot.UseVisualStyleBackColor = true;
+            buttonAuthBot.Click += buttonAuthBot_Click;
             // 
             // Form1
             // 
@@ -1450,6 +1463,7 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox textBoxGiveawayPrice;
         private System.Windows.Forms.Button buttonAuth;
+        private System.Windows.Forms.Button buttonAuthBot;
     }
 }
 

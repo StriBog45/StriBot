@@ -22,6 +22,9 @@ namespace StriBot.Application.Authorization
             return await OnRequest();
         }
 
+        public void Stop()
+            => _listener.Stop();
+
         private async Task<AuthorizationModel> OnRequest()
         {
             while (_listener.IsListening)
@@ -36,6 +39,7 @@ namespace StriBot.Application.Authorization
                     {
                         await writer.WriteLineAsync("Authorization started! Check your application!");
                         await writer.FlushAsync();
+
                         return new AuthorizationModel(listenerRequest.QueryString["code"]);
                     }
 
