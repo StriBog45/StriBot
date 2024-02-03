@@ -6,7 +6,6 @@ using StriBot.Application.Commands.Models;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
-using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 
 namespace StriBot.Application.Commands.Handlers
@@ -17,12 +16,10 @@ namespace StriBot.Application.Commands.Handlers
         private string _firstViewer;
         private Platform _platform;
         private readonly IDataBase _dataBase;
-        private readonly Currency _currency;
 
-        public RememberHandler(IDataBase dataBase, Currency currency)
+        public RememberHandler(IDataBase dataBase)
         {
             _dataBase = dataBase;
-            _currency = currency;
         }
 
         public Dictionary<string, Command> CreateCommands()

@@ -73,7 +73,6 @@ namespace StriBot.Application.Bot
             _dataBase = dataBase;
             _configuration = configuration;
             _repeatMessagesHandler = repeatMessagesHandler;
-            var testCustomCommands = _configuration.GetSection("ChannelSettings").GetValue<string>("SomeKey");
 
             EventContainer.CommandReceived += OnChatCommandReceived;
             EventContainer.PlatformEventReceived += OnPlatformEventReceived;
@@ -115,7 +114,7 @@ namespace StriBot.Application.Bot
                     break;
                 case PlatformEventType.NewSubscription:
                 case PlatformEventType.ReSubscription:
-                    Subsctiption(platformEventInfo);
+                    Subscription(platformEventInfo);
                     break;
                 case PlatformEventType.Message:
                     _currencyBaseHandler.ReceivedMessage(platformEventInfo.UserName);
@@ -124,7 +123,7 @@ namespace StriBot.Application.Bot
             }
         }
 
-        private void Subsctiption(PlatformEventInfo platformEventInfo)
+        private void Subscription(PlatformEventInfo platformEventInfo)
         {
             EventContainer.Message($"{platformEventInfo.UserName} подписался! PogChamp Срочно плед этому господину! А пока возьми {PriceList.ToysForSub} {_currency.Incline(PriceList.ToysForSub, true)} :)", platformEventInfo.Platform);
             _dataBase.AddMoney(platformEventInfo.UserName, PriceList.ToysForSub);
@@ -158,7 +157,7 @@ namespace StriBot.Application.Bot
             _timer++;
         }
 
-        public void Connect(Platform[] platforms)
+        public void Connect(IEnumerable<Platform> platforms)
         {
             foreach (var platform in platforms)
             {
@@ -174,7 +173,7 @@ namespace StriBot.Application.Bot
                 _speaker.Say("Бот подключился");
         }
 
-        internal void Reconnect(Platform[] platforms)
+        internal void Reconnect(IEnumerable<Platform> platforms)
         {
             foreach (var platform in platforms)
             {
@@ -206,7 +205,7 @@ namespace StriBot.Application.Bot
             }
         }
 
-        private bool IsAccessAllowed(Role role, CommandInfo commandInfo)
+        private static bool IsAccessAllowed(Role role, CommandInfo commandInfo)
         {
             var result = true;
 

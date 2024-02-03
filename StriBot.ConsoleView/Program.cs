@@ -15,90 +15,89 @@ using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Speaker.Interfaces;
 using StriBot.ConsoleView.Speakers.Implementations;
 
-namespace StriBot.ConsoleView
+namespace StriBot.ConsoleView;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        var serviceProvider = new ServiceCollection()
+            .AddLogging()
+            // BotFiller
+            .AddSingleton<ITwitchInfo, TwitchInfo>()
+            .AddSingleton<SettingsFileManager>()
+            .AddSingleton<ChatBot>()
+            .AddSingleton<TwitchBot>()
+            .AddSingleton<TwitchApiClient>()
+
+            // BotHandlersFiller
+            .AddSingleton<RewardHandler>()
+
+            // CommandCommonFunctionsFiller
+            .AddTransient<ReadyMadePhrases>()
+
+            // CommandsFiller
+            .AddSingleton<MMRHandler>()
+            .AddSingleton<OrderHandler>()
+            .AddSingleton<CurrencyBaseHandler>()
+            .AddSingleton<HalberdHandler>()
+            .AddSingleton<DuelHandler>()
+            .AddSingleton<CustomCommandHandler>()
+            .AddSingleton<RandomAnswerHandler>()
+            .AddSingleton<BurgerHandler>()
+            .AddSingleton<BetsHandler>()
+            .AddSingleton<ProgressHandler>()
+            .AddSingleton<RememberHandler>()
+            .AddSingleton<RaffleHandler>()
+            .AddSingleton<AnswerOptions>()
+
+            // DataBase
+            .AddSingleton<IDataBase, DataBase.Implementations.DataBase>()
+
+            // LanguageFiller
+            .AddSingleton<Currency>()
+            .AddSingleton<Minute>()
+
+            // Speaker Filler
+            .AddSingleton<ISpeaker, SpeakerEmpty>()
+            .BuildServiceProvider();
+
+        var logger = serviceProvider.GetService<ILoggerFactory>()
+            .CreateLogger<Program>();
+        logger.LogDebug("Starting application");
+
+        //do the actual work here
+        var chatBot = serviceProvider.GetService<ChatBot>();
+        chatBot.Connect(new [] {Platform.Twitch});
+
+        logger.LogDebug("Application started!");
+
+        StartConsoleMenu(serviceProvider);
+    }
+
+    private static void StartConsoleMenu(ServiceProvider serviceProvider)
+    {
+        Console.WriteLine("StriBot started!");
+        Console.WriteLine();
+        WriteHelpMenu();
+
+        while (true)
         {
-            var serviceProvider = new ServiceCollection()
-                .AddLogging()
-                // BotFiller
-                .AddSingleton<ITwitchInfo, TwitchInfo>()
-                .AddSingleton<SettingsFileManager>()
-                .AddSingleton<ChatBot>()
-                .AddSingleton<TwitchBot>()
-                .AddSingleton<TwitchApiClient>()
-
-                // BotHandlersFiller
-                .AddSingleton<RewardHandler>()
-
-                // CommandCommonFunctionsFiller
-                .AddTransient<ReadyMadePhrases>()
-
-                // CommandsFiller
-                .AddSingleton<MMRHandler>()
-                .AddSingleton<OrderHandler>()
-                .AddSingleton<CurrencyBaseHandler>()
-                .AddSingleton<HalberdHandler>()
-                .AddSingleton<DuelHandler>()
-                .AddSingleton<CustomCommandHandler>()
-                .AddSingleton<RandomAnswerHandler>()
-                .AddSingleton<BurgerHandler>()
-                .AddSingleton<BetsHandler>()
-                .AddSingleton<ProgressHandler>()
-                .AddSingleton<RememberHandler>()
-                .AddSingleton<RaffleHandler>()
-                .AddSingleton<AnswerOptions>()
-
-                // DataBase
-                .AddSingleton<IDataBase, DataBase.Implementations.DataBase>()
-
-                // LanguageFiller
-                .AddSingleton<Currency>()
-                .AddSingleton<Minute>()
-
-                // Speaker Filler
-                .AddSingleton<ISpeaker, SpeakerEmpty>()
-                .BuildServiceProvider();
-
-            var logger = serviceProvider.GetService<ILoggerFactory>()
-                .CreateLogger<Program>();
-            logger.LogDebug("Starting application");
-
-            //do the actual work here
-            var chatBot = serviceProvider.GetService<ChatBot>();
-            chatBot.Connect(new [] {Platform.Twitch});
-
-            logger.LogDebug("Application started!");
-
-            StartConsoleMenu(serviceProvider);
+            var command = Console.ReadLine()?.ToLower();
+            switch (command)
+            {
+                case "help":
+                    WriteHelpMenu();
+                    break;
+                case "exit":
+                    return;
+            }
         }
 
-        private static void StartConsoleMenu(ServiceProvider serviceProvider)
+        static void WriteHelpMenu()
         {
-            Console.WriteLine("StriBot started!");
-            Console.WriteLine();
-            WriteHelpMenu();
-
-            while (true)
-            {
-                var command = Console.ReadLine()?.ToLower();
-                switch (command)
-                {
-                    case "help":
-                        WriteHelpMenu();
-                        break;
-                    case "exit":
-                        return;
-                }
-            }
-
-            static void WriteHelpMenu()
-            {
-                Console.WriteLine("Help - Write console commands");
-                Console.WriteLine("Exit - Stop application");
-            }
+            Console.WriteLine("Help - Write console commands");
+            Console.WriteLine("Exit - Stop application");
         }
     }
 }

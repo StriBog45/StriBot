@@ -169,5 +169,12 @@ namespace StriBot.ConsoleView.DataBase.Implementations
 
         public List<BananaInfo> GetTopBananas()
             => new();
+
+        public int GetFirstViewerTimes(string nickname)
+            => 0;
+
+        public void IncreaseFirstViewerTimes(string nickname)
+        {
+        }
     }
 }

@@ -48,6 +48,7 @@ namespace StriBot.Application.Bot
             {
                 EventContainer.SendMessage -= SendMessage;
                 _twitchClient.Disconnect();
+                _twitchPub.Disconnect();
             }
 
             _twitchClient = new TwitchClient();
