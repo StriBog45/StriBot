@@ -13,14 +13,16 @@ namespace StriBot.Application.FileManager
         public string BotName { get; private set; }
         public string BotAccessToken { get; private set; }
 
-        public void SetChannel(AuthCodeResponse authCodeResponse, User streamer)
+        public void SetChannelToken(AuthCodeResponse authCodeResponse)
         {
             ChannelAccessToken = authCodeResponse.AccessToken;
-            BotAccessToken = authCodeResponse.AccessToken;
+            BotAccessToken = BotAccessToken ?? authCodeResponse.AccessToken;
+        }
+
+        public void SetStreamerInfo(User streamer)
+        {
             Channel = streamer.DisplayName;
             ChannelId = streamer.Id;
-
-            BotAccessToken = BotAccessToken ?? authCodeResponse.AccessToken;
             BotName = BotName ?? streamer.DisplayName;
         }
 

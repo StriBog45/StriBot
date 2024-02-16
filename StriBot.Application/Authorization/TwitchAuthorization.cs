@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using StriBot.Application.Bot;
 using TwitchLib.Api.Auth;
-using TwitchLib.Api.Helix.Models.Users.GetUsers;
 
 namespace StriBot.Application.Authorization
 {
@@ -9,14 +8,14 @@ namespace StriBot.Application.Authorization
     {
         private const string TwitchRedirectUri = "http://localhost:5278/oauth/";
 
-        private readonly TwitchApiClient _twitchApi;
+        private readonly TwitchApiClient _twitchApiClient;
 
-        public TwitchAuthorization(TwitchApiClient twitchApi)
+        public TwitchAuthorization(TwitchApiClient twitchApiClient)
         {
-            _twitchApi = twitchApi;
+            _twitchApiClient = twitchApiClient;
         }
 
-        public async Task<(AuthCodeResponse, User)> StartAuth()
+        public async Task<AuthCodeResponse> StartAuth()
         {
             var server = new WebServer(TwitchRedirectUri);
             var authorizationModel = await server.Listen();
@@ -24,13 +23,12 @@ namespace StriBot.Application.Authorization
             server.Stop();
 
             // exchange auth code for oauth access/refresh
-            var authCodeResponse = await _twitchApi.GetAccessToken(authorizationModel.Code, TwitchRedirectUri);
-            var user = await _twitchApi.GetAuthorizedUser();
+            var authCodeResponse = await _twitchApiClient.GetAccessToken(authorizationModel.Code, TwitchRedirectUri);
 
-            return (authCodeResponse, user);
+            return authCodeResponse;
         }
 
         public string GetAuthorizationCodeUrl()
-            => _twitchApi.GetAuthorizationCodeUrl(TwitchRedirectUri);
+            => _twitchApiClient.GetAuthorizationCodeUrl(TwitchRedirectUri);
     }
 }

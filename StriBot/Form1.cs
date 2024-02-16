@@ -411,9 +411,12 @@ public partial class Form1 : Form
 
         try
         {
-            var (authCodeResponse, streamer) = await _twitchAuthorization.StartAuth();
-            _twitchInfo.SetChannel(authCodeResponse, streamer);
+            var authCodeResponse = await _twitchAuthorization.StartAuth();
+            _twitchInfo.SetChannelToken(authCodeResponse);
             _twitchApiClient.UpdateAccessToken();
+
+            var streamer = await _twitchApiClient.GetAuthorizedUser();
+            _twitchInfo.SetStreamerInfo(streamer);
 
             _chatBot.Connect(new[] { Platform.Twitch });
         }
@@ -431,8 +434,9 @@ public partial class Form1 : Form
 
         try
         {
-            var (authCodeResponse, userBot) = await _twitchAuthorization.StartAuth();
-            _twitchInfo.SetBot(authCodeResponse, userBot);
+            var authCodeResponse = await _twitchAuthorization.StartAuth();
+            var botUser = await _twitchApiClient.GetAuthorizedUser();
+            _twitchInfo.SetBot(authCodeResponse, botUser);
             _chatBot.Connect(new[] { Platform.Twitch });
         }
         catch (Exception exception)

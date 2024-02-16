@@ -16,7 +16,9 @@ namespace StriBot.Application.Bot.Interfaces
 
         string ChannelId { get; }
 
-        void SetChannel(AuthCodeResponse authCodeResponse, User streamer);
+        void SetChannelToken(AuthCodeResponse authCodeResponse);
+
+        void SetStreamerInfo(User streamer);
 
         void SetBot(AuthCodeResponse authCodeResponse, User userBot);
 
