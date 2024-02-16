@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new System.Windows.Forms.Panel();
+            buttonAuthBot = new System.Windows.Forms.Button();
             buttonAuth = new System.Windows.Forms.Button();
             linkLabel1 = new System.Windows.Forms.LinkLabel();
             pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -134,7 +135,13 @@
             label24 = new System.Windows.Forms.Label();
             textBoxRaffle = new System.Windows.Forms.TextBox();
             timer1 = new System.Windows.Forms.Timer(components);
-            buttonAuthBot = new System.Windows.Forms.Button();
+            tabPage5 = new System.Windows.Forms.TabPage();
+            groupBox10 = new System.Windows.Forms.GroupBox();
+            textBoxRewardPrice = new System.Windows.Forms.TextBox();
+            textBoxRewardName = new System.Windows.Forms.TextBox();
+            buttonRewardCreate = new System.Windows.Forms.Button();
+            label26 = new System.Windows.Forms.Label();
+            label27 = new System.Windows.Forms.Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -155,6 +162,8 @@
             groupBox6.SuspendLayout();
             groupBox5.SuspendLayout();
             tabPage4.SuspendLayout();
+            tabPage5.SuspendLayout();
+            groupBox10.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -170,6 +179,17 @@
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(234, 594);
             panel1.TabIndex = 0;
+            // 
+            // buttonAuthBot
+            // 
+            buttonAuthBot.Location = new System.Drawing.Point(13, 428);
+            buttonAuthBot.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            buttonAuthBot.Name = "buttonAuthBot";
+            buttonAuthBot.Size = new System.Drawing.Size(213, 27);
+            buttonAuthBot.TabIndex = 16;
+            buttonAuthBot.Text = "Авторизовать бота";
+            buttonAuthBot.UseVisualStyleBackColor = true;
+            buttonAuthBot.Click += buttonAuthBot_Click;
             // 
             // buttonAuth
             // 
@@ -223,6 +243,7 @@
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage4);
+            tabControl1.Controls.Add(tabPage5);
             tabControl1.Location = new System.Drawing.Point(7, 14);
             tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabControl1.Name = "tabControl1";
@@ -1298,16 +1319,80 @@
             timer1.Interval = 60000;
             timer1.Tick += timer1_Tick;
             // 
-            // buttonAuthBot
+            // tabPage5
             // 
-            buttonAuthBot.Location = new System.Drawing.Point(13, 428);
-            buttonAuthBot.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            buttonAuthBot.Name = "buttonAuthBot";
-            buttonAuthBot.Size = new System.Drawing.Size(213, 27);
-            buttonAuthBot.TabIndex = 16;
-            buttonAuthBot.Text = "Авторизовать бота";
-            buttonAuthBot.UseVisualStyleBackColor = true;
-            buttonAuthBot.Click += buttonAuthBot_Click;
+            tabPage5.Controls.Add(groupBox10);
+            tabPage5.Location = new System.Drawing.Point(4, 24);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Size = new System.Drawing.Size(642, 539);
+            tabPage5.TabIndex = 5;
+            tabPage5.Text = "Награды за баллы";
+            tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // groupBox10
+            // 
+            groupBox10.Controls.Add(label27);
+            groupBox10.Controls.Add(label26);
+            groupBox10.Controls.Add(textBoxRewardPrice);
+            groupBox10.Controls.Add(textBoxRewardName);
+            groupBox10.Controls.Add(buttonRewardCreate);
+            groupBox10.Location = new System.Drawing.Point(210, 148);
+            groupBox10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            groupBox10.Name = "groupBox10";
+            groupBox10.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            groupBox10.Size = new System.Drawing.Size(230, 124);
+            groupBox10.TabIndex = 10;
+            groupBox10.TabStop = false;
+            groupBox10.Text = "Создать новую награду";
+            // 
+            // textBoxRewardPrice
+            // 
+            textBoxRewardPrice.Location = new System.Drawing.Point(72, 53);
+            textBoxRewardPrice.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBoxRewardPrice.Name = "textBoxRewardPrice";
+            textBoxRewardPrice.Size = new System.Drawing.Size(150, 23);
+            textBoxRewardPrice.TabIndex = 0;
+            textBoxRewardPrice.Text = "1000";
+            // 
+            // textBoxRewardName
+            // 
+            textBoxRewardName.Location = new System.Drawing.Point(72, 22);
+            textBoxRewardName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBoxRewardName.Name = "textBoxRewardName";
+            textBoxRewardName.Size = new System.Drawing.Size(150, 23);
+            textBoxRewardName.TabIndex = 0;
+            textBoxRewardName.Text = "УВЕЛМЧЕНИЕ БАНАНА";
+            // 
+            // buttonRewardCreate
+            // 
+            buttonRewardCreate.Location = new System.Drawing.Point(134, 91);
+            buttonRewardCreate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            buttonRewardCreate.Name = "buttonRewardCreate";
+            buttonRewardCreate.Size = new System.Drawing.Size(88, 27);
+            buttonRewardCreate.TabIndex = 2;
+            buttonRewardCreate.Text = "Создать";
+            buttonRewardCreate.UseVisualStyleBackColor = true;
+            buttonRewardCreate.Click += buttonRewardCreate_Click;
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Location = new System.Drawing.Point(8, 25);
+            label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label26.Name = "label26";
+            label26.Size = new System.Drawing.Size(59, 15);
+            label26.TabIndex = 3;
+            label26.Text = "Название";
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Location = new System.Drawing.Point(8, 53);
+            label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label27.Name = "label27";
+            label27.Size = new System.Drawing.Size(35, 15);
+            label27.TabIndex = 3;
+            label27.Text = "Цена";
             // 
             // Form1
             // 
@@ -1354,6 +1439,9 @@
             groupBox5.PerformLayout();
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            tabPage5.ResumeLayout(false);
+            groupBox10.ResumeLayout(false);
+            groupBox10.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1464,6 +1552,13 @@
         private System.Windows.Forms.TextBox textBoxGiveawayPrice;
         private System.Windows.Forms.Button buttonAuth;
         private System.Windows.Forms.Button buttonAuthBot;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.TextBox textBoxRewardPrice;
+        private System.Windows.Forms.TextBox textBoxRewardName;
+        private System.Windows.Forms.Button buttonRewardCreate;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label26;
     }
 }
 

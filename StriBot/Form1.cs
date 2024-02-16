@@ -440,4 +440,13 @@ public partial class Form1 : Form
             MessageBox.Show(exception.ToString(), "Ошибка");
         }
     }
+
+    private async void buttonRewardCreate_Click(object sender, EventArgs e)
+    {
+        int.TryParse(textBoxRewardPrice.Text, out var price);
+
+        await _twitchApiClient.CreateReward(textBoxRewardName.Text, price);
+
+        MessageBox.Show($"Награда \"{textBoxRewardName.Text}\" создана!", "Сообщение");
+    }
 }

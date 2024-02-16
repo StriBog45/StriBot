@@ -4,6 +4,7 @@ using StriBot.Application.Bot.Interfaces;
 using TwitchLib.Api;
 using TwitchLib.Api.Auth;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Helix.Models.ChannelPoints.CreateCustomReward;
 using TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomRewardRedemptionStatus;
 using TwitchLib.Api.Helix.Models.Users.GetUsers;
 
@@ -120,5 +121,14 @@ namespace StriBot.Application.Bot
 
         public void UpdateAccessToken()
             => _twitchApi.Settings.AccessToken = _twitchInfo.ChannelAccessToken;
+
+        public async Task CreateReward(string name, int price)
+            => await _twitchApi.Helix.ChannelPoints.CreateCustomRewardsAsync(_twitchInfo.ChannelId,
+                new CreateCustomRewardsRequest
+                {
+                    Title = name,
+                    Cost = price,
+                    IsEnabled = false
+                });
     }
 }
