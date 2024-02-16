@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using StriBot.Application.Bot.Enums;
 using StriBot.Application.Bot.Handlers;
 using StriBot.Application.Commands.Enums;
@@ -36,7 +35,6 @@ namespace StriBot.Application.Bot
         private readonly RewardHandler _rewardHandler;
         private readonly IDataBase _dataBase;
         private readonly RaffleHandler _raffleHandler;
-        private readonly IConfiguration _configuration;
         private readonly RepeatMessagesHandler _repeatMessagesHandler;
 
         public ChatBot(ISpeaker speaker, 
@@ -56,7 +54,6 @@ namespace StriBot.Application.Bot
             RandomAnswerHandler randomAnswerHandler,
             OrderHandler orderHandler,
             ProgressHandler progressHandler,
-            IConfiguration configuration,
             RepeatMessagesHandler repeatMessagesHandler,
             BananaHandler bananaHandler)
         {
@@ -71,7 +68,6 @@ namespace StriBot.Application.Bot
             _raffleHandler = raffleHandler;
             _rewardHandler = rewardHandler;
             _dataBase = dataBase;
-            _configuration = configuration;
             _repeatMessagesHandler = repeatMessagesHandler;
 
             EventContainer.CommandReceived += OnChatCommandReceived;

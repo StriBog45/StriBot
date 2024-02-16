@@ -8,7 +8,7 @@ namespace StriBot.Application.FileManager
     {
         private const string FileName = "UserSettings";
         private readonly string _fileNameWithExtension = $"{FileName}.bin";
-        private CurrencyFile _currencyFile;
+        private UserSettings _userSettings;
 
         public SettingsFileManager()
         {
@@ -21,27 +21,30 @@ namespace StriBot.Application.FileManager
             {
                 using (var file = File.OpenRead(_fileNameWithExtension))
                 {
-                    _currencyFile = Serializer.Deserialize<CurrencyFile>(file);
+                    _userSettings = Serializer.Deserialize<UserSettings>(file);
                 }
             }
             else
             {
-                _currencyFile = new CurrencyFile();
+                _userSettings = new UserSettings();
             }
         }
 
-        public void SaveSettings()
+        public void SaveSettings(string selectedCurrency,UserCredentials userCredentials)
         {
+            _userSettings.CurrencyName = selectedCurrency;
+            _userSettings.UserCredentials = userCredentials;
+
             using (var file = File.Create(_fileNameWithExtension))
             {
-                Serializer.Serialize(file, _currencyFile);
+                Serializer.Serialize(file, _userSettings);
             }
         }
 
         public string CurrencyName
-            => _currencyFile.CurrencyName;
+            => _userSettings.CurrencyName;
 
-        public void SetCurrencyName(string name)
-            => _currencyFile.CurrencyName = name;
+        public UserCredentials GetUserCredentials()
+            => _userSettings.UserCredentials;
     }
 }

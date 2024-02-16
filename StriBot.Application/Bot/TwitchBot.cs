@@ -44,6 +44,12 @@ namespace StriBot.Application.Bot
 
         public void Connect()
         {
+            if (string.IsNullOrEmpty(_twitchInfo.Channel))
+            {
+                _twitchClient = new TwitchClient();
+                return;
+            }
+
             if (_twitchClient?.IsConnected == true)
             {
                 EventContainer.SendMessage -= SendMessage;

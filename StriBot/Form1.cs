@@ -14,6 +14,7 @@ using StriBot.Application.Commands.Handlers.Raffle;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.FileManager;
+using StriBot.Application.FileManager.Models;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Localization.Models;
 using StriBot.Application.Platforms.Enums;
@@ -38,15 +39,19 @@ public partial class Form1 : Form
     private readonly IDataBase _dataBase;
     private readonly ITwitchInfo _twitchInfo;
     private readonly TwitchAuthorization _twitchAuthorization;
+    private readonly TwitchApiClient _twitchApiClient;
 
     public Form1()
     {
-
         InitializeComponent();
+
+        _settingsFileManager = GlobalContainer.Default.Resolve<SettingsFileManager>();
+        _twitchInfo = GlobalContainer.Default.Resolve<ITwitchInfo>();
+        _twitchInfo.Set(_settingsFileManager.GetUserCredentials());
 
         _chatBot = GlobalContainer.Default.Resolve<ChatBot>();
         _chatBot.Connect(new[] { Platform.Twitch });
-        _settingsFileManager = GlobalContainer.Default.Resolve<SettingsFileManager>();
+
         _currency = GlobalContainer.Default.Resolve<Currency>();
         _progressHandler = GlobalContainer.Default.Resolve<ProgressHandler>();
         _progressHandler.SetConstructorSettings(BossUpdate, DeathUpdate);
@@ -58,7 +63,7 @@ public partial class Form1 : Form
         _raffleHandler = GlobalContainer.Default.Resolve<RaffleHandler>();
         _dataBase = GlobalContainer.Default.Resolve<IDataBase>();
         _orderHandler.SafeCallConnector(UpdateOrderList);
-        _twitchInfo = GlobalContainer.Default.Resolve<ITwitchInfo>();
+        _twitchApiClient = GlobalContainer.Default.Resolve<TwitchApiClient>();
         _twitchAuthorization = GlobalContainer.Default.Resolve<TwitchAuthorization>();
 
         // Для вызова 0-й минуты
@@ -73,8 +78,8 @@ public partial class Form1 : Form
         if (!string.IsNullOrEmpty(_settingsFileManager.CurrencyName))
         {
             comboBoxCurrency.SelectedItem = _settingsFileManager.CurrencyName;
+            LoadCurrency();
         }
-        LoadCurrency();
     }
 
     private void LoadCurrency()
@@ -129,8 +134,14 @@ public partial class Form1 : Form
     private void Form1_FormClosed(object sender, FormClosedEventArgs e)
     {
         Reporter.CreateCommands(_chatBot.Commands);
-        _settingsFileManager.SetCurrencyName(comboBoxCurrency.Text);
-        _settingsFileManager.SaveSettings();
+        _settingsFileManager.SaveSettings(comboBoxCurrency.Text, new UserCredentials
+        {
+            Channel = _twitchInfo.Channel,
+            ChannelId = _twitchInfo.ChannelId,
+            ChannelAccessToken = _twitchInfo.ChannelAccessToken,
+            BotName = _twitchInfo.BotName,
+            BotAccessToken = _twitchInfo.BotAccessToken
+        });
     }
 
     private void buttonDistribution_Click(object sender, EventArgs e)
@@ -402,6 +413,8 @@ public partial class Form1 : Form
         {
             var (authCodeResponse, streamer) = await _twitchAuthorization.StartAuth();
             _twitchInfo.SetChannel(authCodeResponse, streamer);
+            _twitchApiClient.UpdateAccessToken();
+
             _chatBot.Connect(new[] { Platform.Twitch });
         }
         catch (Exception exception)
@@ -418,8 +431,8 @@ public partial class Form1 : Form
 
         try
         {
-            var (authCodeResponse, streamer) = await _twitchAuthorization.StartAuth();
-            _twitchInfo.SetBot(authCodeResponse, streamer);
+            var (authCodeResponse, userBot) = await _twitchAuthorization.StartAuth();
+            _twitchInfo.SetBot(authCodeResponse, userBot);
             _chatBot.Connect(new[] { Platform.Twitch });
         }
         catch (Exception exception)

@@ -1,4 +1,5 @@
-﻿using TwitchLib.Api.Auth;
+﻿using StriBot.Application.FileManager.Models;
+using TwitchLib.Api.Auth;
 using TwitchLib.Api.Helix.Models.Users.GetUsers;
 
 namespace StriBot.Application.Bot.Interfaces
@@ -13,12 +14,12 @@ namespace StriBot.Application.Bot.Interfaces
 
         string BotName { get; }
 
-        string ChannelClientId { get; }
-
         string ChannelId { get; }
 
         void SetChannel(AuthCodeResponse authCodeResponse, User streamer);
 
         void SetBot(AuthCodeResponse authCodeResponse, User userBot);
+
+        void Set(UserCredentials userCredentials);
     }
 }
