@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using StriBot.Application.Bot.Enums;
 using StriBot.Application.Commands.Enums;
 using StriBot.Application.Commands.Extensions;
 using StriBot.Application.Commands.Models;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
+using StriBot.Application.Localization;
 
 namespace StriBot.Application.Commands.Handlers
 {
@@ -21,7 +23,8 @@ namespace StriBot.Application.Commands.Handlers
             => new Dictionary<string, Command>
             {
                 GetMySize(),
-                GetTopBananas()
+                GetTopBananas(),
+                SetBananaSize()
             };
 
         private Command GetMySize()
@@ -30,7 +33,7 @@ namespace StriBot.Application.Commands.Handlers
                 {
                     var bananaSize = _dataBase.GetBananaSize(commandInfo.DisplayName);
                     EventContainer.Message($"Твой банан {bananaSize}", commandInfo.Platform);
-                }, CommandType.Info);
+                }, CommandType.Interactive);
 
         private Command GetTopBananas()
             => new Command("topbanana", "Топ бананов",
@@ -47,9 +50,25 @@ namespace StriBot.Application.Commands.Handlers
                     }
 
                     EventContainer.Message(string.Join(", ", places), commandInfo.Platform);
-                }, CommandType.Info);
+                }, new []{"Ник", "Размер"}, CommandType.Interactive);
 
         public void IncreaseBananaSize(string nick)
             => _dataBase.IncreaseBananaSize(nick);
+
+        private Command SetBananaSize()
+        {
+            return new Command("setbanana", "Установить размер банана. Доступно только для владельца канала", Role.Broadcaster, Action, CommandType.Interactive);
+
+            void Action(CommandInfo commandInfo)
+            {
+                if (commandInfo.ArgumentsAsList.Count == 2 && int.TryParse(commandInfo.ArgumentsAsList[1], out var bananaSize))
+                {
+                    _dataBase.SetBananaSize(commandInfo.ArgumentsAsList[0], bananaSize);
+                    EventContainer.Message($"Установлен размер банана {bananaSize} для {commandInfo.ArgumentsAsList[0]}!", commandInfo.Platform);
+                }
+                else
+                    ReadyMadePhrases.IncorrectCommand(commandInfo.Platform);
+            }
+        }
     }
 }

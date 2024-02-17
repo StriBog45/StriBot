@@ -6,6 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\robot.ico</ApplicationIcon>
@@ -37,7 +38,6 @@
     <PackageReference Include="System.AppContext" Version="4.3.0" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Console" Version="4.3.1" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />

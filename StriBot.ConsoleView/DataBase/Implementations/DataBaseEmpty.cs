@@ -30,6 +30,10 @@ namespace StriBot.ConsoleView.DataBase.Implementations
         {
         }
 
+        public void SetBananaSize(string nickname, int bananaSize)
+        {
+        }
+
         public List<BananaInfo> GetTopBananas()
             => new();
 

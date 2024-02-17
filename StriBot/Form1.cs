@@ -247,10 +247,16 @@ public partial class Form1 : Form
     }
 
     private void buttonDeathAdd_Click(object sender, EventArgs e)
-        => _progressHandler.Deaths++;
+    {
+        _progressHandler.Deaths++;
+        DeathUpdate();
+    }
 
     private void buttonDeathReduce_Click(object sender, EventArgs e)
-        => _progressHandler.Deaths--;
+    {
+        _progressHandler.Deaths--;
+        DeathUpdate();
+    }
 
     private void DeathUpdate()
     {

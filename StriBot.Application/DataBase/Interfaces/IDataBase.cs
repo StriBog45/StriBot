@@ -19,6 +19,8 @@ namespace StriBot.Application.DataBase.Interfaces
 
         void IncreaseBananaSize(string nickname);
 
+        void SetBananaSize(string nickname, int bananaSize);
+
         List<BananaInfo> GetTopBananas();
 
         int GetFirstViewerTimes(string nickname);

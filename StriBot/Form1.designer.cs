@@ -134,14 +134,14 @@
             buttonGiveaway = new System.Windows.Forms.Button();
             label24 = new System.Windows.Forms.Label();
             textBoxRaffle = new System.Windows.Forms.TextBox();
-            timer1 = new System.Windows.Forms.Timer(components);
             tabPage5 = new System.Windows.Forms.TabPage();
             groupBox10 = new System.Windows.Forms.GroupBox();
+            label27 = new System.Windows.Forms.Label();
+            label26 = new System.Windows.Forms.Label();
             textBoxRewardPrice = new System.Windows.Forms.TextBox();
             textBoxRewardName = new System.Windows.Forms.TextBox();
             buttonRewardCreate = new System.Windows.Forms.Button();
-            label26 = new System.Windows.Forms.Label();
-            label27 = new System.Windows.Forms.Label();
+            timer1 = new System.Windows.Forms.Timer(components);
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -187,7 +187,7 @@
             buttonAuthBot.Name = "buttonAuthBot";
             buttonAuthBot.Size = new System.Drawing.Size(213, 27);
             buttonAuthBot.TabIndex = 16;
-            buttonAuthBot.Text = "Авторизовать бота";
+            buttonAuthBot.Text = "Авторизовать отдельного бота";
             buttonAuthBot.UseVisualStyleBackColor = true;
             buttonAuthBot.Click += buttonAuthBot_Click;
             // 
@@ -206,7 +206,7 @@
             // 
             linkLabel1.AutoSize = true;
             linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            linkLabel1.Location = new System.Drawing.Point(2, 314);
+            linkLabel1.Location = new System.Drawing.Point(13, 313);
             linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new System.Drawing.Size(196, 46);
@@ -281,6 +281,7 @@
             buttonUnfollowMode.TabIndex = 15;
             buttonUnfollowMode.Text = "UnfollowM";
             buttonUnfollowMode.UseVisualStyleBackColor = true;
+            buttonUnfollowMode.Enabled = false;
             buttonUnfollowMode.Click += buttonUnfollowMode_Click;
             // 
             // buttonFollowMode
@@ -292,6 +293,7 @@
             buttonFollowMode.TabIndex = 15;
             buttonFollowMode.Text = "FollowMode";
             buttonFollowMode.UseVisualStyleBackColor = true;
+            buttonFollowMode.Enabled = false;
             buttonFollowMode.Click += buttonFollowMode_Click;
             // 
             // SubMode
@@ -303,6 +305,7 @@
             SubMode.TabIndex = 15;
             SubMode.Text = "SubMode";
             SubMode.UseVisualStyleBackColor = true;
+            SubMode.Enabled = false;
             SubMode.Click += SubMode_Click;
             // 
             // buttonSmileMode
@@ -314,6 +317,7 @@
             buttonSmileMode.TabIndex = 14;
             buttonSmileMode.Text = "SmileMode";
             buttonSmileMode.UseVisualStyleBackColor = true;
+            buttonSmileMode.Enabled = false;
             buttonSmileMode.Click += buttonSmileMode_Click;
             // 
             // groupBox4
@@ -372,7 +376,7 @@
             TextBoxOptions.Name = "TextBoxOptions";
             TextBoxOptions.Size = new System.Drawing.Size(139, 129);
             TextBoxOptions.TabIndex = 0;
-            TextBoxOptions.Text = "Роллтон\r\nwert2401\r\njokero\r\nгетАкс";
+            TextBoxOptions.Text = "Победит A\r\nПобедит B\r\nПобедит C";
             // 
             // buttonStopBets
             // 
@@ -1313,12 +1317,6 @@
             textBoxRaffle.Size = new System.Drawing.Size(386, 23);
             textBoxRaffle.TabIndex = 0;
             // 
-            // timer1
-            // 
-            timer1.Enabled = true;
-            timer1.Interval = 60000;
-            timer1.Tick += timer1_Tick;
-            // 
             // tabPage5
             // 
             tabPage5.Controls.Add(groupBox10);
@@ -1344,6 +1342,26 @@
             groupBox10.TabIndex = 10;
             groupBox10.TabStop = false;
             groupBox10.Text = "Создать новую награду";
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Location = new System.Drawing.Point(8, 53);
+            label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label27.Name = "label27";
+            label27.Size = new System.Drawing.Size(35, 15);
+            label27.TabIndex = 3;
+            label27.Text = "Цена";
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Location = new System.Drawing.Point(8, 25);
+            label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label26.Name = "label26";
+            label26.Size = new System.Drawing.Size(59, 15);
+            label26.TabIndex = 3;
+            label26.Text = "Название";
             // 
             // textBoxRewardPrice
             // 
@@ -1374,25 +1392,11 @@
             buttonRewardCreate.UseVisualStyleBackColor = true;
             buttonRewardCreate.Click += buttonRewardCreate_Click;
             // 
-            // label26
+            // timer1
             // 
-            label26.AutoSize = true;
-            label26.Location = new System.Drawing.Point(8, 25);
-            label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label26.Name = "label26";
-            label26.Size = new System.Drawing.Size(59, 15);
-            label26.TabIndex = 3;
-            label26.Text = "Название";
-            // 
-            // label27
-            // 
-            label27.AutoSize = true;
-            label27.Location = new System.Drawing.Point(8, 53);
-            label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label27.Name = "label27";
-            label27.Size = new System.Drawing.Size(35, 15);
-            label27.TabIndex = 3;
-            label27.Text = "Цена";
+            timer1.Enabled = true;
+            timer1.Interval = 60000;
+            timer1.Tick += timer1_Tick;
             // 
             // Form1
             // 

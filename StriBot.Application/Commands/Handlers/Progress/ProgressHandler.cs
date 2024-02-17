@@ -52,6 +52,7 @@ namespace StriBot.Application.Commands.Handlers.Progress
             _bossUpdate = bossUpdate;
             _deathUpdate = deathUpdate;
             _bossUpdate();
+            _deathUpdate();
         }
 
         private Command CreateBossesCommand()

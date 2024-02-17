@@ -112,6 +112,20 @@ namespace StriBot.DateBase.Implementations
             command.ExecuteNonQuery();
         }
 
+        public void SetBananaSize(string nickname, int bananaSize)
+        {
+            var clearName = CleanNickname(nickname);
+            
+            using var connection = new SqliteConnection(BasePath);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = $"UPDATE Money SET banana_size = {bananaSize} WHERE nick = $nick";
+            command.Parameters.AddWithValue("$nick", clearName);
+
+            command.ExecuteNonQuery();
+        }
+
         public List<BananaInfo> GetTopBananas()
         {
             var result = new List<BananaInfo>();
