@@ -64,6 +64,8 @@ public partial class Form1 : Form
         _orderHandler.SafeCallConnector(UpdateOrderList);
         _twitchApiClient = GlobalContainer.Default.Resolve<TwitchApiClient>();
 
+        EventContainer.MessageToApplicationEvent += ShowMessage;
+
         Task.Run(async () =>
         {
             try
@@ -82,6 +84,9 @@ public partial class Form1 : Form
             EnableButtons();
         });
     }
+
+    private static void ShowMessage(string message, string title)
+        => MessageBox.Show(message, title);
 
     private void Form1_Load(object sender, EventArgs e)
     {

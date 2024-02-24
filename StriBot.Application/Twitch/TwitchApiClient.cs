@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using StriBot.Application.Events;
 using StriBot.Application.Twitch.Interfaces;
 using TwitchLib.Api;
 using TwitchLib.Api.Auth;
 using TwitchLib.Api.Core.Enums;
+using TwitchLib.Api.Core.Exceptions;
 using TwitchLib.Api.Helix.Models.ChannelPoints.CreateCustomReward;
 using TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomRewardRedemptionStatus;
 using TwitchLib.Api.Helix.Models.Users.GetUsers;
@@ -31,10 +34,23 @@ namespace StriBot.Application.Twitch
             };
         }
 
-        public Task CompleteReward(string rewardId, string redemptionId)
-            => _twitchApi.Helix.ChannelPoints.UpdateRedemptionStatusAsync(_twitchInfo.ChannelId, rewardId,
-                new List<string> { redemptionId },
-                new UpdateCustomRewardRedemptionStatusRequest { Status = CustomRewardRedemptionStatus.FULFILLED });
+        public async Task CompleteReward(string rewardId, string redemptionId)
+        {
+            try
+            {
+                await _twitchApi.Helix.ChannelPoints.UpdateRedemptionStatusAsync(_twitchInfo.ChannelId, rewardId,
+                    new List<string> { redemptionId },
+                    new UpdateCustomRewardRedemptionStatusRequest { Status = CustomRewardRedemptionStatus.FULFILLED });
+            }
+            catch (BadTokenException)
+            {
+                EventContainer.MessageToApplication("Бот не может закрыть награду, которую создал не бот. Создайте награду из приложения", "Невозможно закрыть награду");
+            }
+            catch (Exception e)
+            {
+                EventContainer.MessageToApplication(e.ToString(), "Ошибка");
+            }
+        }
 
         public string GetAuthorizationCodeUrl(string redirectUri)
         {

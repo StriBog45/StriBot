@@ -10,8 +10,10 @@ namespace StriBot.Application.Events
         public delegate void MessageHandler(Platform[] platforms, string message);
         public delegate void PlatformEventHandler(PlatformEventInfo platformEventInfo);
         public delegate Task RewardEventHandler(RewardInfo rewardInfo);
+        public delegate void MessageToApplicationHandler(string message, string title);
         public static event CommandHandler CommandReceived;
         public static event MessageHandler SendMessage;
+        public static event MessageToApplicationHandler MessageToApplicationEvent; 
         public static event PlatformEventHandler PlatformEventReceived;
         public static event RewardEventHandler RewardEventReceived;
 
@@ -29,5 +31,8 @@ namespace StriBot.Application.Events
 
         public static void RewardEvent(RewardInfo rewardInfo)
             => RewardEventReceived?.Invoke(rewardInfo);
+
+        public static void MessageToApplication(string message, string title)
+            => MessageToApplicationEvent?.Invoke(message, title);
     }
 }

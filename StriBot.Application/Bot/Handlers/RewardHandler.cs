@@ -38,6 +38,7 @@ namespace StriBot.Application.Bot.Handlers
                     break;
                 case "УВЕЛМЧЕНИЕ БАНАНА":
                     _bananaHandler.IncreaseBananaSize(rewardInfo.UserName);
+                    await _twitchApiClient.CompleteReward(rewardInfo.RewardId, rewardInfo.RedemptionId);
                     break;
             }
         }
