@@ -1,1 +1,1 @@
-StriBot
+Список команд бота: https://vk.cc/a6Giqf
