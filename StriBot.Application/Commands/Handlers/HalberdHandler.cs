@@ -61,14 +61,14 @@ namespace StriBot.Application.Commands.Handlers
 
                             if (_halberdDictionary.ContainsKey(commandInfo.ArgumentsAsList[0]))
                             {
-                                var clearName = _dataBase.CleanNickname(commandInfo.ArgumentsAsList[0]);
+                                var clearName = _dataBase.ClearNickname(commandInfo.ArgumentsAsList[0]);
                                 var halberdValue = _halberdDictionary[clearName];
                                 halberdValue.Time += HalberdTimeoutTime;
                                 _halberdDictionary[clearName] = halberdValue;
 
                             }
                             else
-                                _halberdDictionary.TryAdd(_dataBase.CleanNickname(commandInfo.ArgumentsAsList[0]), (commandInfo.Platform, HalberdTimeoutTime));
+                                _halberdDictionary.TryAdd(_dataBase.ClearNickname(commandInfo.ArgumentsAsList[0]), (commandInfo.Platform, HalberdTimeoutTime));
 
                             EventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на {commandInfo.ArgumentsAsList[0]}! Цель обезаружена на {_minute.Incline(HalberdTimeoutTime)}!",
                                 commandInfo.Platform);
@@ -78,7 +78,7 @@ namespace StriBot.Application.Commands.Handlers
                     }
                     else
                     {
-                        _halberdDictionary.TryAdd(_dataBase.CleanNickname(commandInfo.DisplayName), (commandInfo.Platform, HalberdTimeoutTime));
+                        _halberdDictionary.TryAdd(_dataBase.ClearNickname(commandInfo.DisplayName), (commandInfo.Platform, HalberdTimeoutTime));
                         EventContainer.Message($"{commandInfo.DisplayName} использовал алебарду на себя и не может использовать команды в течении {_minute.Incline(HalberdTimeoutTime)}!", 
                             commandInfo.Platform);
                     }
@@ -95,7 +95,7 @@ namespace StriBot.Application.Commands.Handlers
 
         public bool CanSendMessage(CommandInfo commandInfo)
         {
-            var clearName = _dataBase.CleanNickname(commandInfo.DisplayName);
+            var clearName = _dataBase.ClearNickname(commandInfo.DisplayName);
             var result = !_halberdDictionary.ContainsKey(clearName);
 
             if (!result)

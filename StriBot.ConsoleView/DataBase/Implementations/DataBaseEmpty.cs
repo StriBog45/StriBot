@@ -13,7 +13,7 @@ namespace StriBot.ConsoleView.DataBase.Implementations
         public int GetMoney(string nickname)
             => 0;
 
-        public string CleanNickname(string nick)
+        public string ClearNickname(string nick)
             => "StriBot";
 
         public string GetSteamTradeLink(string nickname)

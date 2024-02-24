@@ -12,7 +12,7 @@ namespace StriBot.DateBase.Implementations
 
         public void AddMoney(string nickname, int amount)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             using var connection = new SqliteConnection(BasePath);
             connection.Open();
@@ -24,7 +24,7 @@ namespace StriBot.DateBase.Implementations
 
         public int GetMoney(string nickname)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
             var money = 0;
 
             using var connection = new SqliteConnection(BasePath);
@@ -42,14 +42,18 @@ namespace StriBot.DateBase.Implementations
             return money;
         }
 
-        public string CleanNickname(string nick)
-            => nick[0] != '@' 
-                ? nick 
+        public string ClearNickname(string nick)
+        {
+            var nickWithoutSymbol = nick[0] != '@'
+                ? nick
                 : nick.Remove(0, 1);
+
+            return nickWithoutSymbol.ToLower();
+        }
 
         public string GetSteamTradeLink(string nickname)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             using var connection = new SqliteConnection(BasePath);
             connection.Open();
@@ -69,7 +73,7 @@ namespace StriBot.DateBase.Implementations
 
         public void AddSteamTradeLink(string nickname, string steamTradeLink)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             using var connection = new SqliteConnection(BasePath);
             connection.Open();
@@ -81,7 +85,7 @@ namespace StriBot.DateBase.Implementations
 
         public int GetBananaSize(string nickname)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
             var bananaSize = 0;
 
             using var connection = new SqliteConnection(BasePath);
@@ -101,7 +105,7 @@ namespace StriBot.DateBase.Implementations
 
         public void IncreaseBananaSize(string nickname)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             using var connection = new SqliteConnection(BasePath);
             connection.Open();
@@ -114,7 +118,7 @@ namespace StriBot.DateBase.Implementations
 
         public void SetBananaSize(string nickname, int bananaSize)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
             
             using var connection = new SqliteConnection(BasePath);
             connection.Open();
@@ -154,7 +158,7 @@ namespace StriBot.DateBase.Implementations
 
         public int GetFirstViewerTimes(string nickname)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
             var bananaSize = 0;
 
             using var connection = new SqliteConnection(BasePath);
@@ -174,7 +178,7 @@ namespace StriBot.DateBase.Implementations
 
         public void IncreaseFirstViewerTimes(string nickname)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             using var connection = new SqliteConnection(BasePath);
             connection.Open();

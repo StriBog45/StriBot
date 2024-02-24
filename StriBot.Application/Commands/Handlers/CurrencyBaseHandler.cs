@@ -207,7 +207,7 @@ namespace StriBot.Application.Commands.Handlers
 
         public void ReceivedMessage(string displayName)
         {
-            var cleanName = _dataBase.CleanNickname(displayName);
+            var cleanName = _dataBase.ClearNickname(displayName);
             
             if (!_userLastMessage.ContainsKey(cleanName))
             {

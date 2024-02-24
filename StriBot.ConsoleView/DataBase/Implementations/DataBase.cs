@@ -28,7 +28,7 @@ namespace StriBot.ConsoleView.DataBase.Implementations
 
         public void AddMoney(string nickname, int amount)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             var dTable = new DataTable();
             using (var connection = (SQLiteConnection)factory.CreateConnection())
@@ -63,7 +63,7 @@ namespace StriBot.ConsoleView.DataBase.Implementations
 
         public int GetMoney(string nickname)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             var dTable = new DataTable();
             using (var connection = (SQLiteConnection)factory.CreateConnection())
@@ -91,14 +91,14 @@ namespace StriBot.ConsoleView.DataBase.Implementations
                 : 0;
         }
 
-        public string CleanNickname(string nick)
+        public string ClearNickname(string nick)
             => nick[0] != '@' 
                 ? nick 
                 : nick.Remove(0, 1);
 
         public string GetSteamTradeLink(string nickname)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             var dTable = new DataTable();
             using (var connection = (SQLiteConnection)factory.CreateConnection())
@@ -128,7 +128,7 @@ namespace StriBot.ConsoleView.DataBase.Implementations
 
         public void AddSteamTradeLink(string nickname, string steamTradeLink)
         {
-            var clearName = CleanNickname(nickname);
+            var clearName = ClearNickname(nickname);
 
             var dTable = new DataTable();
             using (var connection = (SQLiteConnection)factory.CreateConnection())

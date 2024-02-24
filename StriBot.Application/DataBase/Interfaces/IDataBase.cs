@@ -9,7 +9,7 @@ namespace StriBot.Application.DataBase.Interfaces
 
         int GetMoney(string nickname);
 
-        string CleanNickname(string nick);
+        string ClearNickname(string nick);
 
         string GetSteamTradeLink(string nickname);
 
