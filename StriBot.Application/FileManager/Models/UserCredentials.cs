@@ -15,9 +15,21 @@ namespace StriBot.Application.FileManager.Models
         public string ChannelAccessToken { get; set; }
 
         [ProtoMember(4)]
+        public string ChannelRefreshToken { get; set; }
+
+        [ProtoMember(5)] 
+        public int ChannelExpiresIn { get; set; }
+
+        [ProtoMember(6)]
         public string BotName { get; set; }
 
-        [ProtoMember(5)]
+        [ProtoMember(7)]
         public string BotAccessToken { get; set; }
+
+        [ProtoMember(8)]
+        public string BotRefreshToken { get; set; }
+
+        [ProtoMember(9)]
+        public int BotExpiresIn { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using DryIoc;
-using StriBot.Application.Authorization;
 using StriBot.Application.Bot;
-using StriBot.Application.Bot.Interfaces;
 using StriBot.Application.FileManager;
+using StriBot.Application.Twitch;
+using StriBot.Application.Twitch.Interfaces;
 using StriBot.DryIoc.Interfaces;
 
 namespace StriBot.DryIoc.Implementations

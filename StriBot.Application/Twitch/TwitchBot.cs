@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Authentication;
-using StriBot.Application.Bot.Interfaces;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Enums;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Platforms.Enums;
+using StriBot.Application.Twitch.Interfaces;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
 using TwitchLib.PubSub;
 using TwitchLib.PubSub.Events;
 
-namespace StriBot.Application.Bot
+namespace StriBot.Application.Twitch
 {
     public class TwitchBot
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using StriBot.Application.Bot.Interfaces;
+using StriBot.Application.Twitch.Interfaces;
 using TwitchLib.Api;
 using TwitchLib.Api.Auth;
 using TwitchLib.Api.Core.Enums;
@@ -8,7 +8,7 @@ using TwitchLib.Api.Helix.Models.ChannelPoints.CreateCustomReward;
 using TwitchLib.Api.Helix.Models.ChannelPoints.UpdateCustomRewardRedemptionStatus;
 using TwitchLib.Api.Helix.Models.Users.GetUsers;
 
-namespace StriBot.Application.Bot
+namespace StriBot.Application.Twitch
 {
     public class TwitchApiClient
     {
@@ -89,5 +89,8 @@ namespace StriBot.Application.Bot
                     Cost = price,
                     IsEnabled = false
                 });
+
+        public Task<RefreshResponse> RefreshToken(string refreshToken)
+            => _twitchApi.Auth.RefreshAuthTokenAsync(refreshToken, TwitchClientSecret);
     }
 }

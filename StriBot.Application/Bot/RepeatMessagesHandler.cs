@@ -8,7 +8,7 @@ namespace StriBot.Application.Bot
 {
     public class RepeatMessagesHandler
     {
-        private List<RepeatMessage> _repeatMessages;
+        private readonly List<RepeatMessage> _repeatMessages;
 
         public RepeatMessagesHandler(IConfiguration configuration)
         {

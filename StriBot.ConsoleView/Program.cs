@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StriBot.Application.Bot;
 using StriBot.Application.Bot.Handlers;
-using StriBot.Application.Bot.Interfaces;
 using StriBot.Application.Commands.Handlers;
 using StriBot.Application.Commands.Handlers.Progress;
 using StriBot.Application.Commands.Handlers.Raffle;
@@ -13,6 +12,8 @@ using StriBot.Application.Localization;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Speaker.Interfaces;
+using StriBot.Application.Twitch;
+using StriBot.Application.Twitch.Interfaces;
 using StriBot.ConsoleView.Speakers.Implementations;
 
 namespace StriBot.ConsoleView;

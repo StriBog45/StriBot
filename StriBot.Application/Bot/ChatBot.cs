@@ -16,6 +16,7 @@ using StriBot.Application.Localization.Extensions;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Speaker.Interfaces;
+using StriBot.Application.Twitch;
 
 namespace StriBot.Application.Bot
 {
@@ -168,6 +169,9 @@ namespace StriBot.Application.Bot
             if (_twitchBot.IsConnected())
                 _speaker.Say("Бот подключился");
         }
+
+        public bool IsConnected()
+            => _twitchBot.IsConnected();
 
         internal void Reconnect(IEnumerable<Platform> platforms)
         {

@@ -2,6 +2,7 @@
 using StriBot.Application.Commands.Handlers;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.Events.Models;
+using StriBot.Application.Twitch;
 
 namespace StriBot.Application.Bot.Handlers
 {

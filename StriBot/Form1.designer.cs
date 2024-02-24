@@ -189,6 +189,7 @@
             buttonAuthBot.TabIndex = 16;
             buttonAuthBot.Text = "Авторизовать отдельного бота";
             buttonAuthBot.UseVisualStyleBackColor = true;
+            buttonAuthBot.Enabled = false;
             buttonAuthBot.Click += buttonAuthBot_Click;
             // 
             // buttonAuth
@@ -200,6 +201,7 @@
             buttonAuth.TabIndex = 16;
             buttonAuth.Text = "Авторизовать канал";
             buttonAuth.UseVisualStyleBackColor = true;
+            buttonAuth.Enabled = false;
             buttonAuth.Click += buttonAuth_Click;
             // 
             // linkLabel1
@@ -250,6 +252,7 @@
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new System.Drawing.Size(650, 567);
             tabControl1.TabIndex = 11;
+            tabControl1.Enabled = false;
             // 
             // tabPage1
             // 

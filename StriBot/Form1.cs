@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using DryIoc;
-using StriBot.Application.Authorization;
 using StriBot.Application.Bot;
-using StriBot.Application.Bot.Interfaces;
 using StriBot.Application.Commands.Handlers;
 using StriBot.Application.Commands.Handlers.Progress;
 using StriBot.Application.Commands.Handlers.Raffle;
@@ -18,6 +17,8 @@ using StriBot.Application.FileManager.Models;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Localization.Models;
 using StriBot.Application.Platforms.Enums;
+using StriBot.Application.Twitch;
+using StriBot.Application.Twitch.Interfaces;
 using StriBot.DryIoc;
 
 namespace StriBot;
@@ -48,10 +49,8 @@ public partial class Form1 : Form
         _settingsFileManager = GlobalContainer.Default.Resolve<SettingsFileManager>();
         _twitchInfo = GlobalContainer.Default.Resolve<ITwitchInfo>();
         _twitchInfo.Set(_settingsFileManager.GetUserCredentials());
-
+        _twitchAuthorization = GlobalContainer.Default.Resolve<TwitchAuthorization>();
         _chatBot = GlobalContainer.Default.Resolve<ChatBot>();
-        _chatBot.Connect(new[] { Platform.Twitch });
-
         _currency = GlobalContainer.Default.Resolve<Currency>();
         _progressHandler = GlobalContainer.Default.Resolve<ProgressHandler>();
         _progressHandler.SetConstructorSettings(BossUpdate, DeathUpdate);
@@ -64,10 +63,24 @@ public partial class Form1 : Form
         _dataBase = GlobalContainer.Default.Resolve<IDataBase>();
         _orderHandler.SafeCallConnector(UpdateOrderList);
         _twitchApiClient = GlobalContainer.Default.Resolve<TwitchApiClient>();
-        _twitchAuthorization = GlobalContainer.Default.Resolve<TwitchAuthorization>();
 
-        // Для вызова 0-й минуты
-        _chatBot.TimerTick();
+        Task.Run(async () =>
+        {
+            try
+            {
+                await _twitchAuthorization.RefreshTokens();
+                _chatBot.Connect(new[] { Platform.Twitch });
+
+                // Для вызова 0-й минуты
+                _chatBot.TimerTick();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            EnableButtons();
+        });
     }
 
     private void Form1_Load(object sender, EventArgs e)
@@ -133,15 +146,20 @@ public partial class Form1 : Form
 
     private void Form1_FormClosed(object sender, FormClosedEventArgs e)
     {
-        Reporter.CreateCommands(_chatBot.Commands);
         _settingsFileManager.SaveSettings(comboBoxCurrency.Text, new UserCredentials
         {
             Channel = _twitchInfo.Channel,
             ChannelId = _twitchInfo.ChannelId,
             ChannelAccessToken = _twitchInfo.ChannelAccessToken,
+            ChannelRefreshToken = _twitchInfo.ChannelRefreshToken,
+            ChannelExpiresIn = _twitchInfo.ChannelExpiresIn,
             BotName = _twitchInfo.BotName,
-            BotAccessToken = _twitchInfo.BotAccessToken
+            BotAccessToken = _twitchInfo.BotAccessToken,
+            BotRefreshToken = _twitchInfo.BotRefreshToken,
+            BotExpiresIn = _twitchInfo.BotExpiresIn
         });
+
+        Reporter.CreateCommands(_chatBot.Commands);
     }
 
     private void buttonDistribution_Click(object sender, EventArgs e)
@@ -425,6 +443,8 @@ public partial class Form1 : Form
             _twitchInfo.SetStreamerInfo(streamer);
 
             _chatBot.Connect(new[] { Platform.Twitch });
+
+            EnableButtons();
         }
         catch (Exception exception)
         {
@@ -458,5 +478,16 @@ public partial class Form1 : Form
         await _twitchApiClient.CreateReward(textBoxRewardName.Text, price);
 
         MessageBox.Show($"Награда \"{textBoxRewardName.Text}\" создана!", "Сообщение");
+    }
+
+    private void EnableButtons()
+    {
+        buttonAuth.Invoke(() => buttonAuth.Enabled = true);
+
+        if (_chatBot.IsConnected())
+        {
+            buttonAuthBot.Invoke(() => buttonAuthBot.Enabled = true);
+            tabControl1.Invoke(() => tabControl1.Enabled = true);
+        }
     }
 }
