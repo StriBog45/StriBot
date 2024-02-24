@@ -124,8 +124,9 @@ namespace StriBot.DateBase.Implementations
             connection.Open();
 
             var command = connection.CreateCommand();
-            command.CommandText = $"UPDATE Money SET banana_size = {bananaSize} WHERE nick = $nick";
+            command.CommandText = $"INSERT INTO Money (nick ,money, banana_size) VALUES($nick, 0, $bananaSize) ON CONFLICT(nick) DO UPDATE SET banana_size = $bananaSize";
             command.Parameters.AddWithValue("$nick", clearName);
+            command.Parameters.AddWithValue("$bananaSize", bananaSize);
 
             command.ExecuteNonQuery();
         }
