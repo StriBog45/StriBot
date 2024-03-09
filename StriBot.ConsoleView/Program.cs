@@ -29,7 +29,7 @@ internal class Program
             .AddSingleton<SettingsFileManager>()
             .AddSingleton<ChatBot>()
             .AddSingleton<TwitchBot>()
-            .AddSingleton<TwitchApiClient>()
+            .AddTransient<TwitchApiClient>()
 
             // BotHandlersFiller
             .AddSingleton<RewardHandler>()

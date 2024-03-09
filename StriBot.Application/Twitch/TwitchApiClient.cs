@@ -28,8 +28,7 @@ namespace StriBot.Application.Twitch
             {
                 Settings =
                 {
-                    ClientId = TwitchApplicationClientId,
-                    AccessToken = _twitchInfo.ChannelAccessToken
+                    ClientId = TwitchApplicationClientId
                 }
             };
         }
@@ -40,7 +39,8 @@ namespace StriBot.Application.Twitch
             {
                 await _twitchApi.Helix.ChannelPoints.UpdateRedemptionStatusAsync(_twitchInfo.ChannelId, rewardId,
                     new List<string> { redemptionId },
-                    new UpdateCustomRewardRedemptionStatusRequest { Status = CustomRewardRedemptionStatus.FULFILLED });
+                    new UpdateCustomRewardRedemptionStatusRequest { Status = CustomRewardRedemptionStatus.FULFILLED },
+                    accessToken:_twitchInfo.ChannelAccessToken);
             }
             catch (BadTokenException)
             {
@@ -56,6 +56,8 @@ namespace StriBot.Application.Twitch
         {
             var authScopes = new List<AuthScopes>
             {
+                AuthScopes.Channel_Feed_Edit,
+                AuthScopes.Channel_Feed_Read,
                 AuthScopes.Channel_Subscriptions,
                 AuthScopes.Chat_Read,
                 AuthScopes.Chat_Edit,
@@ -92,10 +94,7 @@ namespace StriBot.Application.Twitch
             => _twitchApi.Auth.GetAccessTokenFromCodeAsync(code, TwitchClientSecret, redirectUri);
 
         public async Task<User> GetAuthorizedUser()
-            => (await _twitchApi.Helix.Users.GetUsersAsync()).Users[0];
-
-        public void UpdateAccessToken()
-            => _twitchApi.Settings.AccessToken = _twitchInfo.ChannelAccessToken;
+            => (await _twitchApi.Helix.Users.GetUsersAsync(accessToken: _twitchInfo.ChannelAccessToken)).Users[0];
 
         public async Task CreateReward(string name, int price)
             => await _twitchApi.Helix.ChannelPoints.CreateCustomRewardsAsync(_twitchInfo.ChannelId,
@@ -104,7 +103,8 @@ namespace StriBot.Application.Twitch
                     Title = name,
                     Cost = price,
                     IsEnabled = false
-                });
+                },
+                accessToken: _twitchInfo.ChannelAccessToken);
 
         public Task<RefreshResponse> RefreshToken(string refreshToken)
             => _twitchApi.Auth.RefreshAuthTokenAsync(refreshToken, TwitchClientSecret);
