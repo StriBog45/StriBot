@@ -135,12 +135,10 @@
             label24 = new System.Windows.Forms.Label();
             textBoxRaffle = new System.Windows.Forms.TextBox();
             tabPage5 = new System.Windows.Forms.TabPage();
-            groupBox10 = new System.Windows.Forms.GroupBox();
-            label27 = new System.Windows.Forms.Label();
-            label26 = new System.Windows.Forms.Label();
-            textBoxRewardPrice = new System.Windows.Forms.TextBox();
-            textBoxRewardName = new System.Windows.Forms.TextBox();
-            buttonRewardCreate = new System.Windows.Forms.Button();
+            groupBox11 = new System.Windows.Forms.GroupBox();
+            buttonCreateRewardIncreaseBanana = new System.Windows.Forms.Button();
+            buttonCreateRewardFirstViewer = new System.Windows.Forms.Button();
+            buttonCreateRewardConvertPoints = new System.Windows.Forms.Button();
             timer1 = new System.Windows.Forms.Timer(components);
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -163,7 +161,7 @@
             groupBox5.SuspendLayout();
             tabPage4.SuspendLayout();
             tabPage5.SuspendLayout();
-            groupBox10.SuspendLayout();
+            groupBox11.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -182,6 +180,7 @@
             // 
             // buttonAuthBot
             // 
+            buttonAuthBot.Enabled = false;
             buttonAuthBot.Location = new System.Drawing.Point(13, 428);
             buttonAuthBot.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             buttonAuthBot.Name = "buttonAuthBot";
@@ -189,11 +188,11 @@
             buttonAuthBot.TabIndex = 16;
             buttonAuthBot.Text = "Авторизовать отдельного бота";
             buttonAuthBot.UseVisualStyleBackColor = true;
-            buttonAuthBot.Enabled = false;
             buttonAuthBot.Click += buttonAuthBot_Click;
             // 
             // buttonAuth
             // 
+            buttonAuth.Enabled = false;
             buttonAuth.Location = new System.Drawing.Point(13, 395);
             buttonAuth.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             buttonAuth.Name = "buttonAuth";
@@ -201,7 +200,6 @@
             buttonAuth.TabIndex = 16;
             buttonAuth.Text = "Авторизовать канал";
             buttonAuth.UseVisualStyleBackColor = true;
-            buttonAuth.Enabled = false;
             buttonAuth.Click += buttonAuth_Click;
             // 
             // linkLabel1
@@ -246,13 +244,13 @@
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage4);
             tabControl1.Controls.Add(tabPage5);
+            tabControl1.Enabled = false;
             tabControl1.Location = new System.Drawing.Point(7, 14);
             tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new System.Drawing.Size(650, 567);
             tabControl1.TabIndex = 11;
-            tabControl1.Enabled = false;
             // 
             // tabPage1
             // 
@@ -277,6 +275,7 @@
             // 
             // buttonUnfollowMode
             // 
+            buttonUnfollowMode.Enabled = false;
             buttonUnfollowMode.Location = new System.Drawing.Point(489, 503);
             buttonUnfollowMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             buttonUnfollowMode.Name = "buttonUnfollowMode";
@@ -284,11 +283,11 @@
             buttonUnfollowMode.TabIndex = 15;
             buttonUnfollowMode.Text = "UnfollowM";
             buttonUnfollowMode.UseVisualStyleBackColor = true;
-            buttonUnfollowMode.Enabled = false;
             buttonUnfollowMode.Click += buttonUnfollowMode_Click;
             // 
             // buttonFollowMode
             // 
+            buttonFollowMode.Enabled = false;
             buttonFollowMode.Location = new System.Drawing.Point(394, 503);
             buttonFollowMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             buttonFollowMode.Name = "buttonFollowMode";
@@ -296,11 +295,11 @@
             buttonFollowMode.TabIndex = 15;
             buttonFollowMode.Text = "FollowMode";
             buttonFollowMode.UseVisualStyleBackColor = true;
-            buttonFollowMode.Enabled = false;
             buttonFollowMode.Click += buttonFollowMode_Click;
             // 
             // SubMode
             // 
+            SubMode.Enabled = false;
             SubMode.Location = new System.Drawing.Point(300, 503);
             SubMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             SubMode.Name = "SubMode";
@@ -308,11 +307,11 @@
             SubMode.TabIndex = 15;
             SubMode.Text = "SubMode";
             SubMode.UseVisualStyleBackColor = true;
-            SubMode.Enabled = false;
             SubMode.Click += SubMode_Click;
             // 
             // buttonSmileMode
             // 
+            buttonSmileMode.Enabled = false;
             buttonSmileMode.Location = new System.Drawing.Point(205, 503);
             buttonSmileMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             buttonSmileMode.Name = "buttonSmileMode";
@@ -320,7 +319,6 @@
             buttonSmileMode.TabIndex = 14;
             buttonSmileMode.Text = "SmileMode";
             buttonSmileMode.UseVisualStyleBackColor = true;
-            buttonSmileMode.Enabled = false;
             buttonSmileMode.Click += buttonSmileMode_Click;
             // 
             // groupBox4
@@ -512,7 +510,7 @@
             groupBox2.Controls.Add(label3);
             groupBox2.Controls.Add(DistributionMoneyPerUser);
             groupBox2.Controls.Add(DistributionMaxUsers);
-            groupBox2.Location = new System.Drawing.Point(247, 295);
+            groupBox2.Location = new System.Drawing.Point(248, 295);
             groupBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -577,7 +575,7 @@
             panel4.Location = new System.Drawing.Point(7, 87);
             panel4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel4.Name = "panel4";
-            panel4.Size = new System.Drawing.Size(195, 163);
+            panel4.Size = new System.Drawing.Size(203, 163);
             panel4.TabIndex = 7;
             // 
             // listView1
@@ -586,7 +584,7 @@
             listView1.Location = new System.Drawing.Point(4, 3);
             listView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             listView1.Name = "listView1";
-            listView1.Size = new System.Drawing.Size(182, 121);
+            listView1.Size = new System.Drawing.Size(195, 121);
             listView1.TabIndex = 3;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = System.Windows.Forms.View.Details;
@@ -598,7 +596,7 @@
             // 
             // buttonBossDelete
             // 
-            buttonBossDelete.Location = new System.Drawing.Point(50, 132);
+            buttonBossDelete.Location = new System.Drawing.Point(61, 130);
             buttonBossDelete.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             buttonBossDelete.Name = "buttonBossDelete";
             buttonBossDelete.Size = new System.Drawing.Size(88, 27);
@@ -1322,7 +1320,7 @@
             // 
             // tabPage5
             // 
-            tabPage5.Controls.Add(groupBox10);
+            tabPage5.Controls.Add(groupBox11);
             tabPage5.Location = new System.Drawing.Point(4, 24);
             tabPage5.Name = "tabPage5";
             tabPage5.Size = new System.Drawing.Size(642, 539);
@@ -1330,70 +1328,52 @@
             tabPage5.Text = "Награды за баллы";
             tabPage5.UseVisualStyleBackColor = true;
             // 
-            // groupBox10
+            // groupBox11
             // 
-            groupBox10.Controls.Add(label27);
-            groupBox10.Controls.Add(label26);
-            groupBox10.Controls.Add(textBoxRewardPrice);
-            groupBox10.Controls.Add(textBoxRewardName);
-            groupBox10.Controls.Add(buttonRewardCreate);
-            groupBox10.Location = new System.Drawing.Point(210, 148);
-            groupBox10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            groupBox10.Name = "groupBox10";
-            groupBox10.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            groupBox10.Size = new System.Drawing.Size(230, 124);
-            groupBox10.TabIndex = 10;
-            groupBox10.TabStop = false;
-            groupBox10.Text = "Создать новую награду";
+            groupBox11.Controls.Add(buttonCreateRewardIncreaseBanana);
+            groupBox11.Controls.Add(buttonCreateRewardFirstViewer);
+            groupBox11.Controls.Add(buttonCreateRewardConvertPoints);
+            groupBox11.Location = new System.Drawing.Point(283, 197);
+            groupBox11.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            groupBox11.Name = "groupBox11";
+            groupBox11.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            groupBox11.Size = new System.Drawing.Size(163, 124);
+            groupBox11.TabIndex = 11;
+            groupBox11.TabStop = false;
+            groupBox11.Text = "Создать награду";
             // 
-            // label27
+            // buttonCreateRewardIncreaseBanana
             // 
-            label27.AutoSize = true;
-            label27.Location = new System.Drawing.Point(8, 53);
-            label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label27.Name = "label27";
-            label27.Size = new System.Drawing.Size(35, 15);
-            label27.TabIndex = 3;
-            label27.Text = "Цена";
+            buttonCreateRewardIncreaseBanana.Location = new System.Drawing.Point(8, 88);
+            buttonCreateRewardIncreaseBanana.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            buttonCreateRewardIncreaseBanana.Name = "buttonCreateRewardIncreaseBanana";
+            buttonCreateRewardIncreaseBanana.Size = new System.Drawing.Size(144, 27);
+            buttonCreateRewardIncreaseBanana.TabIndex = 2;
+            buttonCreateRewardIncreaseBanana.Text = "УВЕЛМЧЕНИЕ БАНАНА";
+            buttonCreateRewardIncreaseBanana.UseVisualStyleBackColor = true;
+            buttonCreateRewardIncreaseBanana.Click += buttonCreateRewardIncreaseBanana_Click;
             // 
-            // label26
+            // buttonCreateRewardFirstViewer
             // 
-            label26.AutoSize = true;
-            label26.Location = new System.Drawing.Point(8, 25);
-            label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label26.Name = "label26";
-            label26.Size = new System.Drawing.Size(59, 15);
-            label26.TabIndex = 3;
-            label26.Text = "Название";
+            buttonCreateRewardFirstViewer.Location = new System.Drawing.Point(8, 55);
+            buttonCreateRewardFirstViewer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            buttonCreateRewardFirstViewer.Name = "buttonCreateRewardFirstViewer";
+            buttonCreateRewardFirstViewer.Size = new System.Drawing.Size(144, 27);
+            buttonCreateRewardFirstViewer.TabIndex = 2;
+            buttonCreateRewardFirstViewer.Text = "#1";
+            buttonCreateRewardFirstViewer.UseVisualStyleBackColor = true;
+            buttonCreateRewardFirstViewer.Click += buttonCreateRewardFirstViewer_Click;
             // 
-            // textBoxRewardPrice
+            // buttonCreateRewardConvertPoints
             // 
-            textBoxRewardPrice.Location = new System.Drawing.Point(72, 53);
-            textBoxRewardPrice.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            textBoxRewardPrice.Name = "textBoxRewardPrice";
-            textBoxRewardPrice.Size = new System.Drawing.Size(150, 23);
-            textBoxRewardPrice.TabIndex = 0;
-            textBoxRewardPrice.Text = "1000";
-            // 
-            // textBoxRewardName
-            // 
-            textBoxRewardName.Location = new System.Drawing.Point(72, 22);
-            textBoxRewardName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            textBoxRewardName.Name = "textBoxRewardName";
-            textBoxRewardName.Size = new System.Drawing.Size(150, 23);
-            textBoxRewardName.TabIndex = 0;
-            textBoxRewardName.Text = "УВЕЛМЧЕНИЕ БАНАНА";
-            // 
-            // buttonRewardCreate
-            // 
-            buttonRewardCreate.Location = new System.Drawing.Point(134, 91);
-            buttonRewardCreate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            buttonRewardCreate.Name = "buttonRewardCreate";
-            buttonRewardCreate.Size = new System.Drawing.Size(88, 27);
-            buttonRewardCreate.TabIndex = 2;
-            buttonRewardCreate.Text = "Создать";
-            buttonRewardCreate.UseVisualStyleBackColor = true;
-            buttonRewardCreate.Click += buttonRewardCreate_Click;
+            buttonCreateRewardConvertPoints.Location = new System.Drawing.Point(8, 22);
+            buttonCreateRewardConvertPoints.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            buttonCreateRewardConvertPoints.Name = "buttonCreateRewardConvertPoints";
+            buttonCreateRewardConvertPoints.Size = new System.Drawing.Size(144, 27);
+            buttonCreateRewardConvertPoints.TabIndex = 2;
+            buttonCreateRewardConvertPoints.Text = "Перевод баллов";
+            buttonCreateRewardConvertPoints.UseVisualStyleBackColor = true;
+            buttonCreateRewardConvertPoints.Click += buttonCreateRewardConvertPoints_Click;
             // 
             // timer1
             // 
@@ -1447,8 +1427,7 @@
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
             tabPage5.ResumeLayout(false);
-            groupBox10.ResumeLayout(false);
-            groupBox10.PerformLayout();
+            groupBox11.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1560,12 +1539,10 @@
         private System.Windows.Forms.Button buttonAuth;
         private System.Windows.Forms.Button buttonAuthBot;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.TextBox textBoxRewardPrice;
-        private System.Windows.Forms.TextBox textBoxRewardName;
-        private System.Windows.Forms.Button buttonRewardCreate;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.Button buttonCreateRewardConvertPoints;
+        private System.Windows.Forms.Button buttonCreateRewardFirstViewer;
+        private System.Windows.Forms.Button buttonCreateRewardIncreaseBanana;
     }
 }
 

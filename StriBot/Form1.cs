@@ -475,15 +475,6 @@ public partial class Form1 : Form
         }
     }
 
-    private async void buttonRewardCreate_Click(object sender, EventArgs e)
-    {
-        int.TryParse(textBoxRewardPrice.Text, out var price);
-
-        await _twitchApiClient.CreateReward(textBoxRewardName.Text, price);
-
-        MessageBox.Show($"Награда \"{textBoxRewardName.Text}\" создана!", "Сообщение");
-    }
-
     private void EnableButtons()
     {
         buttonAuth.Invoke(() => buttonAuth.Enabled = true);
@@ -492,6 +483,45 @@ public partial class Form1 : Form
         {
             buttonAuthBot.Invoke(() => buttonAuthBot.Enabled = true);
             tabControl1.Invoke(() => tabControl1.Enabled = true);
+        }
+    }
+
+    private async void buttonCreateRewardConvertPoints_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            await _twitchApiClient.CreateReward(buttonCreateRewardConvertPoints.Text, 1500);
+            MessageBox.Show($"Награда \"{buttonCreateRewardConvertPoints.Text}\" создана!", "Сообщение");
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show($"Возможно награда уже создана. {exception.Message}", "Ошибка");
+        }
+    }
+
+    private async void buttonCreateRewardFirstViewer_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            await _twitchApiClient.CreateReward(buttonCreateRewardFirstViewer.Text, 1500);
+            MessageBox.Show($"Награда \"{buttonCreateRewardFirstViewer.Text}\" создана!", "Сообщение");
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show($"Возможно награда уже создана. {exception.Message}", "Ошибка");
+        }
+    }
+
+    private async void buttonCreateRewardIncreaseBanana_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            await _twitchApiClient.CreateReward(buttonCreateRewardIncreaseBanana.Text, 1500);
+            MessageBox.Show($"Награда \"{buttonCreateRewardIncreaseBanana.Text}\" создана!", "Сообщение");
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show($"Возможно награда уже создана. {exception.Message}", "Ошибка");
         }
     }
 }
