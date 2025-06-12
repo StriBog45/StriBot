@@ -42,7 +42,7 @@ public class DuelHandler
                 {
                     if (commandInfo.ArgumentsAsList.Count > 0)
                     {
-                        if (int.TryParse(commandInfo.ArgumentsAsString, out int amount) && amount > 0)
+                        if (int.TryParse(commandInfo.ArgumentsAsString, out var amount) && amount > 0)
                         {
                             if (amount <= _dataBase.GetMoney(commandInfo.DisplayName))
                             {
@@ -80,18 +80,18 @@ public class DuelHandler
                         _dataBase.AddMoney(winner.DisplayName, _duelBet);
                         _dataBase.AddMoney(looser.DisplayName, -_duelBet);
 
-                        if (_duelBet > 0)
-                            EventContainer.Message($"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. {winner.DisplayName} получил за победу {_duelBet} {_currency.GenitiveMultiple}! Kappa )/",
-                                commandInfo.Platform);
-                        else
-                            EventContainer.Message($"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. Поздравляем победителя {winner.DisplayName} Kappa )/", commandInfo.Platform);
+                        EventContainer.Message(
+                            _duelBet > 0
+                                ? $"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. {winner.DisplayName} получил за победу {_duelBet} {_currency.GenitiveMultiple}! Kappa )/"
+                                : $"Дуэлянты достают пистолеты... Выстрел!.. На земле лежит {looser.DisplayName}. Поздравляем победителя {winner.DisplayName} Kappa )/",
+                            commandInfo.Platform);
 #warning Нужно событие timeout
                         //if (looser.IsModerator.HasValue && !looser.IsModerator.Value)
                         //    twitchBot.UserTimeout(looser.DisplayName, new TimeSpan(0, timeoutTimeInMinute, 0), "Ваш противник - (凸ಠ益ಠ)凸");
                         CleanDuelMember();
                     }
                 }
-            }, new[] { "размер ставки" }, CommandType.Interactive);
+            }, ["размер ставки"], CommandType.Interactive);
 
         return result;
     }

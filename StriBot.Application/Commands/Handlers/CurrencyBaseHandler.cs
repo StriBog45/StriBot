@@ -24,8 +24,8 @@ public class CurrencyBaseHandler
     private readonly Dictionary<string, DateTime> _userLastMessage;
     private int _distributionAmountUsers;
     private int _distributionAmountPerUsers;
-    private int SubCoefficient => _subBonus ? subCoefficient : 1;
-    private int subCoefficient = 2;
+    private int SubCoefficient => _subBonus ? _subCoefficient : 1;
+    private readonly int _subCoefficient = 2;
     private bool _subBonus;
 
     public CurrencyBaseHandler(Currency currency, ReadyMadePhrases readyMadePhrases, IDataBase dataBase)
@@ -44,7 +44,7 @@ public class CurrencyBaseHandler
         {
             if (_distributionAmountUsers > 0)
             {
-                if (!_receivedUsers.Where(x => x.CompareTo(commandInfo.DisplayName) == 0).ToArray().Any())
+                if (!_receivedUsers.Where(x => string.Compare(x, commandInfo.DisplayName, StringComparison.InvariantCulture) == 0).ToArray().Any())
                 {
                     if (commandInfo.IsSubscriber.HasValue && commandInfo.IsSubscriber.Value)
                         _dataBase.AddMoney(commandInfo.DisplayName, _distributionAmountPerUsers * SubCoefficient);

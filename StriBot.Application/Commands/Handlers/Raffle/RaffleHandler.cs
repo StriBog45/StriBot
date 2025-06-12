@@ -19,7 +19,7 @@ public class RaffleHandler
     private string _commandName;
     private int _price;
         
-    private const int SubscriberBonus = 3;
+    // private const int SubscriberBonus = 3;
     private int _participantsCount;
 
     private bool IsProgress { get; set; }
@@ -44,7 +44,7 @@ public class RaffleHandler
     }
 
     public Dictionary<string, Command> CreateCommands()
-        => new Dictionary<string, Command>()
+        => new()
         {
             RaffleInfo()
         };

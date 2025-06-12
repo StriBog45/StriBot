@@ -80,7 +80,7 @@ public class ChatBot
             customCommandHandler.CreateCommands(),
             mmrHandler.CreateCommands(),
             randomAnswerHandler.CreateCommands(),
-            burgerHandler.CreateCommands(),
+            BurgerHandler.CreateCommands(),
             progressHandler.CreateCommands(),
             _rememberHandler.CreateCommands(),
             orderHandler.CreateCommands(),

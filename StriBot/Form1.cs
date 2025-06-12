@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
@@ -192,27 +191,27 @@ public partial class Form1 : Form
 
     private void buttonCreateOptions_Click(object sender, EventArgs e)
     {
-        var options = TextBoxOptions.Text.Split(["\r\n"], StringSplitOptions.RemoveEmptyEntries).ToArray();
+        var options = TextBoxOptions.Text.Split(["\r\n"], StringSplitOptions.RemoveEmptyEntries);
         _betsHandler.CreateBets(options, [Platform.Twitch]);
     }
 
     private void buttonBetsOfManiac_Click(object sender, EventArgs e)
-        => _betsHandler.CreateBets(["Количество повешанных", "0", "1", "2", "3", "4"], new[] { Platform.Twitch });
+        => _betsHandler.CreateBets(["Количество повешанных", "0", "1", "2", "3", "4"], [Platform.Twitch]);
 
     private void buttonBetsOfSurvivors_Click(object sender, EventArgs e)
-        => _betsHandler.CreateBets(["Количество сбежавших", "0", "1", "2", "3", "4"], new[] { Platform.Twitch });
+        => _betsHandler.CreateBets(["Количество сбежавших", "0", "1", "2", "3", "4"], [Platform.Twitch]);
 
     private void buttonBetsOfSurvivor_Click(object sender, EventArgs e)
-        => _betsHandler.CreateBets(["Выживание стримера", "выжил", "погиб"], new[] { Platform.Twitch });
+        => _betsHandler.CreateBets(["Выживание стримера", "выжил", "погиб"], [Platform.Twitch]);
 
     private void buttonBetsDota2_Click(object sender, EventArgs e)
-        => _betsHandler.CreateBets(["Победа команды", "radiant", "dire"], new[] { Platform.Twitch });
+        => _betsHandler.CreateBets(["Победа команды", "radiant", "dire"], [Platform.Twitch]);
 
     private void buttonStopBets_Click(object sender, EventArgs e)
-        => _betsHandler.StopBetsProcess(new[] { Platform.Twitch });
+        => _betsHandler.StopBetsProcess([Platform.Twitch]);
 
     private void buttonSelectWinner_Click(object sender, EventArgs e)
-        => _betsHandler.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value), new[] { Platform.Twitch });
+        => _betsHandler.SetBetsWinner(Convert.ToInt32(numericUpDownWinnerSelcter.Value), [Platform.Twitch]);
 
     private void UpdateOrderList(List<(string, string, int)> orders)
     {
@@ -238,7 +237,7 @@ public partial class Form1 : Form
                 webBrowser.Navigate(selected.SubItems[0].Text);
             _orderHandler.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, int.Parse(selected.SubItems[2].Text));
             _dataBase.AddMoney(selected.SubItems[1].Text, -int.Parse(selected.SubItems[2].Text));
-            EventContainer.Message(string.Format("Заказ @{0} на {1} принят", selected.SubItems[1].Text, selected.SubItems[0].Text), Platform.Twitch);
+            EventContainer.Message($"Заказ @{selected.SubItems[1].Text} на {selected.SubItems[0].Text} принят", Platform.Twitch);
             listViewOrder.Items.Remove(selected);
         }
     }
@@ -247,7 +246,7 @@ public partial class Form1 : Form
         foreach (ListViewItem selected in listViewOrder.SelectedItems)
         {
             _orderHandler.OrderRemove(selected.SubItems[0].Text, selected.SubItems[1].Text, int.Parse(selected.SubItems[2].Text));
-            EventContainer.Message(string.Format("Заказ @{0} отменен", selected.SubItems[1].Text), Platform.Twitch);
+            EventContainer.Message($"Заказ @{selected.SubItems[1].Text} отменен", Platform.Twitch);
             listViewOrder.Items.Remove(selected);
         }
     }
@@ -456,19 +455,17 @@ public partial class Form1 : Form
 
     private async void buttonAuth_Click(object sender, EventArgs e)
     {
-        OpenLink(_twitchAuthorization.GetAuthorizationCodeUrl());
-
         try
         {
+            OpenLink(_twitchAuthorization.GetAuthorizationCodeUrl());
+        
             var authCodeResponse = await _twitchAuthorization.StartAuth();
             _twitchInfo.SetChannelToken(authCodeResponse);
 
             var streamer = await _twitchApiClient.GetAuthorizedUser();
             _twitchInfo.SetStreamerInfo(streamer);
 
-            _chatBot.Connect(new[] { Platform.Twitch });
-
-            var result = await _twitchApiClient.ValidateAccessToken(authCodeResponse.AccessToken);
+            _chatBot.Connect([Platform.Twitch]);
 
             EnableButtons();
         }
@@ -490,7 +487,7 @@ public partial class Form1 : Form
             var authCodeResponse = await _twitchAuthorization.StartAuth();
             var botUser = await _twitchApiClient.GetAuthorizedUser();
             _twitchInfo.SetBot(authCodeResponse, botUser);
-            _chatBot.Connect(new[] { Platform.Twitch });
+            _chatBot.Connect([Platform.Twitch]);
         }
         catch (Exception exception)
         {

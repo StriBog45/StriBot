@@ -13,10 +13,9 @@ public class DataBase : IDataBase
 {
     private const string DataBaseFilePath = @"StriBot.db3";
     private const string DataBaseConnectPath = "Data Source = " + DataBaseFilePath;
-    static SQLiteCommand sqlCmd = new SQLiteCommand();
     //SQLiteConnection.CreateFile(baseName);
 
-    static SQLiteFactory factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
+    private static readonly SQLiteFactory Factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
 
     public DataBase()
     {
@@ -31,33 +30,31 @@ public class DataBase : IDataBase
         var clearName = ClearNickname(nickname);
 
         var dTable = new DataTable();
-        using (var connection = (SQLiteConnection)factory.CreateConnection())
+        using var connection = (SQLiteConnection)Factory.CreateConnection();
+        connection.ConnectionString = DataBaseConnectPath;
+        connection.Open();
+        var sqlCmd = new SQLiteCommand(connection);
+        var amountBefore = 0;
+
+        if (connection.State != ConnectionState.Open)
+            throw new ArgumentException("Connection closed");
+
+        try // чтение
         {
-            connection.ConnectionString = DataBaseConnectPath;
-            connection.Open();
-            sqlCmd.Connection = connection;
-            var amountBefore = 0;
+            var sqlQuery = $"SELECT nick, money FROM Money WHERE nick = '{clearName}'";
+            var adapter = new SQLiteDataAdapter(sqlQuery, connection);
+            adapter.Fill(dTable);
 
-            if (connection.State != ConnectionState.Open)
-                throw new ArgumentException("Connection closed");
+            if (dTable.Rows.Count > 0)
+                amountBefore = Convert.ToInt32(dTable.Rows[0].ItemArray[1]);
 
-            try // чтение
-            {
-                var sqlQuery = $"SELECT nick, money FROM Money WHERE nick = '{clearName}'";
-                var adapter = new SQLiteDataAdapter(sqlQuery, connection);
-                adapter.Fill(dTable);
-
-                if (dTable.Rows.Count > 0)
-                    amountBefore = Convert.ToInt32(dTable.Rows[0].ItemArray[1]);
-
-                sqlCmd.CommandText =
-                    $"INSERT INTO Money ('nick', 'money') VALUES('{clearName}', '{amount}') ON CONFLICT(nick) DO UPDATE SET money = {amountBefore + amount};";
-                sqlCmd.ExecuteNonQuery();
-            }
-            catch (SQLiteException exception)
-            {
-                throw exception;
-            }
+            sqlCmd.CommandText =
+                $"INSERT INTO Money ('nick', 'money') VALUES('{clearName}', '{amount}') ON CONFLICT(nick) DO UPDATE SET money = {amountBefore + amount};";
+            sqlCmd.ExecuteNonQuery();
+        }
+        catch (SQLiteException exception)
+        {
+            throw exception;
         }
     }
 
@@ -66,11 +63,10 @@ public class DataBase : IDataBase
         var clearName = ClearNickname(nickname);
 
         var dTable = new DataTable();
-        using (var connection = (SQLiteConnection)factory.CreateConnection())
+        using (var connection = (SQLiteConnection)Factory.CreateConnection())
         {
             connection.ConnectionString = DataBaseConnectPath;
             connection.Open();
-            sqlCmd.Connection = connection;
 
             if (connection.State != ConnectionState.Open)
                 throw new ArgumentException("Connection closed");
@@ -101,11 +97,10 @@ public class DataBase : IDataBase
         var clearName = ClearNickname(nickname);
 
         var dTable = new DataTable();
-        using (var connection = (SQLiteConnection)factory.CreateConnection())
+        using (var connection = (SQLiteConnection)Factory.CreateConnection())
         {
             connection.ConnectionString = DataBaseConnectPath;
             connection.Open();
-            sqlCmd.Connection = connection;
 
             if (connection.State != ConnectionState.Open)
                 throw new ArgumentException("Connection closed");
@@ -131,12 +126,12 @@ public class DataBase : IDataBase
         var clearName = ClearNickname(nickname);
 
         var dTable = new DataTable();
-        using (var connection = (SQLiteConnection)factory.CreateConnection())
+        using (var connection = (SQLiteConnection)Factory.CreateConnection())
         {
             connection.ConnectionString = DataBaseConnectPath;
             connection.Open();
-            sqlCmd.Connection = connection;
-            int amountBefore = 0;
+            var sqlCmd = new SQLiteCommand(connection);
+            var amountBefore = 0;
 
             if (connection.State != ConnectionState.Open)
                 throw new ArgumentException("Connection closed");

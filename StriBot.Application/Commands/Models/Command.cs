@@ -9,7 +9,7 @@ public class Command
 {
     public string Name { get; set; }
     public string Info { get; set; }
-    public string[] Args { get; set; } = null;
+    public string[] Args { get; set; }
     public Role Requires { get; set; }
     public CommandType Type { get; set; }
     public Action<CommandInfo> Action { get; set; }

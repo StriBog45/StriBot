@@ -50,7 +50,7 @@ public class BananaHandler
                 }
 
                 EventContainer.Message(string.Join(", ", places), commandInfo.Platform);
-            }, new []{"Ник", "Размер"}, CommandType.Interactive);
+            }, ["Ник", "Размер"], CommandType.Interactive);
 
     public void IncreaseBananaSize(string nick)
         => _dataBase.IncreaseBananaSize(nick);

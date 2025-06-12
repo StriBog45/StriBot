@@ -20,7 +20,7 @@ namespace StriBot.ConsoleView;
 
 internal class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         var serviceProvider = new ServiceCollection()
             .AddLogging()
@@ -73,10 +73,10 @@ internal class Program
 
         logger.LogDebug("Application started!");
 
-        StartConsoleMenu(serviceProvider);
+        StartConsoleMenu();
     }
 
-    private static void StartConsoleMenu(ServiceProvider serviceProvider)
+    private static void StartConsoleMenu()
     {
         Console.WriteLine("StriBot started!");
         Console.WriteLine();

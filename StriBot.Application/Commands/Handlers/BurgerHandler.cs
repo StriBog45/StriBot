@@ -11,8 +11,10 @@ namespace StriBot.Application.Commands.Handlers;
 
 public class BurgerHandler
 {
-    private static readonly int _maxBurgerSize = 3;
-    private static readonly string[] ListStuffing =  {
+    private const int MaxBurgerSize = 3;
+
+    private static readonly string[] ListStuffing =
+    [
         "сосисками",
         "бабушкиной аджикой, ядреной такой",
         "ломтиком сыра",
@@ -50,8 +52,9 @@ public class BurgerHandler
         "рыбным филе",
         "грибами",
         "хлебом"
-    };
-    private static readonly string[] ListFoundation = {
+    ];
+    private static readonly string[] ListFoundation =
+    [
         "горячем хлебушке",
         "горячей булочке",
         "горячем ломтике хлеба",
@@ -59,11 +62,11 @@ public class BurgerHandler
         "хрустящем и поджаренном ломтике хлеба",
         "черном хлебе",
         "лаваше"
-    };
+    ];
         
     private static string BurgerCombiner()
     {
-        var burgerSize = RandomHelper.Random.Next(1, _maxBurgerSize);
+        var burgerSize = RandomHelper.Random.Next(1, MaxBurgerSize);
         var burgerBuilder = new StringBuilder("бутерброд с ");
         for(var i=0; i<burgerSize; i++)
         {
@@ -76,17 +79,17 @@ public class BurgerHandler
         return burgerBuilder.ToString();
     }
 
-    public Dictionary<string, Command> CreateCommands()
-        => new Dictionary<string, Command>()
+    public static Dictionary<string, Command> CreateCommands()
+        => new()
         {
             new Command("Бутерброд","Выдает бутерброд тебе или объекту",
                 delegate (CommandInfo commandInfo)
                 {
                     EventContainer.Message(
                         string.IsNullOrEmpty(commandInfo.ArgumentsAsString)
-                            ? $"Несу {BurgerCombiner()} для {commandInfo.DisplayName}! HahaCat "
-                            : $"Несу {BurgerCombiner()} для {commandInfo.ArgumentsAsString}! HahaCat ",
+                            ? $"Несу {BurgerCombiner()} для {commandInfo.DisplayName}! TPFufun "
+                            : $"Несу {BurgerCombiner()} для {commandInfo.ArgumentsAsString}! TPFufun ",
                         commandInfo.Platform);
-                }, new[] {"Объект"}, CommandType.Interactive)
+                }, ["Объект"], CommandType.Interactive)
         };
 }

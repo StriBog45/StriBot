@@ -37,7 +37,7 @@ public class BetsHandler
             _betsTimer++;
             if (_betsTimer == 5)
                 StopBetsProcess(platforms);
-        };
+        }
     }
 
     public void StopBetsProcess(Platform[] platforms)
@@ -130,12 +130,12 @@ public class BetsHandler
                 EventContainer.Message("В данный момент ставить нельзя!", platforms);
         }
 
-        return new Command("Ставка", "Сделать ставку", Action, new[] { "на что", "сколько" }, CommandType.Interactive);
+        return new Command("Ставка", "Сделать ставку", Action, ["на что", "сколько"], CommandType.Interactive);
     }
 
     public Dictionary<string, Command> CreateCommands()
         => new Dictionary<string, Command>
         {
-            CreateBetCommand(new[] {Platform.Twitch})
+            CreateBetCommand([Platform.Twitch])
         };
 }

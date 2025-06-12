@@ -35,7 +35,7 @@ public class DataBaseEmpty : IDataBase
     }
 
     public List<BananaInfo> GetTopBananas()
-        => new();
+        => [];
 
     public int GetFirstViewerTimes(string nickname)
         => 0;

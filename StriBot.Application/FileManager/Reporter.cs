@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using StriBot.Application.Bot.Enums;
@@ -11,34 +9,22 @@ namespace StriBot.Application.FileManager;
 
 public static class Reporter
 {
-    private static readonly string _catalog = "Отчеты";
-    private static readonly string _infoName = "Информационные";
-    private static readonly string _interactiveName = "Интерактив";
-    private static readonly string _ordersName = "Заказы";
-    private static readonly string _moderatorsName = "Модераторам";
-    private static readonly string _streamersName = "Стримеры";
-
-    public static void CreateReport()
-    {
-        var name = DateTime.Now.ToString(new CultureInfo("ru-RU")).Split(' ')[0];
-        var path = GetPath(name);
-
-        while (File.Exists(path))
-        {
-            name += "(1)";
-            path = GetPath(name);
-        }
-    }
+    private const string Catalog = "Отчеты";
+    private const string InfoName = "Информационные";
+    private const string InteractiveName = "Интерактив";
+    private const string OrdersName = "Заказы";
+    private const string ModeratorsName = "Модераторам";
+    private const string StreamersName = "Стримеры";
 
     public static void CreateCommands(Dictionary<string, Command> commands)
     {
         CreateCatalogIfNeed();
 
-        CommandReport(_infoName, commands, CommandType.Info);
-        CommandReport(_interactiveName, commands, CommandType.Interactive);
-        CommandReport(_ordersName, commands, CommandType.Order);
-        CommandReport(_moderatorsName, commands, Role.Moderator);
-        CommandReport(_streamersName, commands, CommandType.Streamers);
+        CommandReport(InfoName, commands, CommandType.Info);
+        CommandReport(InteractiveName, commands, CommandType.Interactive);
+        CommandReport(OrdersName, commands, CommandType.Order);
+        CommandReport(ModeratorsName, commands, Role.Moderator);
+        CommandReport(StreamersName, commands, CommandType.Streamers);
     }
 
     private static void CommandReport(string fileName, Dictionary<string, Command> commands, CommandType commandType)
@@ -86,11 +72,11 @@ public static class Reporter
     }
 
     private static string GetPath(string name)
-        => $"{_catalog}\\{name}.txt";
+        => $"{Catalog}\\{name}.txt";
 
     private static void CreateCatalogIfNeed()
     {
-        if (!Directory.Exists(_catalog))
-            Directory.CreateDirectory(_catalog);
+        if (!Directory.Exists(Catalog))
+            Directory.CreateDirectory(Catalog);
     }
 }

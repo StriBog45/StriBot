@@ -24,7 +24,7 @@ public class ProgressHandler
 
     public ProgressHandler()
     {
-        _bosses = new BossList();
+        _bosses = [];
         LoadBosses();
     }
 
@@ -34,15 +34,13 @@ public class ProgressHandler
 
         if (Directory.Exists(path))
         {
-            using (var streamReader = new StreamReader(path))
-            {
-                var lines = streamReader.ReadToEnd()
-                    .Split(new char[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+            using var streamReader = new StreamReader(path);
+            var lines = streamReader.ReadToEnd()
+                .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (var line in lines)
-                {
-                    _bosses.Add(line);
-                }
+            foreach (var line in lines)
+            {
+                _bosses.Add(line);
             }
         }
     }
@@ -59,10 +57,7 @@ public class ProgressHandler
         => new Command("Боссы", "Список убитых боссов!",
             delegate (CommandInfo e)
             {
-                if (_bosses.Count > 0)
-                    EventContainer.Message(_bosses.ToString(), e.Platform);
-                else
-                    EventContainer.Message("Боссов нет", e.Platform);
+                EventContainer.Message(_bosses.Count > 0 ? _bosses.ToString() : "Боссов нет", e.Platform);
             }, CommandType.Interactive);
 
     private Command CreateBossCommand()
@@ -77,22 +72,20 @@ public class ProgressHandler
 
                     EventContainer.Message($"Босс {commandInfo.ArgumentsAsString} успешно добавлен!", commandInfo.Platform);
                 }
-            }, new [] { "Имя босса" }, CommandType.Interactive);
+            }, ["Имя босса"], CommandType.Interactive);
 
     private static void RecordBoss(string name)
     {
         var path = GetPath(BossesFileName);
-        using (var file = File.AppendText(path))
-        {
-            file.WriteLine(name);
-        }
+        using var file = File.AppendText(path);
+        file.WriteLine(name);
     }
 
     private Command CreateDeathsCommand()
         => new Command("Смертей", "Показывает количество смертей",
             delegate (CommandInfo commandInfo)
             {
-                EventContainer.Message(string.Format("Смертей: {0}", Deaths), commandInfo.Platform);
+                EventContainer.Message($"Смертей: {Deaths}", commandInfo.Platform);
             }, CommandType.Interactive);
 
     private Command CreateDeathCommand()
@@ -101,12 +94,12 @@ public class ProgressHandler
             {
                 Deaths++;
                 _deathUpdate();
-                EventContainer.Message(string.Format("Смертей: {0}", Deaths), commandInfo.Platform);
+                EventContainer.Message($"Смертей: {Deaths}", commandInfo.Platform);
                 EventContainer.Message("▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬ ……………..............……...Ｙ Ｏ Ｕ Ｄ Ｉ Ｅ Ｄ…….……….........…..… ▬▬▬▬▬▬▬▬▬▬ஜ۩۞۩ஜ▬▬▬▬▬▬▬▬▬", commandInfo.Platform);
             }, CommandType.Interactive);
 
     public Dictionary<string, Command> CreateCommands()
-        => new Dictionary<string, Command>()
+        => new()
         {
             CreateDeathCommand(),
             CreateDeathsCommand(),
