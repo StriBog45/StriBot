@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DryIoc;
+using Microsoft.Extensions.Hosting;
 using StriBot.Application.Bot;
 using StriBot.Application.Commands.Handlers;
 using StriBot.Application.Commands.Handlers.Progress;
@@ -20,7 +20,6 @@ using StriBot.Application.Localization.Models;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Twitch;
 using StriBot.Application.Twitch.Interfaces;
-using StriBot.DryIoc;
 
 namespace StriBot;
 
@@ -43,28 +42,45 @@ public partial class Form1 : Form
     private readonly ITwitchInfo _twitchInfo;
     private readonly TwitchAuthorization _twitchAuthorization;
     private readonly TwitchApiClient _twitchApiClient;
+    private readonly IHostApplicationLifetime _hostApplicationLifetime;
 
-    public Form1()
+    public Form1(IHostApplicationLifetime hostApplicationLifetime, 
+        MMRHandler handlerMmr, 
+        OrderHandler orderHandler, 
+        CurrencyBaseHandler currencyBaseHandler, 
+        BetsHandler betsHandler, 
+        ChatBot chatBot, 
+        ProgressHandler progressHandler, 
+        RememberHandler rememberHandler, 
+        Currency currency, 
+        SettingsFileManager settingsFileManager, 
+        RaffleHandler raffleHandler, 
+        IDataBase dataBase, 
+        ITwitchInfo twitchInfo, 
+        TwitchAuthorization twitchAuthorization, 
+        TwitchApiClient twitchApiClient)
     {
+        _hostApplicationLifetime = hostApplicationLifetime;
+        _handlerMMR = handlerMmr;
+        _orderHandler = orderHandler;
+        _currencyBaseHandler = currencyBaseHandler;
+        _betsHandler = betsHandler;
+        _chatBot = chatBot;
+        _progressHandler = progressHandler;
+        _rememberHandler = rememberHandler;
+        _currency = currency;
+        _settingsFileManager = settingsFileManager;
+        _raffleHandler = raffleHandler;
+        _dataBase = dataBase;
+        _twitchInfo = twitchInfo;
+        _twitchAuthorization = twitchAuthorization;
+        _twitchApiClient = twitchApiClient;
+
         InitializeComponent();
 
-        _settingsFileManager = GlobalContainer.Default.Resolve<SettingsFileManager>();
-        _twitchInfo = GlobalContainer.Default.Resolve<ITwitchInfo>();
         _twitchInfo.Set(_settingsFileManager.GetUserCredentials());
-        _twitchAuthorization = GlobalContainer.Default.Resolve<TwitchAuthorization>();
-        _chatBot = GlobalContainer.Default.Resolve<ChatBot>();
-        _currency = GlobalContainer.Default.Resolve<Currency>();
-        _progressHandler = GlobalContainer.Default.Resolve<ProgressHandler>();
         _progressHandler.SetConstructorSettings(BossUpdate, DeathUpdate);
-        _handlerMMR = GlobalContainer.Default.Resolve<MMRHandler>();
-        _orderHandler = GlobalContainer.Default.Resolve<OrderHandler>();
-        _currencyBaseHandler = GlobalContainer.Default.Resolve<CurrencyBaseHandler>();
-        _betsHandler = GlobalContainer.Default.Resolve<BetsHandler>();
-        _rememberHandler = GlobalContainer.Default.Resolve<RememberHandler>();
-        _raffleHandler = GlobalContainer.Default.Resolve<RaffleHandler>();
-        _dataBase = GlobalContainer.Default.Resolve<IDataBase>();
         _orderHandler.SafeCallConnector(UpdateOrderList);
-        _twitchApiClient = GlobalContainer.Default.Resolve<TwitchApiClient>();
 
         EventContainer.MessageToApplicationEvent += ShowMessage;
 
@@ -73,7 +89,7 @@ public partial class Form1 : Form
             try
             {
                 await _twitchAuthorization.RefreshTokens();
-                _chatBot.Connect(new[] { Platform.Twitch });
+                _chatBot.Connect([Platform.Twitch]);
 
                 // Для вызова 0-й минуты
                 _chatBot.TimerTick();
@@ -167,6 +183,8 @@ public partial class Form1 : Form
         });
 
         Reporter.CreateCommands(_chatBot.Commands);
+
+        _hostApplicationLifetime.StopApplication();
     }
 
     private void buttonDistribution_Click(object sender, EventArgs e)
