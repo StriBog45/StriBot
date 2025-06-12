@@ -1,9 +1,8 @@
-﻿namespace StriBot.Application.DataBase.Models
-{
-    public class BananaInfo
-    {
-        public string Nick { get; set; }
+﻿namespace StriBot.Application.DataBase.Models;
 
-        public int BananaSize { get; set; }
-    }
+public class BananaInfo
+{
+    public string Nick { get; set; }
+
+    public int BananaSize { get; set; }
 }

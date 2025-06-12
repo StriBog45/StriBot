@@ -1,30 +1,29 @@
 ﻿using System.Collections.Generic;
 using StriBot.Application.DataBase.Models;
 
-namespace StriBot.Application.DataBase.Interfaces
+namespace StriBot.Application.DataBase.Interfaces;
+
+public interface IDataBase
 {
-    public interface IDataBase
-    {
-        void AddMoney(string nickname, int amount);
+    void AddMoney(string nickname, int amount);
 
-        int GetMoney(string nickname);
+    int GetMoney(string nickname);
 
-        string ClearNickname(string nick);
+    string ClearNickname(string nick);
 
-        string GetSteamTradeLink(string nickname);
+    string GetSteamTradeLink(string nickname);
 
-        void AddSteamTradeLink(string nickname, string steamTradeLink);
+    void AddSteamTradeLink(string nickname, string steamTradeLink);
 
-        int GetBananaSize(string nickname);
+    int GetBananaSize(string nickname);
 
-        void IncreaseBananaSize(string nickname);
+    void IncreaseBananaSize(string nickname);
 
-        void SetBananaSize(string nickname, int bananaSize);
+    void SetBananaSize(string nickname, int bananaSize);
 
-        List<BananaInfo> GetTopBananas();
+    List<BananaInfo> GetTopBananas();
 
-        int GetFirstViewerTimes(string nickname);
+    int GetFirstViewerTimes(string nickname);
 
-        void IncreaseFirstViewerTimes(string nickname);
-    }
+    void IncreaseFirstViewerTimes(string nickname);
 }

@@ -4,28 +4,27 @@ using StriBot.Application.Configurations.Models;
 using StriBot.Application.Events;
 using StriBot.Application.Platforms.Enums;
 
-namespace StriBot.Application.Bot
+namespace StriBot.Application.Bot;
+
+public class RepeatMessagesHandler
 {
-    public class RepeatMessagesHandler
+    private readonly List<RepeatMessage> _repeatMessages;
+
+    public RepeatMessagesHandler(IConfiguration configuration)
     {
-        private readonly List<RepeatMessage> _repeatMessages;
+        _repeatMessages = configuration.GetSection("RepeatMessages").Get<List<RepeatMessage>>();
+    }
 
-        public RepeatMessagesHandler(IConfiguration configuration)
+    public void Tick(int timer)
+    {
+        if (_repeatMessages != null)
         {
-            _repeatMessages = configuration.GetSection("RepeatMessages").Get<List<RepeatMessage>>();
-        }
-
-        public void Tick(int timer)
-        {
-            if (_repeatMessages != null)
+            foreach (var repeatMessage in _repeatMessages)
             {
-                foreach (var repeatMessage in _repeatMessages)
+                if (timer >= repeatMessage.DelayBeforeFirstDispatchInMinutes
+                    && (timer - repeatMessage.DelayBeforeFirstDispatchInMinutes) % repeatMessage.FrequencyInMinutes == 0)
                 {
-                    if (timer >= repeatMessage.DelayBeforeFirstDispatchInMinutes
-                        && (timer - repeatMessage.DelayBeforeFirstDispatchInMinutes) % repeatMessage.FrequencyInMinutes == 0)
-                    {
-                        EventContainer.Message(repeatMessage.Message, new[] {Platform.Twitch});
-                    }
+                    EventContainer.Message(repeatMessage.Message, new[] {Platform.Twitch});
                 }
             }
         }

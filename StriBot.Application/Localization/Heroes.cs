@@ -1,10 +1,10 @@
 ﻿using StriBot.Application.Extensions;
 
-namespace StriBot.Application.Localization
+namespace StriBot.Application.Localization;
+
+public static class Heroes
 {
-    public static class Heroes
-    {
-        private static readonly string[] ListHeroes =  {
+    private static readonly string[] ListHeroes =  {
         "Abaddon",
         "Axe",
         "Beastmaster",
@@ -122,8 +122,7 @@ namespace StriBot.Application.Localization
         "Witch Doctor",
         "Zeus",
         "Hoodwink"
-        };
-        public static string GetRandomHero()
-            => RandomHelper.GetRandomOfArray(ListHeroes);
-    }
+    };
+    public static string GetRandomHero()
+        => RandomHelper.GetRandomOfArray(ListHeroes);
 }

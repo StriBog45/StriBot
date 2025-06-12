@@ -1,13 +1,12 @@
 ﻿using DryIoc;
 
-namespace StriBot.DryIoc.Interfaces
+namespace StriBot.DryIoc.Interfaces;
+
+public interface IContainerFiller
 {
-    public interface IContainerFiller
-    {
-        /// <summary>
-        ///     Регистрация зависимости в контейнере
-        /// </summary>
-        /// <param name="container"> контейнер для регистрации </param>
-        void Fill(IContainer container);
-    }
+    /// <summary>
+    ///     Регистрация зависимости в контейнере
+    /// </summary>
+    /// <param name="container"> контейнер для регистрации </param>
+    void Fill(IContainer container);
 }

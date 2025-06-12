@@ -1,10 +1,9 @@
-﻿namespace StriBot.Application.Bot.Enums
+﻿namespace StriBot.Application.Bot.Enums;
+
+public enum Role
 {
-    public enum Role
-    {
-        Any = 0,
-        Subscriber = 2,
-        Moderator = 3,
-        Broadcaster = 4
-    }
+    Any = 0,
+    Subscriber = 2,
+    Moderator = 3,
+    Broadcaster = 4
 }

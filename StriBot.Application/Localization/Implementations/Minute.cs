@@ -1,31 +1,30 @@
 ﻿using StriBot.Application.Localization.Interfaces;
 
-namespace StriBot.Application.Localization.Implementations
+namespace StriBot.Application.Localization.Implementations;
+
+public class Minute : ICases
 {
-    public class Minute : ICases
-    {
-        public string Nominative => "минута";
+    public string Nominative => "минута";
 
-        public string Genitive => "минуты";
+    public string Genitive => "минуты";
 
-        public string Dative => "минуту";
+    public string Dative => "минуту";
 
-        public string Accusative => "минуту";
+    public string Accusative => "минуту";
 
-        public string Instrumental => "минутой";
+    public string Instrumental => "минутой";
 
-        public string Prepositional => "минуте";
+    public string Prepositional => "минуте";
 
-        public string NominativeMultiple => "минуты";
+    public string NominativeMultiple => "минуты";
 
-        public string GenitiveMultiple => "минут";
+    public string GenitiveMultiple => "минут";
 
-        public string DativeMultiple => "минутам";
+    public string DativeMultiple => "минутам";
 
-        public string AccusativeMultiple => "минуты";
+    public string AccusativeMultiple => "минуты";
 
-        public string InstrumentalMultiple => "минутами";
+    public string InstrumentalMultiple => "минутами";
 
-        public string PrepositionalMultiple => "минутах";
-    }
+    public string PrepositionalMultiple => "минутах";
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DryIoc;
@@ -23,6 +24,7 @@ using StriBot.DryIoc;
 
 namespace StriBot;
 
+[SupportedOSPlatform("windows")]
 public partial class Form1 : Form
 {
     private delegate void SafeCallDelegate();
@@ -172,21 +174,21 @@ public partial class Form1 : Form
 
     private void buttonCreateOptions_Click(object sender, EventArgs e)
     {
-        var options = TextBoxOptions.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-        _betsHandler.CreateBets(options, new[] { Platform.Twitch });
+        var options = TextBoxOptions.Text.Split(["\r\n"], StringSplitOptions.RemoveEmptyEntries).ToArray();
+        _betsHandler.CreateBets(options, [Platform.Twitch]);
     }
 
     private void buttonBetsOfManiac_Click(object sender, EventArgs e)
-        => _betsHandler.CreateBets(new[] { "Количество повешанных", "0", "1", "2", "3", "4" }, new[] { Platform.Twitch });
+        => _betsHandler.CreateBets(["Количество повешанных", "0", "1", "2", "3", "4"], new[] { Platform.Twitch });
 
     private void buttonBetsOfSurvivors_Click(object sender, EventArgs e)
-        => _betsHandler.CreateBets(new[] { "Количество сбежавших", "0", "1", "2", "3", "4" }, new[] { Platform.Twitch });
+        => _betsHandler.CreateBets(["Количество сбежавших", "0", "1", "2", "3", "4"], new[] { Platform.Twitch });
 
     private void buttonBetsOfSurvivor_Click(object sender, EventArgs e)
-        => _betsHandler.CreateBets(new[] { "Выживание стримера", "выжил", "погиб" }, new[] { Platform.Twitch });
+        => _betsHandler.CreateBets(["Выживание стримера", "выжил", "погиб"], new[] { Platform.Twitch });
 
     private void buttonBetsDota2_Click(object sender, EventArgs e)
-        => _betsHandler.CreateBets(new[] { "Победа команды", "radiant", "dire" }, new[] { Platform.Twitch });
+        => _betsHandler.CreateBets(["Победа команды", "radiant", "dire"], new[] { Platform.Twitch });
 
     private void buttonStopBets_Click(object sender, EventArgs e)
         => _betsHandler.StopBetsProcess(new[] { Platform.Twitch });
@@ -206,7 +208,7 @@ public partial class Form1 : Form
         {
             listViewOrder.Items.Clear();
             foreach (var order in orders)
-                listViewOrder.Items.Add(new ListViewItem(new[] { order.Item1, order.Item2.ToString(), order.Item3.ToString() }));
+                listViewOrder.Items.Add(new ListViewItem([order.Item1, order.Item2, order.Item3.ToString()]));
         }
     }
 
@@ -448,6 +450,8 @@ public partial class Form1 : Form
 
             _chatBot.Connect(new[] { Platform.Twitch });
 
+            var result = await _twitchApiClient.ValidateAccessToken(authCodeResponse.AccessToken);
+
             EnableButtons();
         }
         catch (Exception exception)
@@ -458,12 +462,13 @@ public partial class Form1 : Form
 
     private async void buttonAuthBot_Click(object sender, EventArgs e)
     {
-        Clipboard.SetText(_twitchAuthorization.GetAuthorizationCodeUrl(), TextDataFormat.Text);
-        MessageBox.Show(
-            "Ссылка для авторизации скопирована в буфер обмена (ctrl+v). Убедитесь что выбран профиль для бота", "Авторизация бота");
-
         try
         {
+            Clipboard.SetText(_twitchAuthorization.GetAuthorizationCodeUrl(), TextDataFormat.Text);
+            MessageBox.Show(
+                "Ссылка для авторизации скопирована в буфер обмена (ctrl+v). Убедитесь что выбран профиль для бота",
+                "Авторизация бота");
+
             var authCodeResponse = await _twitchAuthorization.StartAuth();
             var botUser = await _twitchApiClient.GetAuthorizedUser();
             _twitchInfo.SetBot(authCodeResponse, botUser);

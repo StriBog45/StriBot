@@ -6,39 +6,38 @@ using StriBot.Application.Configurations.Models;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 
-namespace StriBot.Application.Commands.Handlers
+namespace StriBot.Application.Commands.Handlers;
+
+public class CustomCommandHandler
 {
-    public class CustomCommandHandler
+    private readonly IConfiguration _configuration;
+
+    public CustomCommandHandler(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
+        _configuration = configuration;
+    }
 
-        public CustomCommandHandler(IConfiguration configuration)
+    public Dictionary<string, Command> CreateCommands()
+    {
+        var customCommands = _configuration.GetSection("CustomCommands").Get<List<CustomCommand>>();
+        var friendlyStreamers = _configuration.GetSection("FriendlyStreamers").Get<List<CustomCommand>>();
+
+        var dictionaryCommands = new Dictionary<string, Command>();
+
+        foreach (var customCommand in customCommands)
         {
-            _configuration = configuration;
+            dictionaryCommands.Add(customCommand.Command.ToLower(), new Command(customCommand.Command, customCommand.Description,
+                delegate(CommandInfo commandInfo) { EventContainer.Message(customCommand.Message, commandInfo.Platform); },
+                CommandType.Info));
         }
 
-        public Dictionary<string, Command> CreateCommands()
+        foreach (var friendlyStreamer in friendlyStreamers)
         {
-            var customCommands = _configuration.GetSection("CustomCommands").Get<List<CustomCommand>>();
-            var friendlyStreamers = _configuration.GetSection("FriendlyStreamers").Get<List<CustomCommand>>();
-
-            var dictionaryCommands = new Dictionary<string, Command>();
-
-            foreach (var customCommand in customCommands)
-            {
-                dictionaryCommands.Add(customCommand.Command.ToLower(), new Command(customCommand.Command, customCommand.Description,
-                    delegate(CommandInfo commandInfo) { EventContainer.Message(customCommand.Message, commandInfo.Platform); },
-                    CommandType.Info));
-            }
-
-            foreach (var friendlyStreamer in friendlyStreamers)
-            {
-                dictionaryCommands.Add(friendlyStreamer.Command.ToLower(), new Command(friendlyStreamer.Command, friendlyStreamer.Description,
-                    delegate(CommandInfo commandInfo) { EventContainer.Message(friendlyStreamer.Message, commandInfo.Platform); },
-                    CommandType.Streamers));
-            }
-
-            return dictionaryCommands;
+            dictionaryCommands.Add(friendlyStreamer.Command.ToLower(), new Command(friendlyStreamer.Command, friendlyStreamer.Description,
+                delegate(CommandInfo commandInfo) { EventContainer.Message(friendlyStreamer.Message, commandInfo.Platform); },
+                CommandType.Streamers));
         }
+
+        return dictionaryCommands;
     }
 }

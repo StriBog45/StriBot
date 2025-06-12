@@ -4,52 +4,51 @@ using System.Net;
 using System.Threading.Tasks;
 using StriBot.Application.Server.Models;
 
-namespace StriBot.Application.Server
+namespace StriBot.Application.Server;
+
+public class WebServer
 {
-    public class WebServer
+    private readonly HttpListener _listener;
+
+    public WebServer(string uri)
     {
-        private readonly HttpListener _listener;
+        _listener = new HttpListener();
+        _listener.Prefixes.Add(uri);
+    }
 
-        public WebServer(string uri)
+    public async Task<AuthorizationModel> Listen()
+    {
+        _listener.Start();
+
+        return await OnRequest();
+    }
+
+    public void Stop()
+        => _listener.Stop();
+
+    private async Task<AuthorizationModel> OnRequest()
+    {
+        while (_listener.IsListening)
         {
-            _listener = new HttpListener();
-            _listener.Prefixes.Add(uri);
-        }
+            var listenerContext = await _listener.GetContextAsync();
+            var listenerRequest = listenerContext.Request;
+            var listenerResponse = listenerContext.Response;
 
-        public async Task<AuthorizationModel> Listen()
-        {
-            _listener.Start();
-
-            return await OnRequest();
-        }
-
-        public void Stop()
-            => _listener.Stop();
-
-        private async Task<AuthorizationModel> OnRequest()
-        {
-            while (_listener.IsListening)
+            using (var writer = new StreamWriter(listenerResponse.OutputStream))
             {
-                var listenerContext = await _listener.GetContextAsync();
-                var listenerRequest = listenerContext.Request;
-                var listenerResponse = listenerContext.Response;
-
-                using (var writer = new StreamWriter(listenerResponse.OutputStream))
+                if (listenerRequest.QueryString.AllKeys.Any("code".Contains))
                 {
-                    if (listenerRequest.QueryString.AllKeys.Any("code".Contains))
-                    {
-                        await writer.WriteLineAsync("Authorization started! Check your application!");
-                        await writer.FlushAsync();
-
-                        return new AuthorizationModel(listenerRequest.QueryString["code"]);
-                    }
-
-                    await writer.WriteLineAsync("No code found in query string!");
+                    await writer.WriteLineAsync("Authorization started! Check your application!");
                     await writer.FlushAsync();
-                }
-            }
 
-            return null;
+                    return new AuthorizationModel(listenerRequest.QueryString["code"]);
+                }
+
+                await writer.WriteLineAsync("No code found in query string!");
+                await writer.FlushAsync();
+            }
         }
+
+        return null;
     }
 }

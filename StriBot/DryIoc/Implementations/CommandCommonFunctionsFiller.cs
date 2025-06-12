@@ -2,13 +2,12 @@
 using StriBot.Application.Localization;
 using StriBot.DryIoc.Interfaces;
 
-namespace StriBot.DryIoc.Implementations
+namespace StriBot.DryIoc.Implementations;
+
+class CommandCommonFunctionsFiller : IContainerFiller
 {
-    class CommandCommonFunctionsFiller : IContainerFiller
+    public void Fill(IContainer container)
     {
-        public void Fill(IContainer container)
-        {
-            container.Register<ReadyMadePhrases>(Reuse.Singleton);
-        }
+        container.Register<ReadyMadePhrases>(Reuse.Singleton);
     }
 }

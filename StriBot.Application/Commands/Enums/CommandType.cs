@@ -1,11 +1,10 @@
-﻿namespace StriBot.Application.Commands.Enums
+﻿namespace StriBot.Application.Commands.Enums;
+
+public enum CommandType
 {
-    public enum CommandType
-    {
-        Info,
-        Interactive,
-        Order,
-        Streamers,
-        Hidden
-    }
+    Info,
+    Interactive,
+    Order,
+    Streamers,
+    Hidden
 }

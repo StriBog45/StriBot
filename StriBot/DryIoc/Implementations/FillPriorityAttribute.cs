@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace StriBot.DryIoc.Implementations
-{
-    public class FillPriorityAttribute : Attribute
-    {
-        public int Priority { get; }
+namespace StriBot.DryIoc.Implementations;
 
-        public FillPriorityAttribute(int priority)
-        {
-            Priority = priority;
-        }
+public class FillPriorityAttribute : Attribute
+{
+    public int Priority { get; }
+
+    public FillPriorityAttribute(int priority)
+    {
+        Priority = priority;
     }
 }

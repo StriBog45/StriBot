@@ -1,13 +1,12 @@
-﻿namespace StriBot.Application.Events.Enums
+﻿namespace StriBot.Application.Events.Enums;
+
+public enum PlatformEventType
 {
-    public enum PlatformEventType
-    {
-        HighlightedMessage,
-        Raid,
-        GiftSubscription,
-        NewSubscription,
-        ReSubscription,
-        Message,
-        Reward
-    }
+    HighlightedMessage,
+    Raid,
+    GiftSubscription,
+    NewSubscription,
+    ReSubscription,
+    Message,
+    Reward
 }

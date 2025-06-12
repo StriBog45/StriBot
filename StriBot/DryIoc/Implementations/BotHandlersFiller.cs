@@ -2,13 +2,12 @@
 using StriBot.Application.Bot.Handlers;
 using StriBot.DryIoc.Interfaces;
 
-namespace StriBot.DryIoc.Implementations
+namespace StriBot.DryIoc.Implementations;
+
+public class BotHandlersFiller : IContainerFiller
 {
-    public class BotHandlersFiller : IContainerFiller
+    public void Fill(IContainer container)
     {
-        public void Fill(IContainer container)
-        {
-            container.Register<RewardHandler>(Reuse.Singleton);
-        }
+        container.Register<RewardHandler>(Reuse.Singleton);
     }
 }

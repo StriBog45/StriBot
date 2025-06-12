@@ -1,10 +1,9 @@
-﻿namespace StriBot.Application.Platforms.Enums
+﻿namespace StriBot.Application.Platforms.Enums;
+
+public enum Platform
 {
-    public enum Platform
-    {
-        Twitch,
-        GoodGame,
-        Youtube,
-        VkPlay
-    }
+    Twitch,
+    GoodGame,
+    Youtube,
+    VkPlay
 }

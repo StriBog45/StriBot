@@ -1,11 +1,10 @@
 ﻿using StriBot.Application.Speaker.Interfaces;
 
-namespace StriBot.ConsoleView.Speakers.Implementations
+namespace StriBot.ConsoleView.Speakers.Implementations;
+
+public class SpeakerEmpty : ISpeaker
 {
-    public class SpeakerEmpty : ISpeaker
+    public void Say(string text)
     {
-        public void Say(string text)
-        {
-        }
     }
 }
