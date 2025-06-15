@@ -7,6 +7,7 @@ using StriBot.Application.Commands.Handlers.Progress;
 using StriBot.Application.Commands.Handlers.Raffle;
 using StriBot.Application.DataBase.Interfaces;
 using StriBot.Application.FileManager;
+using StriBot.Application.Loader;
 using StriBot.Application.Localization;
 using StriBot.Application.Localization.Implementations;
 using StriBot.Application.Speaker.Interfaces;
@@ -69,5 +70,10 @@ public static class ServicesExtension
     public static IServiceCollection AddDataBase(this IServiceCollection services)
     {
         return services.AddTransient<IDataBase, DataBase>();
+    }
+
+    public static IServiceCollection AddLoader(this IServiceCollection services)
+    {
+        return services.AddTransient<Loader>();
     }
 }

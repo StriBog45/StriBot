@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Extensions.Hosting;
 using StriBot.Application.Bot;
 using StriBot.Application.Commands.Handlers;
 using StriBot.Application.Commands.Handlers.Progress;
@@ -41,25 +40,22 @@ public partial class Form1 : Form
     private readonly ITwitchInfo _twitchInfo;
     private readonly TwitchAuthorization _twitchAuthorization;
     private readonly TwitchApiClient _twitchApiClient;
-    private readonly IHostApplicationLifetime _hostApplicationLifetime;
 
-    public Form1(IHostApplicationLifetime hostApplicationLifetime, 
-        MMRHandler handlerMmr, 
-        OrderHandler orderHandler, 
-        CurrencyBaseHandler currencyBaseHandler, 
-        BetsHandler betsHandler, 
-        ChatBot chatBot, 
-        ProgressHandler progressHandler, 
-        RememberHandler rememberHandler, 
-        Currency currency, 
-        SettingsFileManager settingsFileManager, 
-        RaffleHandler raffleHandler, 
-        IDataBase dataBase, 
-        ITwitchInfo twitchInfo, 
-        TwitchAuthorization twitchAuthorization, 
+    public Form1(MMRHandler handlerMmr,
+        OrderHandler orderHandler,
+        CurrencyBaseHandler currencyBaseHandler,
+        BetsHandler betsHandler,
+        ChatBot chatBot,
+        ProgressHandler progressHandler,
+        RememberHandler rememberHandler,
+        Currency currency,
+        SettingsFileManager settingsFileManager,
+        RaffleHandler raffleHandler,
+        IDataBase dataBase,
+        ITwitchInfo twitchInfo,
+        TwitchAuthorization twitchAuthorization,
         TwitchApiClient twitchApiClient)
     {
-        _hostApplicationLifetime = hostApplicationLifetime;
         _handlerMMR = handlerMmr;
         _orderHandler = orderHandler;
         _currencyBaseHandler = currencyBaseHandler;
@@ -77,7 +73,6 @@ public partial class Form1 : Form
 
         InitializeComponent();
 
-        _twitchInfo.Set(_settingsFileManager.GetUserCredentials());
         _progressHandler.SetConstructorSettings(BossUpdate, DeathUpdate);
         _orderHandler.SafeCallConnector(UpdateOrderList);
 
@@ -182,8 +177,6 @@ public partial class Form1 : Form
         });
 
         Reporter.CreateCommands(_chatBot.Commands);
-
-        _hostApplicationLifetime.StopApplication();
     }
 
     private void buttonDistribution_Click(object sender, EventArgs e)

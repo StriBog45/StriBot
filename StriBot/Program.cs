@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StriBot.Application.Loader;
 using StriBot.Application.WebSockets;
 using StriBot.DependencyInjections;
 using TwitchLib.EventSub.Websockets.Extensions;
@@ -19,7 +21,7 @@ internal static class Program
     /// </summary>
     [STAThread]
     [SupportedOSPlatform("windows")]
-    private static void Main()
+    private static async Task Main()
     {
         System.Windows.Forms.Application.EnableVisualStyles();
         System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
@@ -29,6 +31,7 @@ internal static class Program
 
         hostApplicationBuilder.Services.AddSingleton<Form1>()
             .AddSpeaker()
+            .AddLoader()
             .AddBot()
             .AddBotHandlers()
             .AddBotCommands()
@@ -37,17 +40,13 @@ internal static class Program
             .AddLogging()
             .AddTwitchLibEventSubWebsockets()
             .AddHostedService<WebsocketHostedService>();
-        
+
         hostApplicationBuilder.UseWindowsFormsLifetime<Form1>();
 
         using var host = hostApplicationBuilder.Build();
 
-        try
-        {
-            host.Run();
-        }
-        catch (OperationCanceledException)
-        {
-        }
+        await host.Services.GetService<Loader>().Load();
+
+        await host.RunAsync();
     }
 }

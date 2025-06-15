@@ -7,7 +7,7 @@ namespace StriBot.Application.FileManager;
 public class SettingsFileManager
 {
     private const string FileName = "UserSettings";
-    private readonly string _fileNameWithExtension = $"{FileName}.bin";
+    private const string FileNameWithExtension = $"{FileName}.bin";
     private UserSettings _userSettings;
 
     public SettingsFileManager()
@@ -17,12 +17,10 @@ public class SettingsFileManager
 
     private void LoadSettings()
     {
-        if (File.Exists(_fileNameWithExtension))
+        if (File.Exists(FileNameWithExtension))
         {
-            using (var file = File.OpenRead(_fileNameWithExtension))
-            {
-                _userSettings = Serializer.Deserialize<UserSettings>(file);
-            }
+            using var file = File.OpenRead(FileNameWithExtension);
+            _userSettings = Serializer.Deserialize<UserSettings>(file);
         }
         else
         {
@@ -35,10 +33,8 @@ public class SettingsFileManager
         _userSettings.CurrencyName = selectedCurrency;
         _userSettings.UserCredentials = userCredentials;
 
-        using (var file = File.Create(_fileNameWithExtension))
-        {
-            Serializer.Serialize(file, _userSettings);
-        }
+        using var file = File.Create(FileNameWithExtension);
+        Serializer.Serialize(file, _userSettings);
     }
 
     public string CurrencyName

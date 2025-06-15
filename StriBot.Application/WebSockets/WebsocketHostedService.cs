@@ -7,6 +7,7 @@ using StriBot.Application.Events;
 using StriBot.Application.Events.Models;
 using StriBot.Application.Platforms.Enums;
 using StriBot.Application.Twitch;
+using StriBot.Application.Twitch.Interfaces;
 using TwitchLib.EventSub.Websockets;
 using TwitchLib.EventSub.Websockets.Core.EventArgs;
 using TwitchLib.EventSub.Websockets.Core.EventArgs.Channel;
@@ -18,15 +19,18 @@ public class WebsocketHostedService : IHostedService
         private readonly ILogger<WebsocketHostedService> _logger;
         private readonly EventSubWebsocketClient _eventSubWebsocketClient;
         private readonly TwitchApiClient _twitchApiClient;
+        private readonly ITwitchInfo _twitchInfo;
 
         public WebsocketHostedService(ILogger<WebsocketHostedService> logger,
             EventSubWebsocketClient eventSubWebsocketClient,
-            TwitchApiClient twitchApiClient)
+            TwitchApiClient twitchApiClient,
+            ITwitchInfo twitchInfo)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             _eventSubWebsocketClient = eventSubWebsocketClient ?? throw new ArgumentNullException(nameof(eventSubWebsocketClient));
             _twitchApiClient = twitchApiClient;
+            _twitchInfo = twitchInfo;
             _eventSubWebsocketClient.WebsocketConnected += OnWebsocketConnected;
             _eventSubWebsocketClient.WebsocketDisconnected += OnWebsocketDisconnected;
             _eventSubWebsocketClient.WebsocketReconnected += OnWebsocketReconnected;
@@ -34,7 +38,7 @@ public class WebsocketHostedService : IHostedService
             _eventSubWebsocketClient.ChannelPointsCustomRewardRedemptionAdd += EventSubWebsocketClientOnChannelPointsCustomRewardRedemptionAdd;
         }
 
-        private Task EventSubWebsocketClientOnChannelPointsCustomRewardRedemptionAdd(object sender, ChannelPointsCustomRewardRedemptionArgs e)
+        private static Task EventSubWebsocketClientOnChannelPointsCustomRewardRedemptionAdd(object sender, ChannelPointsCustomRewardRedemptionArgs e)
         {
             EventContainer.RewardEvent(new RewardInfo
             {
@@ -51,7 +55,10 @@ public class WebsocketHostedService : IHostedService
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await _eventSubWebsocketClient.ConnectAsync();
+            if (_twitchInfo.ChannelAuthorized)
+            {
+                await _eventSubWebsocketClient.ConnectAsync();
+            }
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
@@ -93,7 +100,7 @@ public class WebsocketHostedService : IHostedService
 
         private Task OnErrorOccurred(object sender, ErrorOccuredArgs e)
         {
-            _logger.LogError($"Websocket {_eventSubWebsocketClient.SessionId} - Error occurred!");
+            _logger.LogError(e.Exception, "Websocket {SessionId} - Error occurred!", _eventSubWebsocketClient.SessionId);
             return Task.CompletedTask;
         }
     }
