@@ -15,6 +15,8 @@ namespace StriBot.Application.Twitch;
 
 public class TwitchApiClient
 {
+    // Get ClientId and ClientSecret by register an Application here: https://dev.twitch.tv/console/apps
+    // https://dev.twitch.tv/docs/authentication/register-app/
     private const string TwitchApplicationClientId = "knbxrofioasvmo625pfga4ccbs3nee";
     private const string TwitchClientSecret = "694l6zbapm00ewmbz97fkf4fyqqmiz";
 
@@ -38,7 +40,7 @@ public class TwitchApiClient
         try
         {
             await _twitchApi.Helix.ChannelPoints.UpdateRedemptionStatusAsync(_twitchInfo.ChannelId, rewardId,
-                new List<string> { redemptionId },
+                [redemptionId],
                 new UpdateCustomRewardRedemptionStatusRequest { Status = CustomRewardRedemptionStatus.FULFILLED },
                 accessToken:_twitchInfo.ChannelAccessToken);
         }
@@ -111,4 +113,13 @@ public class TwitchApiClient
 
     public Task<RefreshResponse> RefreshToken(string refreshToken)
         => _twitchApi.Auth.RefreshAuthTokenAsync(refreshToken, TwitchClientSecret);
+
+    public async Task SubscribeChannelPointsCustomRewardRedemptionAddAsync(string sessionId)
+    {
+        // https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchannel_points_custom_reward_redemptionadd
+        var condition = new Dictionary<string, string> { { "broadcaster_user_id", _twitchInfo.ChannelId } };
+
+        await _twitchApi.Helix.EventSub.CreateEventSubSubscriptionAsync("channel.channel_points_custom_reward_redemption.add", "1", condition,
+            EventSubTransportMethod.Websocket, sessionId, clientId: TwitchApplicationClientId, accessToken: _twitchInfo.ChannelAccessToken);
+    }
 }

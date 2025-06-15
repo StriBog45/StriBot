@@ -3,7 +3,10 @@ using System.Runtime.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StriBot.Application.WebSockets;
 using StriBot.DependencyInjections;
+using TwitchLib.EventSub.Websockets.Extensions;
+using WindowsFormsLifetime;
 
 namespace StriBot;
 
@@ -30,11 +33,14 @@ internal static class Program
             .AddBotHandlers()
             .AddBotCommands()
             .AddLanguage()
-            .AddDataBase();
+            .AddDataBase()
+            .AddLogging()
+            .AddTwitchLibEventSubWebsockets()
+            .AddHostedService<WebsocketHostedService>();
+        
+        hostApplicationBuilder.UseWindowsFormsLifetime<Form1>();
 
         using var host = hostApplicationBuilder.Build();
-
-        System.Windows.Forms.Application.Run(host.Services.GetRequiredService<Form1>());
 
         try
         {

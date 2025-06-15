@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Security.Authentication;
+﻿using System.Linq;
 using StriBot.Application.Events;
 using StriBot.Application.Events.Enums;
 using StriBot.Application.Events.Models;
@@ -9,8 +7,6 @@ using StriBot.Application.Twitch.Interfaces;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
-using TwitchLib.PubSub;
-using TwitchLib.PubSub.Events;
 
 namespace StriBot.Application.Twitch;
 
@@ -18,7 +14,6 @@ public class TwitchBot
 {
     private readonly ITwitchInfo _twitchInfo;
     private TwitchClient _twitchClient;
-    private TwitchPubSub _twitchPub;
 
     public TwitchBot(ITwitchInfo twitchInfo)
     {
@@ -37,7 +32,6 @@ public class TwitchBot
         {
             EventContainer.SendMessage -= SendMessage;
             _twitchClient.Disconnect();
-            _twitchPub.Disconnect();
         }
 
         _twitchClient = new TwitchClient();
@@ -55,47 +49,13 @@ public class TwitchBot
         _twitchClient.Initialize(connectionCredentials, _twitchInfo.Channel);
         _twitchClient.Connect();
 
-        // TODO Использовать EventSub https://dev.twitch.tv/docs/pubsub/#responses
-        // _twitchPub = new TwitchPubSub();
-        // _twitchPub.OnPubSubServiceConnected += TwitchPub_OnPubSubServiceConnected;
-        // _twitchPub.OnListenResponse += TwitchPubOnOnListenResponse;
-        // _twitchPub.OnChannelPointsRewardRedeemed += TwitchPubOnOnChannelPointsRewardRedeemed;
-        //
-        // _twitchPub.ListenToChannelPoints(_twitchInfo.ChannelId);
-        // _twitchPub.Connect();
-
         EventContainer.SendMessage += SendMessage;
     }
-
-    private void TwitchPubOnOnListenResponse(object sender, OnListenResponseArgs e)
-    {
-        if (!e.Successful)
-        {
-            throw new AuthenticationException($"TwitchPub OAuth failed!  Response: {e.Response}, {_twitchInfo.ChannelAccessToken}");
-        }
-    }
-
-    private static void TwitchPubOnOnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
-        => EventContainer.RewardEvent(new RewardInfo
-        {
-            Platform = Platform.Twitch,
-            RewardMessage = e.RewardRedeemed.Redemption.UserInput,
-            RewardName = e.RewardRedeemed.Redemption.Reward.Title,
-            UserName = e.RewardRedeemed.Redemption.User.DisplayName,
-            RewardId = e.RewardRedeemed.Redemption.Reward.Id,
-            RedemptionId = e.RewardRedeemed.Redemption.Id
-        });
 
     private void SendMessage(Platform[] platforms, string message)
     {
         if (platforms.Contains(Platform.Twitch))
             SendMessage(message);
-    }
-
-    private void TwitchPub_OnPubSubServiceConnected(object sender, EventArgs e)
-    {
-        // SendTopics accepts an oauth optionally, which is necessary for some topics
-        _twitchPub.SendTopics(_twitchInfo.BotAccessToken);
     }
 
     private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
